@@ -1,10 +1,10 @@
-const throwError = (message, detail) => {
+export const throwError = (message, detail) => {
   const err = new Error(message);
   Object.assign(err, detail);
   throw err;
 };
 
-const throwExposable = (code, status, description, exposeMeta) => {
+export const throwExposable = (code, status = undefined, description = undefined, exposeMeta = undefined) => {
   const error = getError(code);
 
   if (!error) {
@@ -16,7 +16,7 @@ const throwExposable = (code, status, description, exposeMeta) => {
     });
   }
 
-  const err = new Error(code);
+  const err = new Error(code) as any;
   err.exposeCustom_ = true;
 
   err.status = status || error.status;
@@ -29,7 +29,7 @@ const throwExposable = (code, status, description, exposeMeta) => {
   throw err;
 };
 
-function castExposable(error) {
+export function castExposable(error) {
 
   if (error.exposeCustom_) throw error;
 
@@ -37,7 +37,7 @@ function castExposable(error) {
 
 }
 
-function getError(errorCode) {
+export function getError(errorCode) {
   const code = ERRORS[errorCode];
   if (!errorCode || !code) {
     return null;
@@ -45,20 +45,22 @@ function getError(errorCode) {
   return code;
 }
 
-function assert(condition, ...args) {
+export function assert(condition, ...args) {
   if (!condition) {
+		// @ts-ignore
     throwError(...args);
   }
 }
 
 
-function assertExposable(condition, ...args) {
+export function assertExposable(condition, ...args) {
   if (!condition) {
+		// @ts-ignore
     throwExposable(...args);
   }
 }
 
-const ERRORS = {
+export const ERRORS = {
   too_busy: {
     status: 503,
     description: 'Server too busy',
@@ -131,15 +133,6 @@ const ERRORS = {
     status: 400,
     description: 'Signup is currently disabled',
   },
-};
-
-module.exports = {
-  throwError,
-  throwExposable,
-  assert,
-  assertExposable,
-  castExposable,
-  ERRORS,
 };
 
 /****
