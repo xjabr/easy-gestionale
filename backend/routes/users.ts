@@ -46,7 +46,7 @@ const RouterUsers = {
 		await UsersController.signout(req.body.email);
 
 		res.status(200).send('OK');
-	},
+	}
 }
 
 
