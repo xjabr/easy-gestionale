@@ -1,9 +1,8 @@
-import CustomerRoutes from 'routes/customers';
 import CustomerColl from '../models/customer';
 
 export const CustomersController = {
-	list: async () => {
-		const result = await CustomerColl.find();
+	list: async (organization_id) => {
+		const result = await CustomerColl.find({ organization_id: organization_id });
 		return result;
 	},
 

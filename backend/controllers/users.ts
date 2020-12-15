@@ -11,8 +11,10 @@ const signToken = (user): JWTtoken => {
     {
       id: user._id,
 			email: user.email,
+			organization_id: user.organization_id,
 			username: user.username,
       isActive: user.isActive,
+      isAdmin: user.isAdmin,
       isVerified: user.isVerified,
       iat: new Date().getTime(),
       exp: new Date().setDate(new Date().getDate() + 14), // Expires in 14 days
@@ -42,7 +44,7 @@ export const UsersController = {
 	create: async (body) =>{
 		const { email, username } = body;
 
-		const exists = await UserColl.exists({ email, username})
+		const exists = await UserColl.exists({ email, username })
 		assertExposable(!exists, 'already_exists');
 
 		const newUser = new UserColl(body);

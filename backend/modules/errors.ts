@@ -120,10 +120,18 @@ export const ERRORS = {
   user_not_exists: {
     status: 400,
     description: 'User not found.',
-  },
+	},
+	organization_not_found: {
+    status: 400,
+    description: 'Organization not found.',
+	},
   user_not_verified: {
     status: 400,
     description: 'User not verified.',
+	},
+	user_not_admin: {
+    status: 400,
+    description: 'User not admin.',
   },
   invalid_token: {
     status: 400,

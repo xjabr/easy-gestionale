@@ -23,6 +23,7 @@ const RouterUsers = {
 	create: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
 		// validate body
 		const schema = Joi.object({
+			organization_id: Joi.string().required(),
 			first_name: Joi.string().required(),
 			last_name: Joi.string().required(),
 			username: Joi.string().required(),
@@ -51,7 +52,7 @@ const RouterUsers = {
 
 
 const UserRoutes: express.Router = express.Router();
-const authed = authMiddleware.authAssert({ isActive: true, isVerified: true });
+const authed = authMiddleware.authAssert({ isActive: true, isVerified: false, isAdmin: false });
 
 UserRoutes.post('/login', errorMiddleware(RouterUsers.login));
 UserRoutes.post('/create', errorMiddleware(RouterUsers.create));

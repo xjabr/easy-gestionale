@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { IUserModel, rolesEnum } from '../types/users';
 
 export interface IUser extends IUserModel, mongoose.Document {
+	organization_id: string;
 	first_name: string;
 	last_name: string;
 	username: string;
@@ -11,14 +12,16 @@ export interface IUser extends IUserModel, mongoose.Document {
 	password: string;
 	role: rolesEnum;
 	isCorrectPassword?(password: string): void;
+	isAdmin: boolean;
 	isVerified: boolean;
-	isActive: true;
+	isActive: boolean;
 }
 
 const saltRounds = 10;
 
 // TODO: VALIDATION
 const UserSchema: mongoose.Schema = new mongoose.Schema({
+	organization_id: { type: mongoose.Types.ObjectId, ref: 'organization' },
 	first_name: { type: String, required: true },
 	last_name: { type: String, required: true },
 	username: { type: String, required: true },
@@ -29,6 +32,7 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
 	},
 	password: { type: String, required: true, select: true },
 	role: { type: String, required: true, enum: ['ADMIN', 'STAFF', 'CLIENT'] },
+	isAdmin: { type: Boolean, default: false },
 	isActive: { type: Boolean, default: true },
 	isVerified: { type: Boolean, default: false },
 	divisions: { type: Array, required: false, default: ['all'] }

@@ -5,7 +5,9 @@ import * as cors from 'cors';
 import * as logger from 'morgan';
 
 import {
-  routerUsers,
+	routerUsers,
+	routerOrganization,
+	routerCustomers
 } from './routes';
 
 require('dotenv').config();
@@ -35,6 +37,8 @@ db.once('open', function () {
   app.use(cors());
   app.get('/', (_req, res) => res.send('LAZWEB api working with email!'));
   app.use('/api/users', routerUsers);
+  app.use('/api/organizations', routerOrganization);
+  app.use('/api/customers', routerCustomers);
 });
 
 export default app;

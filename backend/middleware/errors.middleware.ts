@@ -1,10 +1,9 @@
 const errorMiddleware = (fn) => {
-
   return (req, res, next) => {
 
     return fn(req, res, next).catch((error) => {
-      res.error = error;
-
+			res.error = error;
+			
       let status = 500;
       const response = {
         code: 'unknown_error',
