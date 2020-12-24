@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useAuth } from './Context/auth-context'
+import { useAuth } from './contexts/auth-context'
 
-import AuthenticatedApp from './Components/authenticated-app'
-import UnauthenticatedApp from './Components/unathenticated-app'
+import AuthenticatedApp from './components/authenticated-app'
+import UnauthenticatedApp from './components/unathenticated-app'
 
 const App = () => {
     const auth = useAuth()

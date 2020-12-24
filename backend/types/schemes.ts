@@ -27,8 +27,8 @@ const schemes = {
 		cap: Joi.string().max(5).required(),
 		country: Joi.string().required(),
 		address: Joi.string().required(),
-		pec: Joi.string().required(),
-		cod_desti: Joi.string().required(),
+		pec: Joi.string().optional(),
+		cod_desti: Joi.string().optional(),
 		iban: Joi.string().optional(),
 		bank: Joi.string().optional()
 	})

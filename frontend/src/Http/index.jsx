@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { API_ENDPOINT } from '../Constants/API_ENDPOINT'
+import { API_ENDPOINT } from '../constants/API_ENDPOINT'
 
 export const httpGet = async (endpoint, token) => {
     return await axios.get(`${API_ENDPOINT}/${endpoint}`, {

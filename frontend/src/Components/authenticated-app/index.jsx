@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Dashboard from '../../UIComponents/Dashboard';
+import Dashboard from '../../ui-components/dashboard';
 
 const AuthenticatedApp = () => {
 	return (

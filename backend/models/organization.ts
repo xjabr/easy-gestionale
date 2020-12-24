@@ -10,8 +10,8 @@ const OrganizationsScheme: mongoose.Schema = new mongoose.Schema({
 	cap: { type: String, required: true },
 	country: { type: String, required: true },
 	address: { type: String, required: true },
-	pec: { type: String, required: true },
-	cod_desti: { type: String, required: true },
+	pec: { type: String, required: false },
+	cod_desti: { type: String, required: false },
 	iban: { type: String, required: false },
 	bank: { type: String, required: false }
 });

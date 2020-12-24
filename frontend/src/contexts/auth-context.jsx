@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import jwt from 'jwt-decode'
 
-import { httpPost } from '../Http'
-import { AUTH_ENDPOINT } from '../Constants/API_ENDPOINT'
+import { httpPost } from '../http'
+import { AUTH_ENDPOINT } from '../constants/API_ENDPOINT'
 
 const AuthContext = React.createContext()
 
