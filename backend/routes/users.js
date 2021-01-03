@@ -62,12 +62,12 @@ const limitRequestsMiddleware = rateLimit({
 	max: 5,
 	message: {
 		status: 429,
-		message: 'Too many login requests, please try again in an hour'
+		message: 'Too many requests, please try again in an hour'
 	}
 });
 
 UserRoutes.post('/login', limitRequestsMiddleware, errorMiddleware(RouterUsers.login));
-UserRoutes.post('/create', errorMiddleware(RouterUsers.create));
+UserRoutes.post('/create', limitRequestsMiddleware, errorMiddleware(RouterUsers.create));
 UserRoutes.post('/logout', errorMiddleware(authed), errorMiddleware(RouterUsers.logout));
 
 module.exports = UserRoutes;
