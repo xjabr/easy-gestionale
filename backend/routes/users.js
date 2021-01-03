@@ -58,7 +58,7 @@ const UserRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: false, isAdmin: false });
 
 const limitRequestsMiddleware = rateLimit({
-	windowMs: 60 * 60 * 1000,
+	windowMs: 60 * 60 * 1000, // 1 hour
 	max: 5,
 	message: {
 		status: 429,
