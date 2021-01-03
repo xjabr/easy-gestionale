@@ -1,7 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import styled from 'styled-components';
 
 import Navbar from '../navbar';
+import Sidebar from '../sidebar';
+
+const WrapperMain = styled.div`
+	width: 80%;
+	flex: 0 80%;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	height: calc(100% - 96px);
+	padding: 10px;
+	overflow: auto;
+`;
 
 const Home = () => { 
 	return (
@@ -13,9 +26,12 @@ const Dashboard = () => {
 	return (
 		<BrowserRouter>
 			<Navbar isAuth={true} />
-			<Switch>
-				<Route exact path="/" component={Home} />
-			</Switch>
+			<Sidebar></Sidebar>
+			<WrapperMain>
+				<Switch>
+					<Route exact path="/" component={Home} />
+				</Switch>
+			</WrapperMain>
 		</BrowserRouter>
 	)
 }

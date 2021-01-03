@@ -12,7 +12,7 @@ const WrapperNavbar = styled.div`
   display: flex;
   flex-direction: row;
   background: #7189ED;
-  padding: 20px;
+  padding: 20px 30px;
   align-items: center;
 
   .navbar-item {
