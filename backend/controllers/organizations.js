@@ -1,7 +1,7 @@
-import OrganizationColl from '../models/organization';
-import { assertExposable } from '../modules/errors';
+const OrganizationColl = require('../models/organization');
+const { assertExposable } = require('../modules/errors');
 
-export const OrganizationsController = {
+const OrganizationsController = {
 	create: async (body) =>{
 		const { name_org } = body;
 
@@ -14,3 +14,5 @@ export const OrganizationsController = {
 		return result;
 	}
 }
+
+module.exports.OrganizationsController = OrganizationsController;

@@ -1,10 +1,10 @@
-export const throwError = (message, detail) => {
+const throwError = (message, detail) => {
   const err = new Error(message);
   Object.assign(err, detail);
   throw err;
 };
 
-export const throwExposable = (code, status = undefined, description = undefined, exposeMeta = undefined) => {
+const throwExposable = (code, status = undefined, description = undefined, exposeMeta = undefined) => {
   const error = getError(code);
 
   if (!error) {
@@ -16,7 +16,7 @@ export const throwExposable = (code, status = undefined, description = undefined
     });
   }
 
-  const err = new Error(code) as any;
+  const err = new Error(code);
   err.exposeCustom_ = true;
 
   err.status = status || error.status;
@@ -29,7 +29,7 @@ export const throwExposable = (code, status = undefined, description = undefined
   throw err;
 };
 
-export function castExposable(error) {
+function castExposable(error) {
 
   if (error.exposeCustom_) throw error;
 
@@ -37,7 +37,7 @@ export function castExposable(error) {
 
 }
 
-export function getError(errorCode) {
+function getError(errorCode) {
   const code = ERRORS[errorCode];
   if (!errorCode || !code) {
     return null;
@@ -45,7 +45,7 @@ export function getError(errorCode) {
   return code;
 }
 
-export function assert(condition, ...args) {
+function assert(condition, ...args) {
   if (!condition) {
 		// @ts-ignore
     throwError(...args);
@@ -53,14 +53,14 @@ export function assert(condition, ...args) {
 }
 
 
-export function assertExposable(condition, ...args) {
+function assertExposable(condition, ...args) {
   if (!condition) {
 		// @ts-ignore
     throwExposable(...args);
   }
 }
 
-export const ERRORS = {
+const ERRORS = {
   too_busy: {
     status: 503,
     description: 'Server too busy',
@@ -142,6 +142,14 @@ export const ERRORS = {
     description: 'Signup is currently disabled',
   },
 };
+
+module.exports.throwError = throwError;
+module.exports.throwExposable = throwExposable;
+module.exports.castExposable = castExposable;
+module.exports.getError = getError;
+module.exports.assert = assert;
+module.exports.assertExposable = assertExposable;
+module.exports.ERRORS = ERRORS;
 
 /****
  HTTP ERROR CODES

@@ -1,4 +1,4 @@
-const Joi = require("@hapi/joi");
+const Joi = require("joi");
 
 const schemes = {
 	customer: Joi.object({
@@ -34,4 +34,4 @@ const schemes = {
 	})
 }
 
-export default schemes;
+module.exports = schemes;

@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // TODO: VALIDATION
-const OrganizationsScheme: mongoose.Schema = new mongoose.Schema({
+const OrganizationsScheme = new mongoose.Schema({
 	name_org: { type: String, required: true },
 	image_org: { type: String, required: false, default: null },
 	p_iva: { type: String, required: true },
@@ -18,4 +18,4 @@ const OrganizationsScheme: mongoose.Schema = new mongoose.Schema({
 
 // Export the model and return your IUser interface
 const OrganizationColl = mongoose.model('organization', OrganizationsScheme);
-export default OrganizationColl;
+module.exports = OrganizationColl;

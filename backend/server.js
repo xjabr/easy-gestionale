@@ -1,18 +1,18 @@
-import * as express from 'express';
-import * as bodyparser from 'body-parser';
-import * as mongoose from 'mongoose';
-import * as cors from 'cors';
-import * as logger from 'morgan';
+const express = require('express');
+const bodyparser = require('body-parser');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const logger = require('morgan');
 
-import {
+const {
 	routerUsers,
 	routerOrganization,
 	routerCustomers
-} from './routes';
+} = require('./routes');
 
 require('dotenv').config();
 
-const app: express.Application = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(bodyparser.json());
@@ -41,4 +41,4 @@ db.once('open', function () {
   app.use('/api/customers', routerCustomers);
 });
 
-export default app;
+module.exports = app;

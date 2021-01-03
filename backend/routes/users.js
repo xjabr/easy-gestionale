@@ -1,14 +1,14 @@
-import * as express from 'express';
+const express = require('express');
 
-import validation from '../utils/validation';
-import { UsersController } from '../controllers/users';
-import { authMiddleware } from '../middleware/auth.middleware';
-import errorMiddleware from '../middleware/errors.middleware';
+const validation = require('../utils/validation');
+const { UsersController } = require('../controllers/users');
+const { authMiddleware } = require('../middleware/auth.middleware');
+const errorMiddleware = require('../middleware/errors.middleware');
 
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 
 const RouterUsers = {
-	login: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	login: async (req, res, _next) => {
 		const schema = Joi.object({
 			username: Joi.string().required(),
 			password: Joi.string().required(),
@@ -20,7 +20,7 @@ const RouterUsers = {
 		res.send({ token });
 	},
 
-	create: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	create: async (req, res, _next) => {
 		// validate body
 		const schema = Joi.object({
 			organization_id: Joi.string().required(),
@@ -38,7 +38,7 @@ const RouterUsers = {
 		res.status(201).send(result);
 	},
 
-	logout: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	logout: async (req, res, _next) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 		});
@@ -51,11 +51,11 @@ const RouterUsers = {
 }
 
 
-const UserRoutes: express.Router = express.Router();
+const UserRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: false, isAdmin: false });
 
 UserRoutes.post('/login', errorMiddleware(RouterUsers.login));
 UserRoutes.post('/create', errorMiddleware(RouterUsers.create));
 UserRoutes.post('/logout', errorMiddleware(authed), errorMiddleware(RouterUsers.logout));
 
-export default UserRoutes;
+module.exports = UserRoutes;

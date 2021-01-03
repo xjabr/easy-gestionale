@@ -1,7 +1,7 @@
-import * as mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 // TODO: VALIDATION
-const CustomerScheme: mongoose.Schema = new mongoose.Schema({
+const CustomerScheme = new mongoose.Schema({
 	organization_id: { type: mongoose.Types.ObjectId, ref: 'organization' },
 	first_name: { type: String, required: true },
 	last_name: { type: String, required: true },
@@ -21,4 +21,4 @@ const CustomerScheme: mongoose.Schema = new mongoose.Schema({
 
 // Export the model and return your IUser interface
 const CustomerColl = mongoose.model('customer', CustomerScheme);
-export default CustomerColl;
+module.exports = CustomerColl;

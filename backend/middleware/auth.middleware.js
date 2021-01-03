@@ -1,16 +1,15 @@
-import * as express from 'express';
-import * as jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
-import { JWT_SECRETS } from '../configuration';
-import { assertExposable, throwExposable } from '../modules/errors';
-import UserColl from '../models/user';
-import OrganizationColl from '../models/organization';
+const { JWT_SECRETS } = require('../configuration');
+const { assertExposable, throwExposable } = require('../modules/errors');
+const UserColl = require('../models/user');
+const OrganizationColl = require('../models/organization');
 
-export const authMiddleware = {
-  authAssert: (opts: any = {}) => async (
-    req: express.Request,
-    res: express.Response | any,
-    next: express.NextFunction,
+module.exports.authMiddleware = {
+  authAssert: (opts = {}) => async (
+    req,
+    res,
+    next,
   ) => {
     const bearerHeader = req.headers['authorization'];
 
@@ -24,7 +23,7 @@ export const authMiddleware = {
       throwExposable('access_denied');
     }
 
-    const { organization_id, email } = jwt.decode(bearer) as any;
+    const { organization_id, email } = jwt.decode(bearer);
 
     const user = await UserColl.findOne({ email });
     assertExposable(user, 'access_denied');

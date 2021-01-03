@@ -31,4 +31,4 @@ const errorMiddleware = (fn) => {
   }
 };
 
-export default errorMiddleware;
+module.exports = errorMiddleware;

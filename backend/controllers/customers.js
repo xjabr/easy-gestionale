@@ -1,6 +1,6 @@
-import CustomerColl from '../models/customer';
+const CustomerColl = require('../models/customer');
 
-export const CustomersController = {
+const CustomersController = {
 	list: async (organization_id) => {
 		const result = await CustomerColl.find({ organization_id: organization_id });
 		return result;
@@ -12,3 +12,5 @@ export const CustomersController = {
 		return result;
 	}
 }
+
+module.exports.CustomersController = CustomersController;
