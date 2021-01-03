@@ -18,6 +18,19 @@ const RouterCustomers = {
 		await validation.validateParams(schemes.customer, req.body)
 		const result = await CustomersController.create({ organization_id: res.organization_id, ...req.body });
 		res.status(201).send(result);
+	},
+
+	/** @type {import("express").RequestHandler} */
+	update: async (req, res, _next) => {
+		await validation.validateParams(schemes.customer, req.body)
+		const result = await CustomersController.update(req.params.id, { ...req.body });
+		res.status(200).send(result);
+	},
+
+	/** @type {import("express").RequestHandler} */
+	delete: async (req, res, _next) => {
+		const result = await CustomersController.delete(req.params.id);
+		res.status(200).send(result);
 	}
 }
 
@@ -26,5 +39,7 @@ const authed = authMiddleware.authAssert({ isActive: true, isVerified: true, isA
 
 CustomerRoutes.get('/', errorMiddleware(authed), errorMiddleware(RouterCustomers.list));
 CustomerRoutes.post('/', errorMiddleware(authed), errorMiddleware(RouterCustomers.create));
+CustomerRoutes.patch('/:id', errorMiddleware(authed), errorMiddleware(RouterCustomers.update));
+CustomerRoutes.delete('/:id', errorMiddleware(authed), errorMiddleware(RouterCustomers.delete));
 
 module.exports = CustomerRoutes;

@@ -17,7 +17,7 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyparser.json());
 
-const MONGO_URL = process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/lazweb-gestionale';
+const MONGO_URL = process.env.MONGO_URL;
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
@@ -31,8 +31,7 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
 db.once('open', function () {
-  // we're connected!
-  console.log('CONNECTED TO DBb. SERVER RUNNING ON PORT 5000');
+  console.log('CONNECTED TO DB');
 
   app.use(cors());
   app.get('/', (_req, res) => res.send('LAZWEB api working with email!'));
