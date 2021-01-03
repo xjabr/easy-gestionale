@@ -1,4 +1,5 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 
 const validation = require('../utils/validation');
 const { UsersController } = require('../controllers/users');
@@ -53,11 +54,19 @@ const RouterUsers = {
 	}
 }
 
-
 const UserRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: false, isAdmin: false });
 
-UserRoutes.post('/login', errorMiddleware(RouterUsers.login));
+const limitRequestsMiddleware = rateLimit({
+	windowMs: 60 * 60 * 1000,
+	max: 5,
+	message: {
+		status: 429,
+		message: 'Too many login requests, please try again in an hour'
+	}
+});
+
+UserRoutes.post('/login', limitRequestsMiddleware, errorMiddleware(RouterUsers.login));
 UserRoutes.post('/create', errorMiddleware(RouterUsers.create));
 UserRoutes.post('/logout', errorMiddleware(authed), errorMiddleware(RouterUsers.logout));
 
