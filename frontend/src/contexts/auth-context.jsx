@@ -35,9 +35,9 @@ function AuthProvider(props) {
     }
 
     const login = async (body) => {
-        const { username, password } = body
+        const { email, password } = body
 
-        const result = await httpPost(`${AUTH_ENDPOINT}/login`, null, { username, password })
+        const result = await httpPost(`${AUTH_ENDPOINT}/login`, null, { email, password })
         return result;
     }
 

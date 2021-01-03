@@ -12,7 +12,7 @@ const RouterUsers = {
   /** @type {import("express").RequestHandler} */
 	login: async (req, res, _next) => {
 		const schema = Joi.object({
-			username: Joi.string().required(),
+			email: Joi.string().email().required(),
 			password: Joi.string().required(),
 		});
 

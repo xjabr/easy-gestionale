@@ -22,9 +22,9 @@ const signToken = (user) => {
 
 const UsersController = {
   signin: async (body) => {
-    const { username, password } = body;
+    const { email, password } = body;
 
-    const user = await UserColl.findOne({ username });
+    const user = await UserColl.findOne({ email });
 
     assertExposable(user, 'login_fail');
     assertExposable(user.isActive, 'disabled_account');

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useAuth } from '../../contexts/auth-context';
 import FormLogin from '../../ui-components/forms-components/login';
+import WrapperAuth from '../../ui-components/forms-components/login/wrapper';
 
 
 const Login = () => {
@@ -14,18 +15,21 @@ const Login = () => {
 			const { token } = result.data;
 			setToken(token);
 		} catch (err) {
-			const { data } = err.response;
-			setError(data.error.description);
+			const { data, status } = err.response;
+
+			if (status === 429) {
+				return setError(data.message)
+			}
+
+			return setError(data.error.description);
 		}
 	}
 
 	return (
 		<>
-			<div>
-				<h1>Welcome back to ClinicSoul</h1>
-				<FormLogin handleSave={onSubmit} />
-				{ error }
-			</div>
+			<WrapperAuth>
+				<FormLogin error={error} handleSave={onSubmit} />
+			</WrapperAuth>
 		</>
 	)
 }
