@@ -8,6 +8,7 @@ const errorMiddleware = require('../middleware/errors.middleware');
 const Joi = require('joi');
 
 const RouterUsers = {
+  /** @type {import("express").RequestHandler} */
 	login: async (req, res, _next) => {
 		const schema = Joi.object({
 			username: Joi.string().required(),
@@ -20,6 +21,7 @@ const RouterUsers = {
 		res.send({ token });
 	},
 
+  /** @type {import("express").RequestHandler} */
 	create: async (req, res, _next) => {
 		// validate body
 		const schema = Joi.object({
@@ -38,6 +40,7 @@ const RouterUsers = {
 		res.status(201).send(result);
 	},
 
+  /** @type {import("express").RequestHandler} */
 	logout: async (req, res, _next) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),

@@ -8,13 +8,13 @@ const errorMiddleware = require('../middleware/errors.middleware');
 
 const RouterCustomers = {
   /** @type {import("express").RequestHandler} */
-	list: async (req, res, next) => {
+	list: async (_req, res, _next) => {
 		const result = await CustomersController.list(res.organization_id);
 		res.status(200).send(result);
 	},
 
   /** @type {import("express").RequestHandler} */
-	create: async (req, res, next) => {
+	create: async (req, res, _next) => {
 		await validation.validateParams(schemes.customer, req.body)
 		const result = await CustomersController.create({ organization_id: res.organization_id, ...req.body });
 		res.status(201).send(result);
