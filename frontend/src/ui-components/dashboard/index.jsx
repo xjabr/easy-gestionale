@@ -6,12 +6,12 @@ import Navbar from '../navbar';
 import Sidebar from '../sidebar';
 
 const WrapperMain = styled.div`
-	width: 80%;
-	flex: 0 80%;
+	width: 85%;
+	flex: 0 85%;
 	position: fixed;
 	right: 0;
 	bottom: 0;
-	height: calc(100% - 96px);
+	height: calc(100% - 76px);
 	padding: 10px;
 	overflow: auto;
 `;

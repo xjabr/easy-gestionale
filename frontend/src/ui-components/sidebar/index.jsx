@@ -7,14 +7,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileInvoice, faReceipt, faFileInvoiceDollar, faUser, faHouseUser, faTachometerAlt, faTable } from '@fortawesome/free-solid-svg-icons';
 
 const WrapperSidebar = styled.div`
-  width: 20%;
-  flex: 0 20%;
+  width: 15%;
+  flex: 0 15%;
   background: #8194e4;
   position: fixed;
   left: 0;
   bottom: 0;
-  bottom: 0;
-  height: calc(100% - 95px);
+  height: calc(100% - 76px);
   padding: 30px;
   overflow: auto;
 
@@ -30,6 +29,7 @@ const WrapperSidebar = styled.div`
     color: #fff;
     text-decoration: none;
     margin-bottom: 10px;
+    font-size: 14px;
     background: #7088ec;
     border-radius: 4px;
     display: flex;

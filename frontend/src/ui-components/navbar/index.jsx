@@ -18,14 +18,14 @@ const WrapperNavbar = styled.div`
   .navbar-item {
     &.logo {
       img {
-        width: 200px;
+        width: 128px;
       }
     }
 
     &.logo-text {
       a {
         font-weight: bold;
-        font-size: 22px;
+        font-size: 18px;
         color: #fff!important;
         text-decoration: none;
         margin-left: 20px
@@ -43,7 +43,7 @@ const WrapperNavbar = styled.div`
 
         a {
           color: #fff;
-          font-size: 18px;
+          font-size: 16px;
           text-decoration: none;
           padding: 0 15px;
 
