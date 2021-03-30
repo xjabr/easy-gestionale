@@ -44,6 +44,8 @@ module.exports.authMiddleware = {
     assertExposable(organization, 'organization_not_found');
 
 		res.user = user;
+		res.id = user.id;
+		res.role = user.role;
 		res.organization_id = user.organization_id;
 		res.isAdmin = user.isAdmin;
 

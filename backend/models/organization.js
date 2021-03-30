@@ -17,5 +17,5 @@ const OrganizationsScheme = new mongoose.Schema({
 });
 
 // Export the model and return your IUser interface
-const OrganizationColl = mongoose.model('organization', OrganizationsScheme);
+const OrganizationColl = mongoose.model('organizations', OrganizationsScheme);
 module.exports = OrganizationColl;

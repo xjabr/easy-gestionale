@@ -7,7 +7,8 @@ const logger = require('morgan');
 const {
 	routerUsers,
 	routerOrganization,
-	routerCustomers
+	routerCustomers,
+	routerInvoices
 } = require('./routes');
 
 require('dotenv').config();
@@ -38,6 +39,7 @@ db.once('open', function () {
   app.use('/api/users', routerUsers);
   app.use('/api/organizations', routerOrganization);
   app.use('/api/customers', routerCustomers);
+  app.use('/api/invoices', routerInvoices);
 });
 
 module.exports = app;

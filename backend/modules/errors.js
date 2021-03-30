@@ -47,7 +47,6 @@ function getError(errorCode) {
 
 function assert(condition, ...args) {
   if (!condition) {
-		// @ts-ignore
     throwError(...args);
   }
 }
@@ -55,7 +54,6 @@ function assert(condition, ...args) {
 
 function assertExposable(condition, ...args) {
   if (!condition) {
-		// @ts-ignore
     throwExposable(...args);
   }
 }
@@ -144,7 +142,11 @@ const ERRORS = {
 	customer_not_found: {
 		status: 404,
 		description: 'Customer not found'
-	}
+	},
+	invoice_not_found: {
+		status: 404,
+		description: 'Invoice not found'
+	},
 };
 
 module.exports.throwError = throwError;

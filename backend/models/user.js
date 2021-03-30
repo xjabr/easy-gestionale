@@ -47,5 +47,5 @@ UserSchema.methods = {
 }
 
 // Export the model and return your IUser interface
-const UserColl = mongoose.model('user', UserSchema);
+const UserColl = mongoose.model('users', UserSchema);
 module.exports = UserColl;
