@@ -2,17 +2,16 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Navbar from '../navbar';
 import Sidebar from '../sidebar';
 
 const WrapperMain = styled.div`
-	width: 85%;
-	flex: 0 85%;
+	width: 80%;
+	flex: 0 80%;
 	position: fixed;
 	right: 0;
 	bottom: 0;
-	height: calc(100% - 76px);
-	padding: 10px;
+	height: 100%;
+	padding: 20px;
 	overflow: auto;
 `;
 
@@ -25,7 +24,6 @@ const Home = () => {
 const Dashboard = () => {
 	return (
 		<BrowserRouter>
-			<Navbar isAuth={true} />
 			<Sidebar></Sidebar>
 			<WrapperMain>
 				<Switch>

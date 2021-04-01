@@ -7,15 +7,27 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileInvoice, faReceipt, faFileInvoiceDollar, faUser, faHouseUser, faTachometerAlt, faTable } from '@fortawesome/free-solid-svg-icons';
 
 const WrapperSidebar = styled.div`
-  width: 15%;
-  flex: 0 15%;
+  width: 20%;
+  flex: 0 20%;
   background: #8194e4;
   position: fixed;
   left: 0;
   bottom: 0;
-  height: calc(100% - 76px);
+  height: 100%;
   padding: 30px;
   overflow: auto;
+  color: #fff;
+
+  h2 {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 25px
+  }
 
   hr {
     border-bottom: 1px solid #ddd;
@@ -50,22 +62,29 @@ const WrapperSidebar = styled.div`
 const Sidebar = () => {
 	return (
     <WrapperSidebar>
+      <h2>LAZWEB GESTIONALE</h2>
 
+      <hr/>
+
+      <h4>Principali</h4>
       <NavLink to="/"><FontAwesomeIcon icon={faTachometerAlt} />Dashboard</NavLink>
 
       <hr/>
 
+      <h4>Anagrafiche</h4>
       <NavLink to="/clienti"><FontAwesomeIcon icon={faUser} />Clienti</NavLink>
       <NavLink to="/fornitori"><FontAwesomeIcon icon={faHouseUser} />Fornitori</NavLink>
 
       <hr/>
 
+      <h4>Contabilità</h4>
       <NavLink to="/fatture-vendita"><FontAwesomeIcon icon={faFileInvoiceDollar} />Fatture Vendita</NavLink>
       <NavLink to="/fatture-acquisto"><FontAwesomeIcon icon={faFileInvoice} />Fatture Acquisto</NavLink>
       <NavLink to="/corrispettivi"><FontAwesomeIcon icon={faReceipt} />Corrispettivi</NavLink>
 
       <hr/>
 
+      <h4>Altri</h4>
       <NavLink to="/prima-nota"><FontAwesomeIcon icon={faTable} />Prima Nota</NavLink>
     </WrapperSidebar>    
 	)

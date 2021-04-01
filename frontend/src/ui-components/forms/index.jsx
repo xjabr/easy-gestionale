@@ -132,7 +132,7 @@ export const InputDate = ({ defaultValue = undefined, name, label, placeholder =
 	return (
 		<>
 			<label htmlFor={name}>{label}</label>
-			<input defaultValue={moment(defaultValue).format('YYYY-MM-DD')} className={'form-control'} name={name} id={name} placeholder={placeholder} type="date" ref={register({ required: isRequired })} onChange={handleValidation} />
+			<input defaultValue={defaultValue} className={'form-control'} name={name} id={name} placeholder={placeholder} type="date" ref={register({ required: isRequired })} onChange={handleValidation} />
 		</>
 	)
 };
