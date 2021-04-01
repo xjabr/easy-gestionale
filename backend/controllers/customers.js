@@ -1,9 +1,20 @@
 const { assertExposable } = require('../modules/errors');
 const CustomerColl = require('../models/customer');
+const { param } = require('../routes/customers');
 
 const CustomersController = {
-	list: async (organization_id) => {
-		const result = await CustomerColl.find({ organization_id: organization_id });
+	list: async (organization_id, user_id, type) => {
+		let params = { organization_id, type };
+		if (user_id !== '*') {
+			params['user_id'] = user_id;
+		}
+
+		const result = await CustomerColl.find(params);
+		return result;
+	},
+
+	single: async (organization_id, id) => {
+		const result = await CustomerColl.findOne({ organization_id, id });
 		return result;
 	},
 

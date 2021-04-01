@@ -14,8 +14,8 @@ const InvoicesController = {
 
 	single: async (organization_id, id) => {
 		const result = await InvoiceColl.findOne({ _id: id });
-		assertExposable(invoice != null, 'invoice_not_found');
-		assertExposable(result.organization_id == organization_id, 'access_denied');
+		assertExposable(result != null, 'invoice_not_found');
+		assertExposable(result.organization_id != organization_id, 'access_denied');
 		return result;
 	},
 

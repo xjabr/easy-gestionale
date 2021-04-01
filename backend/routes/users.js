@@ -59,7 +59,7 @@ const authed = authMiddleware.authAssert({ isActive: true, isVerified: false, is
 
 const limitRequestsMiddleware = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour
-	max: 5,
+	max: 15,
 	message: {
 		status: 429,
 		message: 'Too many requests, please try again in an hour'

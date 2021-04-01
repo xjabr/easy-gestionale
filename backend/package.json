@@ -1,7 +1,7 @@
 {
 	"name": "lazweb-gestionale",
 	"version": "0.0.0-alpha",
-	"description": "Gestionale open source lazweb",
+	"description": "Gestionale lazweb",
 	"main": "app.js",
 	"author": "LAZWEB",
 	"private": true,

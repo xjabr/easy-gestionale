@@ -10,7 +10,7 @@ const InvoiceScheme = new mongoose.Schema({
 	organization_id: { type: mongoose.Types.ObjectId, required: true, ref: 'organizations' },
 	user_id: { type: mongoose.Types.ObjectId, required: true, ref: 'users' },
 	type_document: { type: String, required: true, enum: typeDocument },
-	nr_document: { type: mongoose.Types.ObjectId, required: true },
+	nr_document: { type: String, required: true },
 	date_document: { type: Date, required: true },
 	customer_id: { type: mongoose.Types.ObjectId, required: false, default: null },
 	supplier_id: { type: mongoose.Types.ObjectId, required: false, default: null },
