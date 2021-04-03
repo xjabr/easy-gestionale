@@ -19,7 +19,7 @@ const WrapperSidebar = styled.div`
   color: #fff;
 
   h2 {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: bold;
   }
 

@@ -4,6 +4,9 @@ import styled from 'styled-components';
 
 import Sidebar from '../sidebar';
 
+import Customers from '../../pages/Customers';
+import Suppliers from '../../pages/Suppliers';
+
 const WrapperMain = styled.div`
 	width: 80%;
 	flex: 0 80%;
@@ -28,6 +31,8 @@ const Dashboard = () => {
 			<WrapperMain>
 				<Switch>
 					<Route exact path="/" component={Home} />
+					<Route path="/clienti" component={Customers} />
+					<Route path="/fornitori" component={Suppliers} />
 				</Switch>
 			</WrapperMain>
 		</BrowserRouter>

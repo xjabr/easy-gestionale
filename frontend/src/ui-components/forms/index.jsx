@@ -1,23 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 
-export const InputText = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, validation = null, onChange = null, type = 'text' }) => {
+export const InputText = ({ style = {}, className = '', disabled = false, defaultValue = undefined, name, label, placeholder = '', register = () => { }, isRequired = false, validation = null, onChange = null, type = 'text' }) => {
 	const [error, setError] = useState(false);
 
 	const handleValidation = (e) => {
 		let value = String(e.target.value);
 
-		if (onChange != null) {
+		if (onChange !== null) {
 			onChange(e.target.value);
 		}
 
-		if (validation == null) {
-			return 
+		if (validation === null) {
+			return
 		}
-		
+
 		if (value.match(validation) || value.length < 1) {
 			setError(false);
-			return ;
+			return;
 		}
 
 		setError(true);
@@ -25,29 +25,29 @@ export const InputText = ({ defaultValue = undefined, name, label, placeholder =
 
 	return (
 		<>
-			<label htmlFor={name}>{label}</label>
-			<input defaultValue={defaultValue} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} onChange={handleValidation} />
+			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input ' + className : 'form-control ' + className} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} onChange={handleValidation} />
 		</>
 	)
 };
 
-export const InputEmail = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, validation = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i, onChange = null }) => {
+export const InputEmail = ({ style = {}, disabled = false, defaultValue = undefined, name, label, placeholder = '', register = () => { }, isRequired = false, validation = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i, onChange = null }) => {
 	const [error, setError] = useState(false);
 
 	const handleValidation = (e) => {
 		let value = String(e.target.value);
-		
-		if (onChange != null) {
+
+		if (onChange !== null) {
 			onChange(e.target.value);
 		}
-		
-		if (validation == null) {
-			return ;
+
+		if (validation === null) {
+			return;
 		}
 
 		if (value.match(validation) || value.length < 1) {
 			setError(false);
-			return ;
+			return;
 		}
 
 		setError(true);
@@ -55,103 +55,121 @@ export const InputEmail = ({ defaultValue = undefined, name, label, placeholder 
 
 	return (
 		<>
-			<label htmlFor={name}>{label}</label>
-			<input defaultValue={defaultValue} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type="email" onChange={handleValidation} />
+			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type="email" onChange={handleValidation} />
 		</>
 	)
 };
 
-export const InputNumber = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, validation = /^[0-9]+$/, onChange = null }) => {
+export const InputNumber = ({ price = false, style = {}, disabled = false, value = undefined, defaultValue = undefined, name, step = '1', type = 'text', label, placeholder = '', register = () => { }, isRequired = false, validation = /^[0-9]+$/, onChange = null }) => {
 	const [error, setError] = useState(false);
 
 	const handleValidation = (e) => {
 		let value = String(e.target.value);
-		
-		if (onChange != null) {
+
+		if (onChange !== null) {
 			onChange(e.target.value);
 		}
 
-		if (validation == null) {
-			return ;
+		if (validation === null) {
+			return;
 		}
 
 		if (value.match(validation) || value.length < 1) {
 			setError(false);
-			return ;
+			return;
 		}
-		
+
+		setError(true);
+	}
+
+	if (!price) {
+		return (
+			<>
+				<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+				<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} step={type !== 'number' ? null : step} onChange={handleValidation} />
+			</>
+		)
+	} else {
+		return (
+			<>
+				<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+				<div className="input-group flex-nowrap">
+					<span className="input-group-text">&euro;</span>
+					<input style={style} defaultValue={defaultValue} value={value} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} step={type !== 'number' ? null : step} onChange={handleValidation} />
+				</div>
+			</>
+		)
+	}
+};
+
+export const InputTextArea = ({ style = {}, className = '', disabled = false, defaultValue = undefined, name, label, placeholder = '', register = () => { }, isRequired = false, validation = null, onChange = null }) => {
+	const [error, setError] = useState(false);
+
+	const handleValidation = (e) => {
+		let value = String(e.target.value);
+
+		if (onChange !== null) {
+			onChange(e.target.value);
+		}
+
+		if (validation === null) {
+			return;
+		}
+
+		if (value.match(validation) || value.length < 1) {
+			setError(false);
+			return;
+		}
+
 		setError(true);
 	}
 
 	return (
 		<>
-			<label htmlFor={name}>{label}</label>
-			<input defaultValue={defaultValue} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type="text" onChange={handleValidation} />
-		</>
-	)
-};
-
-export const InputTextArea = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, validation = null, onChange = null }) => {
-	const [error, setError] = useState(false);
-
-	const handleValidation = (e) => {
-		let value = String(e.target.value);
-		
-		if (onChange != null) {
-			onChange(e.target.value);
-		}
-
-		if (validation == null) {
-			return ;
-		}
-
-		if (value.match(validation) || value.length < 1) {
-			setError(false);
-			return ;
-		}
-		
-		setError(true);
-	}
-
-	return (
-		<>
-			<label htmlFor={name}>{label}</label>
-			<textarea defaultValue={defaultValue} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} onChange={handleValidation}></textarea>
+			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<textarea style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input ' + className : 'form-control ' + className} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} onChange={handleValidation}></textarea>
 		</>
 	)
 };
 
 
-export const InputDate = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, validation = null, onChange = null }) => {
+export const InputDate = ({ style = {}, disabled = false, defaultValue = undefined, name, label, placeholder = '', register = () => { }, value = undefined, isRequired = false, onChange = null }) => {
 	const handleValidation = (e) => {
-		if (onChange != null) {
+		if (onChange !== null) {
 			onChange(e.target.value);
 		}
 	}
 
 	return (
 		<>
-			<label htmlFor={name}>{label}</label>
-			<input defaultValue={defaultValue} className={'form-control'} name={name} id={name} placeholder={placeholder} type="date" ref={register({ required: isRequired })} onChange={handleValidation} />
+			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<input style={style} defaultValue={moment(defaultValue).format('YYYY-MM-DD')} disabled={disabled} className={'form-control'} name={name} id={name} placeholder={placeholder} type="date" ref={register({ required: isRequired })} onChange={handleValidation} />
 		</>
 	)
 };
 
-export const InputSelect = ({ defaultValue = undefined, name, label, placeholder = '', register = () => {}, isRequired = false, data = [], onChange = null }) => {
+export const InputSelect = ({ style = {}, className = '', disabled = false, defaultValue = undefined, name, label, placeholder = 'Seleziona un\'opzione', register = () => { }, isRequired = false, data = [], onChange = null }) => {
 	const handleValidation = (e) => {
-		if (onChange != null) {
-			onChange(e.target.value);
+		if (onChange !== null) {
+			onChange(e.target.value === '' ? undefined : e.target.value);
 		}
 	}
 
+	useEffect(() => {
+		if (defaultValue !== undefined && defaultValue !== null) {
+			document.getElementById(name).value = defaultValue;
+		}
+	}, [name, defaultValue]);
+
 	return (
 		<>
-			<label htmlFor={name}>{label}</label>
-			<select defaultValue={defaultValue} name={name} id={name} ref={register({ required: isRequired })} className="form-select" onChange={handleValidation}>
-				<option value="">Seleziona un opzione</option>
+			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<select style={style} defaultValue={defaultValue} disabled={disabled} name={name} id={name} ref={register({ required: isRequired })} className={'form-select ' + className} onChange={handleValidation}>
+				<option value="">{placeholder}</option>
 				{
 					data.map((item, index) => {
-						return <option value={item.value} key={index}>{item.name}</option>
+						return <option value={item.value} key={index}>{item.label}</option>
 					})
 				}
 			</select>
