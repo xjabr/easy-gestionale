@@ -139,9 +139,9 @@ const ERRORS = {
     status: 400,
     description: 'Signup is currently disabled',
 	},
-	customer_not_found: {
+	anagraphic_not_found: {
 		status: 404,
-		description: 'Customer not found'
+		description: 'Anagraphic not found'
 	},
 	invoice_not_found: {
 		status: 404,

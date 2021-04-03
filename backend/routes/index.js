@@ -1,4 +1,4 @@
 module.exports.routerUsers = require('./users');
-module.exports.routerOrganization = require('./organizations');
-module.exports.routerCustomers = require('./customers');
+module.exports.routerOrganizations = require('./organizations');
+module.exports.routerAnagraphics = require('./anagraphics');
 module.exports.routerInvoices = require('./invoices');

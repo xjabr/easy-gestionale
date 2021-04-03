@@ -6,8 +6,8 @@ const logger = require('morgan');
 
 const {
 	routerUsers,
-	routerOrganization,
-	routerCustomers,
+	routerOrganizations,
+	routerAnagraphics,
 	routerInvoices
 } = require('./routes');
 
@@ -37,8 +37,8 @@ db.once('open', function () {
   app.use(cors());
   app.get('/', (_req, res) => res.send('LAZWEB api working with email!'));
   app.use('/api/users', routerUsers);
-  app.use('/api/organizations', routerOrganization);
-  app.use('/api/customers', routerCustomers);
+  app.use('/api/organizations', routerOrganizations);
+  app.use('/api/anagraphics', routerAnagraphics);
   app.use('/api/invoices', routerInvoices);
 });
 

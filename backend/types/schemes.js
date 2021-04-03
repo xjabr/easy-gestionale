@@ -1,14 +1,14 @@
 const Joi = require("joi");
-const { join } = require("lodash");
 
 const schemes = {
-	customer: Joi.object({
+	anagraphic: Joi.object({
 		first_name: Joi.string().required(),
 		last_name: Joi.string().required(),
 		email: Joi.string().email().required(),
 		phone: Joi.string().required(),
 		p_iva: Joi.string().max(1).optional(),
 		cf: Joi.string().max(16).optional(),
+		sdi: Joi.string().optional(),
 		city: Joi.string().optional(),
 		address: Joi.string().optional(),
 		cap: Joi.string().max(5).optional(),
@@ -39,8 +39,7 @@ const schemes = {
 		type_document: Joi.string().required(),
 		nr_document: Joi.number().required(),
 		date_document: Joi.date().required(),
-		customer_id: Joi.string().allow(null).required(),
-		supplier_id: Joi.string().allow(null).required(),
+		anagraphic_id: Joi.string().allow(null).required(),
 		payment_method: Joi.string().required(),
 		bank: Joi.string().required(),
 		services: Joi.array().default([]).required(),
