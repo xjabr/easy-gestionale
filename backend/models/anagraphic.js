@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const { organization } = require('../types/schemes');
+const UserColl = require('./user');
 
 const type = ['CUSTOMER', 'SUPPLIER']
 
@@ -23,6 +25,63 @@ const AnagraphicScheme = new mongoose.Schema({
 	type: { type: String, required: true, enum: type },
 	note: { type: String, required: false, default: null }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
+
+const createParamsObj = async (userId, type, organization_id, search, filter) => {
+	// let user = undefined;
+	let params = {
+		organization_id: mongoose.Types.ObjectId(organization_id),
+		type
+	};
+
+	if (userId != '*') {
+		// user = await UserColl.findOne({ _id: userId });
+		params['userId'] = mongoose.Types.ObjectId(userId);
+	}
+
+	if (search != undefined) {
+		params['$or'] = [
+			{ first_name: { $regex: '^' + search, $options: 'i' } },
+			{ last_name: { $regex: '^' + search, $options: 'i' } },
+			{ phone: { $regex: '^' + search, $options: 'i' } },
+			{ email: { $regex: '^' + search, $options: 'i' } }
+		];
+	}
+
+	if (filter != undefined) {
+	}
+
+	return params;
+}
+
+AnagraphicScheme.statics = {
+	findWithFilters: async function (organization_id, user_id, type, search = undefined, filter = undefined, limit, offset, target = 'created_at', sort = -1) {
+		let params = await createParamsObj(user_id, type, organization_id, search, filter);
+
+		const result = await this.model('anagraphics').aggregate([
+			{
+				$match: {
+					...params
+				}
+			},
+			{ $limit: limit },
+			{ $skip: offset },
+			{ $sort: { [target]: sort } },
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'user_id',
+					foreignField: '_id',
+					as: 'userdata'
+				}
+			}
+		]);
+
+		return {
+			data: result,
+			length: await this.model('anagraphics').countDocuments(params)
+		}
+	}
+};
 
 // Export the model and return your IUser interface
 const AnagraphicColl = mongoose.model('anagraphics', AnagraphicScheme);

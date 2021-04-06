@@ -2,18 +2,13 @@ const { assertExposable } = require('../modules/errors');
 const AnagraphicColl = require('../models/anagraphic');
 
 const AnagraphicsController = {
-	list: async (organization_id, user_id, type) => {
-		let params = { organization_id, type };
-		if (user_id !== '*') {
-			params['user_id'] = user_id;
-		}
-
-		const result = await AnagraphicColl.find(params);
+	list: async (organization_id, user_id, type, query) => {
+		const result = await AnagraphicColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
 		return result;
 	},
 
 	single: async (organization_id, id) => {
-		const result = await AnagraphicColl.findOne({ organization_id, id });
+		const result = await AnagraphicColl.findOne({ organization_id, _id: id });
 		return result;
 	},
 

@@ -6,18 +6,17 @@ const schemes = {
 		last_name: Joi.string().required(),
 		email: Joi.string().email().required(),
 		phone: Joi.string().required(),
-		p_iva: Joi.string().max(1).optional(),
-		cf: Joi.string().max(16).optional(),
-		sdi: Joi.string().optional(),
-		city: Joi.string().optional(),
-		address: Joi.string().optional(),
-		cap: Joi.string().max(5).optional(),
-		country: Joi.string().optional(),
-		iban: Joi.string().optional(),
-		pec: Joi.string().optional(),
-		cod_desti: Joi.string().optional(),
+		p_iva: Joi.string().max(1).allow("").optional(),
+		cf: Joi.string().max(16).allow("").optional(),
+		city: Joi.string().allow("").optional(),
+		address: Joi.string().allow("").optional(),
+		cap: Joi.string().max(5).allow("").optional(),
+		country: Joi.string().allow("").optional(),
+		iban: Joi.string().allow("").optional(),
+		pec: Joi.string().allow("").optional(),
+		cod_desti: Joi.string().allow("").optional(),
 		type: Joi.string().required(),
-		note: Joi.string().optional()
+		note: Joi.string().allow("").optional()
 	}),
 
 	organization: Joi.object({

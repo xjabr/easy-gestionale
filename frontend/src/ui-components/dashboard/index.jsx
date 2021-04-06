@@ -8,8 +8,8 @@ import Customers from '../../pages/Customers';
 import Suppliers from '../../pages/Suppliers';
 
 const WrapperMain = styled.div`
-	width: 80%;
-	flex: 0 80%;
+	width: 83%;
+	flex: 0 83%;
 	position: fixed;
 	right: 0;
 	bottom: 0;

@@ -15,7 +15,7 @@ const RouterAnagraphics = {
 			return res.status(400).send({ ok: false, msg: "Type not valid" });
 		}
 
-		const result = await AnagraphicsController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type);
+		const result = await AnagraphicsController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type, req.query);
 		res.status(200).send(result);
 	},
 

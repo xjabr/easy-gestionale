@@ -9,7 +9,7 @@
 		"start": "nodemon app.js"
 	},
 	"devDependencies": {
-		"chai": "^4.2.0",
+		"chai": "^4.3.4",
 		"husky": "^4.2.5",
 		"jest": "~25.1.0",
 		"mongodb-memory-server": "^6.5.2",
@@ -26,6 +26,7 @@
 		"chai-date-string": "^0.1.0",
 		"cors": "^2.8.5",
 		"dotenv": "^8.2.0",
+		"expect": "^26.6.2",
 		"express": "^4.17.1",
 		"express-rate-limit": "^5.2.3",
 		"jest-sinon": "^1.0.4",
@@ -37,6 +38,7 @@
 		"moment": "^2.27.0",
 		"mongoose": "^5.9.7",
 		"morgan": "^1.10.0",
+		"node-fetch": "^2.6.1",
 		"nodemailer": "^6.4.6",
 		"nodemailer-sendgrid": "^1.0.3",
 		"sinon": "^7.4.2",
