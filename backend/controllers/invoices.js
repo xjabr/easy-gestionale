@@ -1,14 +1,15 @@
 const { assertExposable } = require('../modules/errors');
 const InvoiceColl = require('../models/invoice');
+const AnagraphicColl = require('../models/anagraphic');
 
 const InvoicesController = {
-	list: async (organization_id, user_id = '*', type_document) => {
-		let params = { organization_id, type_document };
-		if (user_id !== '*') {
-			params['user_id'] = user_id;
-		}
+	list: async (organization_id, user_id = '*', type, query) => {
+		const result = await InvoiceColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
+		return result;
+	},
 
-		const result = await InvoiceColl.find(params);
+	listAnagraphicByType: async (organization_id, type) => {
+		const result = await AnagraphicColl.find({ organization_id, type });
 		return result;
 	},
 

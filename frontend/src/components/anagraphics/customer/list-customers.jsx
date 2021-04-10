@@ -93,8 +93,7 @@ const ListCustomers = (props) => {
         <thead className="thead-dark">
           <tr>
             <th></th>
-            <th>Nome</th>
-            <th>Cognome</th>
+            <th>Ragione Sociale/Nome e Cognome</th>
             <th>Email</th>
             <th>Telefono</th>
             <th>Codice Fiscale</th>
@@ -113,7 +112,6 @@ const ListCustomers = (props) => {
                         <button type="button" onClick={() => handleDeleteCustomer(item._id)} className="mx-2 btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
                       </td>
                       <td>{item.first_name}</td>
-                      <td>{item.last_name}</td>
                       <td>{item.email}</td>
                       <td>{item.phone}</td>
                       <td>{item.cf}</td>

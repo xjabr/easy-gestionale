@@ -13,11 +13,8 @@ const FormAnagraphic = ({ customer = null, handleSave, type = 'CUSTOMER' }) => {
 	return (
 		<form className="margin-40" onSubmit={handleSubmit(onSubmit)}>
 			<div className="row mb-3">
-				<div className="col-md-4">
-					<InputText defaultValue={customer == null ? '' : customer.first_name} name="first_name" label="Nome" register={register} isRequired={true} />
-				</div>
-				<div className="col-md-4">
-					<InputText defaultValue={customer == null ? '' : customer.last_name} name="last_name" label="Cognome" register={register} isRequired={true} />
+				<div className="col-md-8">
+					<InputText defaultValue={customer == null ? '' : customer.first_name} name="first_name" label="Ragione Sociale/Nome e Cognome" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-4">
 					<InputEmail defaultValue={customer == null ? '' : customer.email} name="email" label="Email" register={register} isRequired={true} />

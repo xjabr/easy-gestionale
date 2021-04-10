@@ -6,6 +6,8 @@ import Sidebar from '../sidebar';
 
 import Customers from '../../pages/Customers';
 import Suppliers from '../../pages/Suppliers';
+import InvoicesCustomer from '../../pages/InvoicesCustomer';
+import InvoicesSupplier from '../../pages/InvoicesSupplier';
 
 const WrapperMain = styled.div`
 	width: 83%;
@@ -33,6 +35,8 @@ const Dashboard = () => {
 					<Route exact path="/" component={Home} />
 					<Route path="/clienti" component={Customers} />
 					<Route path="/fornitori" component={Suppliers} />
+					<Route path="/fatture-vendita" component={InvoicesCustomer} />
+					<Route path="/fatture-acquisto" component={InvoicesSupplier} />
 				</Switch>
 			</WrapperMain>
 		</BrowserRouter>

@@ -3,7 +3,6 @@ const Joi = require("joi");
 const schemes = {
 	anagraphic: Joi.object({
 		first_name: Joi.string().required(),
-		last_name: Joi.string().required(),
 		email: Joi.string().email().required(),
 		phone: Joi.string().required(),
 		p_iva: Joi.string().max(1).allow("").optional(),
@@ -35,16 +34,21 @@ const schemes = {
 	}),
 
 	invoice: Joi.object({
+		type: Joi.string().required(),
 		type_document: Joi.string().required(),
 		nr_document: Joi.number().required(),
 		date_document: Joi.date().required(),
-		anagraphic_id: Joi.string().allow(null).required(),
-		payment_method: Joi.string().required(),
-		bank: Joi.string().required(),
-		services: Joi.array().default([]).required(),
-		tot_document: Joi.number().required(),
-		tot_iva: Joi.number().required(),
-		tot: Joi.number().required()
+		anagraphic_id: Joi.string().required(),
+		payment_method: Joi.string().allow(null).allow("").optional(),
+		bank: Joi.string().allow(null).allow("").optional(),
+		iban: Joi.string().allow(null).allow("").optional(),
+		services: Joi.array().default([]).optional(),
+		discount: Joi.number().allow(null).optional(),
+		other_taxes: Joi.number().allow(null).optional(),
+		tot_document: Joi.number().allow(null).optional(),
+		tot_iva: Joi.number().allow(null).optional(),
+		tot: Joi.number().allow(null).optional(),
+		note: Joi.string().allow(null).allow("").optional(),
 	})
 }
 

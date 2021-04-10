@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
-import { useAnagraphic } from '../../../contexts/anagraphic-context';
-import NewSupplier from './new-supplier';
+import { useInvoice } from '../../../contexts/invoice-context';
+import NewInvoice from './new-invoice';
 import { getPagination } from '../../../utils/functions';
 
-const ListSuppliers = (props) => {
-  const { listAnagraphic, deleteAnagraphic } = useAnagraphic();
-  const [suppliers, setSuppliers] = useState(null);
+const ListInvoices = (props) => {
+  const { listInvoices, deleteInvoice } = useInvoice();
+  const [invoices, setInvoices] = useState(null);
   const [search, setSearch] = useState(null);
   const [filter, setFilter] = useState(null);
 
@@ -21,43 +21,43 @@ const ListSuppliers = (props) => {
   const [showNewModal, setShowNewModal] = useState(false);
 
   useEffect(() => {
-    const initSuppliers = async () => {
-      const { data } = await listAnagraphic('SUPPLIER', search, filter === 'null' ? null : filter, limit, offset);
-      setSuppliers(data.data);
+    const initInvoices = async () => {
+      const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+      setInvoices(data.data);
       getPagination(data.length, limit, setOffset, setPagination);
     }
 
-    initSuppliers();
-  }, [listAnagraphic, filter, limit, offset, search]);
+    initInvoices();
+  }, [listInvoices, filter, limit, offset, search]);
 
-  const handleDeleteSupplier = async (id) => {
-    const confirmDelete = window.confirm('Sei sicuro di voler eliminare il fornitore?');
+  const handleDeleteInvoice = async (id) => {
+    const confirmDelete = window.confirm('Sei sicuro di voler eliminare il documento?');
 
     if (!confirmDelete) {
       return;
     }
 
-    const { error } = await deleteAnagraphic(id);
+    const { error } = await deleteInvoice(id);
 
     if (error !== null) {
-      return console.log('Impossibile eliminare il fornitore');
+      return console.log('Impossibile eliminare il documento');
     }
 
-    const { data } = await listAnagraphic('SUPPLIER', search, filter === 'null' ? null : filter, limit, offset);
-    setSuppliers(data.data);
+    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+    setInvoices(data.data);
     getPagination(data.length, limit, setOffset, setPagination);
   }
 
   const handleSearch = async () => {
-    const { data } = await listAnagraphic('SUPPLIER', search, filter === 'null' ? null : filter, limit, offset);
-    setSuppliers(data.data);
+    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+    setInvoices(data.data);
     getPagination(data.length, limit, setOffset, setPagination);
   }
 
   return (
-    <div className="list-suppliers-page">
+    <div className="list-invoices-customers-page">
       <div className="top-bar">
-        <button className="btn btn-primary" onClick={() => setShowNewModal(!showNewModal)}>Nuovo fornitore</button>
+        <button className="btn btn-primary" onClick={() => setShowNewModal(!showNewModal)}>Nuovo Documento</button>
 
         <select className="form-select d-inline w-auto mx-2" onChange={(e) => setFilter(e.target.value)}>
           <option value="null">Seleziona un filtro</option>
@@ -65,7 +65,7 @@ const ListSuppliers = (props) => {
 
         <div className="wrapper-input-group w-auto d-inline-block">
           <div className="input-group">
-            <input className="form-control" placeholder="Cerca fornitore" onChange={(e) => setSearch(e.target.value)} />
+            <input className="form-control" placeholder="Cerca documento" onChange={(e) => setSearch(e.target.value)} />
             <input className="btn btn-primary" type="submit" value="Cerca" onClick={handleSearch} />
           </div>
         </div>
@@ -93,29 +93,31 @@ const ListSuppliers = (props) => {
         <thead className="thead-dark">
           <tr>
             <th></th>
-            <th>Ragione Sociale/Nome e Cognome</th>
-            <th>Email</th>
-            <th>Telefono</th>
-            <th>Codice Fiscale</th>
-            <th>Partita IVA</th>
+            <th>Tipo Documento</th>
+            <th>Nr. Documento</th>
+            <th>Data Documento</th>
+            <th>Fornitore</th>
+            <th>Metodo di Pagamento</th>
+            <th>Totale</th>
             <th>Data Creazione</th>
           </tr>
         </thead>
         <tbody>
             {
-              suppliers !== null ?
-                suppliers.map((item, index) => {
+              invoices !== null ?
+                invoices.map((item, index) => {
                   return (
                     <tr key={index}>
                       <td>
                         <NavLink to={`${props.match.path}/${item._id}`} className="btn btn-secondary"><FontAwesomeIcon icon={faEdit} /></NavLink>
-                        <button type="button" onClick={() => handleDeleteSupplier(item._id)} className="mx-2 btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+                        <button type="button" onClick={() => handleDeleteInvoice(item._id)} className="mx-2 btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
                       </td>
-                      <td>{item.first_name}</td>
-                      <td>{item.email}</td>
-                      <td>{item.phone}</td>
-                      <td>{item.cf}</td>
-                      <td>{item.p_iva}</td>
+                      <td>{item.type_document}</td>
+                      <td>{item.nr_document}</td>
+                      <td>{moment(item.date_document).format('DD/MM/YYYY')}</td>
+                      <td>{`${item.anagraphicdata[0].first_name}`}</td>
+                      <td>{item.payment_method}</td>
+                      <td>&euro; {parseFloat(item.tot).toFixed(2)}</td>
                       <td>{moment(item.created_at).format('DD/MM/YYYY')}</td>
                     </tr>
                   )
@@ -125,9 +127,9 @@ const ListSuppliers = (props) => {
         </tbody>
       </table>
 
-      {showNewModal ? <NewSupplier setShowNewForm={setShowNewModal} setSuppliers={setSuppliers} /> : null}
+      {showNewModal ? <NewInvoice setShowNewForm={setShowNewModal} setInvoices={setInvoices} /> : null}
     </div>
   )
 }
 
-export default ListSuppliers;
+export default ListInvoices;

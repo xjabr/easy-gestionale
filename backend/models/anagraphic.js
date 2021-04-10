@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const { organization } = require('../types/schemes');
-const UserColl = require('./user');
 
 const type = ['CUSTOMER', 'SUPPLIER']
 
@@ -9,7 +7,6 @@ const AnagraphicScheme = new mongoose.Schema({
 	organization_id: { type: mongoose.Types.ObjectId, ref: 'organizations' },
 	user_id: { type: mongoose.Types.ObjectId, required: true, ref: 'users' },
 	first_name: { type: String, required: true },
-	last_name: { type: String, required: true },
 	email: { type: String, required: true },
 	phone: { type: String, required: false, default: null },
 	p_iva: { type: String, required: false, default: null },
@@ -41,7 +38,6 @@ const createParamsObj = async (userId, type, organization_id, search, filter) =>
 	if (search != undefined) {
 		params['$or'] = [
 			{ first_name: { $regex: '^' + search, $options: 'i' } },
-			{ last_name: { $regex: '^' + search, $options: 'i' } },
 			{ phone: { $regex: '^' + search, $options: 'i' } },
 			{ email: { $regex: '^' + search, $options: 'i' } }
 		];
@@ -83,6 +79,5 @@ AnagraphicScheme.statics = {
 	}
 };
 
-// Export the model and return your IUser interface
 const AnagraphicColl = mongoose.model('anagraphics', AnagraphicScheme);
 module.exports = AnagraphicColl;
