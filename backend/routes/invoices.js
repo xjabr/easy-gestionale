@@ -5,6 +5,7 @@ const schemes = require('../types/schemes');
 const { InvoicesController } = require('../controllers/invoices');
 const { authMiddleware } = require('../middleware/auth.middleware');
 const errorMiddleware = require('../middleware/errors.middleware');
+const { getVatCodes } = require('../utils/vat-codes');
 
 const RouterInvoices = {
   /** @type {import("express").RequestHandler} */
@@ -54,12 +55,19 @@ const RouterInvoices = {
 	delete: async (req, res, _next) => {
 		const result = await InvoicesController.delete(req.params.id);
 		res.status(200).send(result);
+	},
+
+	/** @type {import("express").RequestHandler} */
+	getVatCodesApi: async (req, res, _next) => {
+		const result = await getVatCodes();
+		res.status(200).send(result);
 	}
 }
 
 const InvoiceRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: true, isAdmin: false });
 
+InvoiceRoutes.get('/vat-codes', errorMiddleware(authed), errorMiddleware(RouterInvoices.getVatCodesApi));
 InvoiceRoutes.get('/list/:type', errorMiddleware(authed), errorMiddleware(RouterInvoices.list));
 InvoiceRoutes.get('/list-anagraphics/:type', errorMiddleware(authed), errorMiddleware(RouterInvoices.listAnagraphicByType));
 InvoiceRoutes.get('/:id', errorMiddleware(authed), errorMiddleware(RouterInvoices.single));

@@ -13,8 +13,8 @@ export const NewPageWrapper = styled.div`
 
 export const NewPageWrapperCopy = styled.div`
 	position: fixed;
-	width: 70%;
-	max-height: 80%;
+	width: 80%;
+	max-height: 90%;
 	top: 50%;
 	left: 50%;
 	background: #fff;

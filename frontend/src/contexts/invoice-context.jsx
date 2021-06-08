@@ -43,6 +43,35 @@ const InvoiceProvider = (props) => {
 		return obj;
 	}
 
+	const getVatCodes = async () => {
+		let obj = {
+			data: null,
+			error: null,
+			meta: null,
+			status: null
+		}
+
+		try {
+			const result = await httpGet(`${INVOICE_ENDPOINT}/vat-codes`, jwtToken, {});
+
+			obj = {
+				data: result.data,
+				error: null,
+				meta: null,
+				status: result.status
+			}
+		} catch (err) {
+			obj = {
+				data: null,
+				error: err,
+				meta: null,
+				status: null
+			}
+		}
+
+		return obj;
+	}
+
   const getAnagraphicsForInvoice = async (type) => {
     let obj = {
 			data: null,
@@ -194,7 +223,8 @@ const InvoiceProvider = (props) => {
         getAnagraphicsForInvoice,
 				createInvoice,
 				updateInvoice,
-				deleteInvoice
+				deleteInvoice,
+				getVatCodes
 			}}
 			{...props}
 		/>

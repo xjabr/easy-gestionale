@@ -149,10 +149,14 @@ export const InputDate = ({ style = {}, disabled = false, defaultValue = undefin
 	)
 };
 
-export const InputSelect = ({ style = {}, className = '', disabled = false, defaultValue = undefined, name, label, placeholder = 'Seleziona un\'opzione', register = () => { }, isRequired = false, data = [], onChange = null }) => {
+export const InputSelect = ({ isObjVal = false, style = {}, className = '', disabled = false, defaultValue = undefined, name, label, placeholder = 'Seleziona un\'opzione', register = () => { }, isRequired = false, data = [], onChange = null }) => {
 	const handleValidation = (e) => {
 		if (onChange !== null) {
-			onChange(e.target.value === '' ? undefined : e.target.value);
+			if (isObjVal) {
+				onChange(e.target.value === '' ? {} : JSON.parse(e.target.value));
+			} else {
+				onChange(e.target.value === '' ? undefined : e.target.value);
+			}
 		}
 	}
 

@@ -19,7 +19,8 @@ const UserSchema = new mongoose.Schema({
 	isAdmin: { type: Boolean, default: false },
 	isActive: { type: Boolean, default: true },
 	isVerified: { type: Boolean, default: false },
-	divisions: { type: Array, required: false, default: ['all'] }
+	divisions: { type: Array, required: false, default: ['all'] },
+	ukUser: { type: Boolean, required: false, default: true }
 });
 
 UserSchema.pre('save', function (next) {
