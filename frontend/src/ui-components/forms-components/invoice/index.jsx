@@ -232,9 +232,9 @@ const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
 											<td>{item.name}</td>
 											<td>{item.description}</td>
 											<td>{item.qta}</td>
-											<td>{item.price}</td>
+											<td>&euro; {parseFloat(item.price).toFixed(2)}</td>
 											<td>{item.vatCode.label}</td>
-											<td>&euro; {item.total}</td>
+											<td>&euro; {parseFloat(item.total).toFixed(2)}</td>
 										</tr>
 									)
 								})

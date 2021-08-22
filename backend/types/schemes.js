@@ -5,7 +5,7 @@ const schemes = {
 		first_name: Joi.string().required(),
 		email: Joi.string().email().required(),
 		phone: Joi.string().required(),
-		p_iva: Joi.string().max(1).allow("").optional(),
+		p_iva: Joi.string().max(13).allow("").optional(),
 		cf: Joi.string().max(16).allow("").optional(),
 		city: Joi.string().allow("").optional(),
 		address: Joi.string().allow("").optional(),

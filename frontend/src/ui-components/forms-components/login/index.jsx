@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { InputText, InputEmail } from '../../forms';
@@ -39,6 +40,10 @@ const FormLogin = ({ error, handleSave }) => {
 			<h1>ACCEDI</h1>
 
 			<hr/>
+
+			<p>Non hai un account? <NavLink to="/registrati">Registrati ora</NavLink></p>
+			
+			<hr />
 
 			{ error ? <div className="alert alert-danger"><strong>{ error }</strong></div> : null }
 
