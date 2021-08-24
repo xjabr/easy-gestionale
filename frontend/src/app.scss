@@ -1,5 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+	font-family: 'Inter', sans-serif;
+}
+
+.btn, input, select, textarea {
+	border-radius: 2px!important;
+}
+
 .btn {
-	font-weight: bold;
 	font-size: 14px;
 }
 
@@ -166,4 +175,12 @@ input[type=checkbox] {
 
 tbody.practice-list > tr:not(.green):not(.red):not(.orange) {
 	background: rgba(0, 0, 0, 0.05)!important;
+}
+
+thead {
+	th {
+		color: #333!important;
+		border-bottom: 1px solid #aaa!important;
+		border-color: #aaa!important;
+	}
 }

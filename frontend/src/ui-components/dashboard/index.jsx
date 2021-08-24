@@ -10,8 +10,8 @@ import InvoicesCustomer from '../../pages/InvoicesCustomer';
 import InvoicesSupplier from '../../pages/InvoicesSupplier';
 
 const WrapperMain = styled.div`
-	width: 83%;
-	flex: 0 83%;
+	width: calc(100% - 250px);
+	flex: 0 calc(100% - 250px);
 	position: fixed;
 	right: 0;
 	bottom: 0;

@@ -6,7 +6,6 @@ export const NewPageWrapper = styled.div`
 	height: 100%;
 	top: 50%;
 	left: 50%;
-	background: #0004;
 	transform: translate(-50%, -50%);
 	z-index: 999;
 `;
@@ -18,10 +17,9 @@ export const NewPageWrapperCopy = styled.div`
 	top: 50%;
 	left: 50%;
 	background: #fff;
-	border: 1px solid #000;
 	transform: translate(-50%, -50%);
-	border-radius: 16px;
-	box-shadow: 5px 5px 20px #0003;
+	border-radius: 2px;
+	box-shadow: 0px 0px 200px #0008;
 	padding: 40px;
 	z-index: 9999;
 	overflow: auto;
