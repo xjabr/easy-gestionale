@@ -1,7 +1,7 @@
-const { assertExposable } = require('../modules/errors');
-const AnagraphicColl = require('../models/anagraphic');
+import { assertExposable } from '../modules/errors';
+import AnagraphicColl from '../models/anagraphic';
 
-const AnagraphicsController = {
+export const AnagraphicsController = {
 	list: async (organization_id, user_id, type, query) => {
 		const result = await AnagraphicColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
 		return result;
@@ -33,5 +33,3 @@ const AnagraphicsController = {
 		return result;
 	}
 }
-
-module.exports.AnagraphicsController = AnagraphicsController;

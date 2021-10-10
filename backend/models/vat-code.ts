@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const VatCodeScheme = new mongoose.Schema({
 	name: { type: String, required: true, default: '' },
@@ -8,5 +8,5 @@ const VatCodeScheme = new mongoose.Schema({
 	forUk: { type: Boolean, required: false, default: false },
 });
 
-const VatCodeColl = mongoose.model('vatcodes', VatCodeScheme);
-module.exports = VatCodeColl
+const VatCodeColl = mongoose.model('vatcodes', VatCodeScheme) as any;
+export default VatCodeColl

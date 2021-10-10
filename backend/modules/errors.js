@@ -59,6 +59,10 @@ function assertExposable(condition, ...args) {
 }
 
 const ERRORS = {
+	invoices_type_not_valid: {
+		status: 400,
+		description: 'Incorrect type of invoice'
+	},
   too_busy: {
     status: 503,
     description: 'Server too busy',

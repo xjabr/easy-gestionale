@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // TODO: VALIDATION
 const OrganizationsScheme = new mongoose.Schema({
@@ -17,5 +17,5 @@ const OrganizationsScheme = new mongoose.Schema({
 });
 
 // Export the model and return your IUser interface
-const OrganizationColl = mongoose.model('organizations', OrganizationsScheme);
-module.exports = OrganizationColl;
+const OrganizationColl = mongoose.model('organizations', OrganizationsScheme) as any;
+export default OrganizationColl;

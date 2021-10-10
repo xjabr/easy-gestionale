@@ -1,15 +1,15 @@
-const express = require('express');
-const bodyparser = require('body-parser');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const logger = require('morgan');
+import express from 'express';
+import bodyparser from 'body-parser';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import logger from 'morgan';
 
-const {
+import {
 	routerUsers,
 	routerOrganizations,
 	routerAnagraphics,
 	routerInvoices
-} = require('./routes');
+} from './routes';
 
 require('dotenv').config();
 
@@ -35,11 +35,11 @@ db.once('open', function () {
   console.log('CONNECTED TO DB');
 
   app.use(cors());
-  app.get('/', (_req, res) => res.send('LAZWEB api working with email!'));
+  app.get('/', (_req, res) => res.send('API working correctly'));
   app.use('/api/users', routerUsers);
   app.use('/api/organizations', routerOrganizations);
   app.use('/api/anagraphics', routerAnagraphics);
   app.use('/api/invoices', routerInvoices);
 });
 
-module.exports = app;
+export default app;

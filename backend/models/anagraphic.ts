@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const type = ['CUSTOMER', 'SUPPLIER']
 
@@ -76,8 +76,8 @@ AnagraphicScheme.statics = {
 			data: result,
 			length: await this.model('anagraphics').countDocuments(params)
 		}
-	}
+	} as any
 };
 
-const AnagraphicColl = mongoose.model('anagraphics', AnagraphicScheme);
-module.exports = AnagraphicColl;
+const AnagraphicColl = mongoose.model('anagraphics', AnagraphicScheme) as any;
+export default AnagraphicColl;

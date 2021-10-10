@@ -1,6 +1,5 @@
 const errorMiddleware = (fn) => {
   return (req, res, next) => {
-
     return fn(req, res, next).catch((error) => {
 			res.error = error;
 			
@@ -31,4 +30,4 @@ const errorMiddleware = (fn) => {
   }
 };
 
-module.exports = errorMiddleware;
+export default errorMiddleware;

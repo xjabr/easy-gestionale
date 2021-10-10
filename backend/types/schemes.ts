@@ -52,4 +52,4 @@ const schemes = {
 	})
 }
 
-module.exports = schemes;
+export default schemes;

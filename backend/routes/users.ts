@@ -1,16 +1,16 @@
-const express = require('express');
-const rateLimit = require('express-rate-limit');
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+import Joi from 'joi';
 
-const validation = require('../utils/validation');
-const { UsersController } = require('../controllers/users');
-const { authMiddleware } = require('../middleware/auth.middleware');
-const errorMiddleware = require('../middleware/errors.middleware');
+import validation from '../utils/validation';
+import { UsersController } from '../controllers/users';
+import { OrganizationsController } from '../controllers/organizations';
+import { authMiddleware } from '../middleware/auth.middleware';
+import errorMiddleware from '../middleware/errors.middleware';
 
-const Joi = require('joi');
 
 const RouterUsers = {
-  /** @type {import("express").RequestHandler} */
-	login: async (req, res, _next) => {
+	login: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 			password: Joi.string().required(),
@@ -22,8 +22,7 @@ const RouterUsers = {
 		res.send({ token });
 	},
 
-  /** @type {import("express").RequestHandler} */
-	create: async (req, res, _next) => {
+	create: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
 		// validate body
 		const schema = Joi.object({
 			organization_id: Joi.string().required(),
@@ -41,8 +40,7 @@ const RouterUsers = {
 		res.status(201).send(result);
 	},
 
-  /** @type {import("express").RequestHandler} */
-	logout: async (req, res, _next) => {
+	logout: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 		});
@@ -51,6 +49,16 @@ const RouterUsers = {
 		await UsersController.signout(req.body.email);
 
 		res.status(200).send('OK');
+	},
+
+	getMyData: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+		const orgInfo = await OrganizationsController.single(res['organization_id']);
+		const userInfo = await UsersController.single(res['id']);
+
+		res.status(200).send({
+			organization: orgInfo,
+			user: userInfo
+		});
 	}
 }
 
@@ -68,6 +76,7 @@ const limitRequestsMiddleware = rateLimit({
 
 UserRoutes.post('/login', limitRequestsMiddleware, errorMiddleware(RouterUsers.login));
 UserRoutes.post('/create', limitRequestsMiddleware, errorMiddleware(RouterUsers.create));
+UserRoutes.get('/my-info', errorMiddleware(authed), errorMiddleware(RouterUsers.getMyData));
 UserRoutes.post('/logout', errorMiddleware(authed), errorMiddleware(RouterUsers.logout));
 
-module.exports = UserRoutes;
+export default UserRoutes;

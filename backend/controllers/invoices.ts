@@ -1,11 +1,24 @@
-const { assertExposable } = require('../modules/errors');
-const InvoiceColl = require('../models/invoice');
-const AnagraphicColl = require('../models/anagraphic');
+import { assertExposable } from '../modules/errors';
+import InvoiceColl from '../models/invoice';
+import AnagraphicColl from '../models/anagraphic';
 
-const InvoicesController = {
+export const InvoicesController = {
 	list: async (organization_id, user_id = '*', type, query) => {
 		const result = await InvoiceColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
 		return result;
+	},
+
+	getLastNr: async (organization_id, type, year = new Date().getFullYear()) => {
+		const startYearDate = `${year}-01-01`;
+		const endYearDate = `${year}-12-31`;
+
+		const result = await InvoiceColl.find({organization_id, type, date_document: { $gte: startYearDate, $lt: endYearDate} }).sort('-nr_document');
+
+		if (result.length < 1) {
+			return 0;
+		}
+
+		return parseInt(result[0].nr_document);
 	},
 
 	listAnagraphicByType: async (organization_id, type) => {
@@ -41,5 +54,3 @@ const InvoicesController = {
 		return result;
 	}
 }
-
-module.exports.InvoicesController = InvoicesController;

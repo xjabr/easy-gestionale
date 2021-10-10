@@ -1,7 +1,23 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 
 const saltRounds = 10;
+
+export interface IUser extends mongoose.Document {
+  organization_id: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  email: string;
+	password: String;
+	role: String;
+	isAdmin: Boolean;
+	isActive: Boolean;
+	isVerified: Boolean;
+	divisions: Array<any>;
+	ukUser: Boolean;
+  isCorrectPassword?(password: string): void;
+}
 
 // TODO: VALIDATION
 const UserSchema = new mongoose.Schema({
@@ -23,7 +39,7 @@ const UserSchema = new mongoose.Schema({
 	ukUser: { type: Boolean, required: false, default: true }
 });
 
-UserSchema.pre('save', function (next) {
+UserSchema.pre<IUser>('save', function (next) {
 	// Check if document is new or a new password has been set
 	if (this.isNew || this.isModified('password')) {
 		// Saving reference to this because of changing scopes
@@ -44,9 +60,9 @@ UserSchema.pre('save', function (next) {
 UserSchema.methods = {
 	isCorrectPassword: async function (password) {
 		return bcrypt.compare(password, this.password);
-	},
+	} as any,
 }
 
 // Export the model and return your IUser interface
-const UserColl = mongoose.model('users', UserSchema);
-module.exports = UserColl;
+const UserColl = mongoose.model<IUser>('users', UserSchema) as any;
+export default UserColl;

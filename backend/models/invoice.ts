@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const typeDocument = [
 	'CLIENTE',
@@ -83,9 +83,9 @@ InvoiceScheme.statics = {
 			data: result,
 			length: await this.model('invoices').countDocuments(params)
 		}
-	}
+	} as any
 };
 
 
-const InvoiceColl = mongoose.model('invoices', InvoiceScheme);
-module.exports = InvoiceColl;
+const InvoiceColl = mongoose.model('invoices', InvoiceScheme) as any;
+export default InvoiceColl;

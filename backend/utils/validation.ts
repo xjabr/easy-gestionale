@@ -1,5 +1,5 @@
-const { throwExposable } = require('../modules/errors');
-const Joi = require('joi');
+import { throwExposable } from '../modules/errors';
+import Joi from 'joi';
 
 const validation = {
   Joi,
@@ -30,4 +30,4 @@ const validation = {
   },
 };
 
-module.exports = validation;
+export default validation;

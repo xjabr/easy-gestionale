@@ -1,14 +1,13 @@
-const express = require('express');
+import express from 'express';
 
-const validation = require('../utils/validation');
-const schemes = require('../types/schemes');
-const { OrganizationsController } = require('../controllers/organizations');
+import validation from '../utils/validation';
+import schemes from '../types/schemes';
+import { OrganizationsController } from '../controllers/organizations';
 // const { authMiddleware } = require('../middleware/auth.middleware');
-const errorMiddleware = require('../middleware/errors.middleware');
+import errorMiddleware from '../middleware/errors.middleware';
 
 const RouterOrganizations = {
-  /** @type {import("express").RequestHandler} */
-	create: async (req, res, _next) => {
+	create: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
 		await validation.validateParams(schemes.organization, req.body)
 		const result = await OrganizationsController.create(req.body);
 		res.status(201).send(result);
@@ -20,4 +19,4 @@ const OrganizationRoutes = express.Router();
 
 OrganizationRoutes.post('/', errorMiddleware(RouterOrganizations.create));
 
-module.exports = OrganizationRoutes;
+export default OrganizationRoutes;

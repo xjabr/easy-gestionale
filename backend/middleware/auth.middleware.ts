@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 
-const { JWT_SECRETS } = require('../configuration');
-const { assertExposable, throwExposable } = require('../modules/errors');
-const UserColl = require('../models/user');
-const OrganizationColl = require('../models/organization');
+import { JWT_SECRETS } from '../configuration';
+import { assertExposable, throwExposable } from '../modules/errors';
+import UserColl from '../models/user';
+import OrganizationColl from '../models/organization';
 
-module.exports.authMiddleware = {
-  authAssert: (opts = {}) => async (
+export const authMiddleware = {
+  authAssert: (opts = {} as any) => async (
     req,
     res,
     next,
@@ -23,7 +23,7 @@ module.exports.authMiddleware = {
       throwExposable('access_denied');
     }
 
-    const { organization_id, email } = jwt.decode(bearer);
+    const { organization_id, email } = jwt.decode(bearer) as any;
 
     const user = await UserColl.findOne({ email });
     assertExposable(user, 'access_denied');
@@ -44,9 +44,9 @@ module.exports.authMiddleware = {
     assertExposable(organization, 'organization_not_found');
 
 		res.user = user;
-		res.id = user.id;
+		res['id'] = user.id;
 		res.role = user.role;
-		res.organization_id = user.organization_id;
+		res['organization_id'] = user.organization_id;
 		res.isAdmin = user.isAdmin;
 
     next();

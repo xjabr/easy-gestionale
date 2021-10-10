@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const UserColl = require('../models/user');
-const { JWT_SECRETS } = require('../configuration');
-const { assertExposable } = require('../modules/errors');
+import jwt from 'jsonwebtoken';
+import UserColl from '../models/user';
+import { JWT_SECRETS } from '../configuration';
+import { assertExposable } from '../modules/errors';
 
 const signToken = (user) => {
   return jwt.sign(
@@ -20,7 +20,7 @@ const signToken = (user) => {
   );
 };
 
-const UsersController = {
+export const UsersController = {
   signin: async (body) => {
     const { email, password } = body;
 
@@ -36,6 +36,12 @@ const UsersController = {
 
     const token = signToken(user);
     return token;
+	},
+
+	single: async (id) =>{
+		const result = await UserColl.findOne({ _id: id });
+		console.log(result);
+		return result;
 	},
 
 	create: async (body) =>{
@@ -55,5 +61,3 @@ const UsersController = {
     return user;
   }
 }
-
-module.exports.UsersController = UsersController;
