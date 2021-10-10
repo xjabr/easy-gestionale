@@ -56,7 +56,7 @@ const EditInvoice = (props) => {
 
 					<div className="d-none">
 						<AnagraphicProvider>
-							<InvoicePdf invoice={invoice} targetRef={pdfTarget} ref={pdfTarget} />
+							<InvoicePdf invoice={invoice} targetRef={pdfTarget} />
 						</AnagraphicProvider>
 					</div>
 

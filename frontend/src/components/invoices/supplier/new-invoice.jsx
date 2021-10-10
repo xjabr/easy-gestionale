@@ -27,7 +27,7 @@ const NewInvoice = ({ setInvoices, setShowNewForm }) => {
 		}
 
 		fetchLastNr();
-	}, []);
+	}, [getLastNr]);
 
   return (
     <NewPageWrapper className="invoice-customer-new">

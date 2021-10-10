@@ -8,6 +8,7 @@ import Customers from '../../pages/Customers';
 import Suppliers from '../../pages/Suppliers';
 import InvoicesCustomer from '../../pages/InvoicesCustomer';
 import InvoicesSupplier from '../../pages/InvoicesSupplier';
+import { useAuth } from '../../contexts/auth-context';
 
 const WrapperMain = styled.div`
 	width: calc(100% - 250px);
@@ -20,9 +21,22 @@ const WrapperMain = styled.div`
 	overflow: auto;
 `;
 
-const Home = () => { 
+const Home = () => {
+	const { user } = useAuth();
+
 	return (
-		<h1>Ciao</h1>
+		<div className="dashboard-component">
+			{
+				user !== null ?
+					<>
+						<h4 className="section-title">Benvenuto {`${user.user.first_name} ${user.user.last_name}`}</h4>
+						<hr />
+
+						{/* get charts for invoices customer and calcs */}
+					</>
+					: null
+			}
+		</div>
 	)
 }
 

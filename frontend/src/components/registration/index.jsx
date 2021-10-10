@@ -11,7 +11,7 @@ const Login = () => {
 
 	const onSubmit = async (obj) => {
 		try {
-			const result = await registration(obj);
+			await registration(obj);
 		} catch (err) {
 			const { data, status } = err.response;
 

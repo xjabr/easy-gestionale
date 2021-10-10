@@ -29,7 +29,7 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 
 		fetchUserData();
 		fetchOtherData();
-	}, []);
+	}, [getSingleAnagraphic, getMyInfo, invoice]);
 
 	return (
 		<div className="container-invoice" style={{ padding: 50 }} ref={targetRef}>
@@ -55,8 +55,8 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									<p>Email: {user.email}</p>
 									<p>Partita IVA: {org.p_iva}</p>
 									<p>Codice Fiscale: {org.cf}</p>
-									<p>PEC: {org.pec ? other.pec : 'n/a'}</p>
-									<p>Codice destinatario: {org.cod_desti ? other.cod_desti : 'n/a'}</p>
+									<p>PEC: {org.pec !== '' && org.pec !== null ? org.pec : 'n/a'}</p>
+									<p>Codice destinatario: {org.cod_desti !== '' && org.cod_desti !== null ? org.cod_desti : 'n/a'}</p>
 								</div>
 								<div style={{ width: '100%' }}>
 									<h3>{other.type === 'CUSTOMER' ? 'Cliente' : 'Fornitore'}</h3>
@@ -66,8 +66,8 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									<p>Email: {other.email}</p>
 									<p>Partita IVA: {other.p_iva}</p>
 									<p>Codice Fiscale: {other.cf}</p>
-									<p>PEC: {other.pec ? other.pec : 'n/a'}</p>
-									<p>Codice destinatario: {other.cod_desti ? other.cod_desti : 'n/a'}</p>
+									<p>PEC: {other.pec !== '' && other.pec !== null ? other.pec : 'n/a'}</p>
+									<p>Codice destinatario: {other.cod_desti !== '' && other.cod_desti !== null ? other.cod_desti : 'n/a'}</p>
 								</div>
 							</div>
 						</div>
@@ -125,8 +125,8 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									{
 										invoice.payment_method === 'BONIFICO' ?
 										<>
-											<p>Banca: <strong>{invoice.bank == '' || invoice.bank == null ? org.bank : invoice.bank}</strong></p>
-											<p>IBAN: <strong>{invoice.iban == '' || invoice.iban == null ? org.iban : invoice.iban}</strong></p>
+											<p>Banca: <strong>{invoice.bank === '' || invoice.bank === null ? org.bank : invoice.bank}</strong></p>
+											<p>IBAN: <strong>{invoice.iban === '' || invoice.iban === null ? org.iban : invoice.iban}</strong></p>
 										</>
 										:
 										<>

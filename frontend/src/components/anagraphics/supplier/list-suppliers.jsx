@@ -40,7 +40,7 @@ const ListSuppliers = (props) => {
     const { error } = await deleteAnagraphic(id);
 
     if (error !== null) {
-      return console.log('Impossibile eliminare il fornitore');
+      return console.log(error.response.data.description);
     }
 
     const { data } = await listAnagraphic('SUPPLIER', search, filter === 'null' ? null : filter, limit, offset);

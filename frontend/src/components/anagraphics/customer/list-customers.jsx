@@ -40,7 +40,7 @@ const ListCustomers = (props) => {
     const { error } = await deleteAnagraphic(id);
 
     if (error !== null) {
-      return console.log('Impossibile eliminare il cliente');
+      return console.log(error.response.data.description);
     }
 
     const { data } = await listAnagraphic('CUSTOMER', search, filter === 'null' ? null : filter, limit, offset);

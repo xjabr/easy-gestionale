@@ -40,7 +40,7 @@ const ListInvoicesCustomers = (props) => {
     const { error } = await deleteInvoice(id);
 
     if (error !== null) {
-      return console.log('Impossibile eliminare il documento');
+      return console.log(error.response.data.description);
     }
 
     const { data } = await listInvoices('CLIENTE', search, filter === 'null' ? null : filter, limit, offset);

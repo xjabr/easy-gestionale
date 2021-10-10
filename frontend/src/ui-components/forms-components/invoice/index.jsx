@@ -19,8 +19,8 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 	const [qtaService, setQtaService] = useState(0);
 	const [priceService, setPriceService] = useState(0);
 	const [vatCodeService, setVatCodeService] = useState(0);
-	const [discount, setDiscount] = useState(invoice == null ? 0 : invoice.discount);
-	const [otherTax, setOtherTax] = useState(invoice == null ? 0 : invoice.other_taxes);
+	const [discount, setDiscount] = useState(invoice === null ? 0 : invoice.discount);
+	const [otherTax, setOtherTax] = useState(invoice === null ? 0 : invoice.other_taxes);
 
 	const [totalDoc, setTotalDoc] = useState(invoice === null ? 0 : invoice.total)
 	const [totalDocIva, setTotalDocIva] = useState(invoice === null ? 0 : invoice.total)
@@ -45,7 +45,6 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 
 		const getAnagraphics = async () => {
 			const { data, error } = await getAnagraphicsForInvoice(type === 'CLIENTE' ? 'CUSTOMER' : 'SUPPLIER');
-			console.log(data);
 
 			if (error !== null) return alert('Errore');
 
@@ -62,7 +61,7 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 
 		getAnagraphics();
 		getVatCodesCall();
-	}, []);
+	}, [getAnagraphicsForInvoice, getVatCodes, type]);
 
 	const onSubmit = async (data) => {
 		data = {
@@ -139,18 +138,18 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 		<form className="margin-40" onSubmit={handleSubmit(onSubmit)}>
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice == null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
+					<InputSelect defaultValue={invoice === null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputNumber defaultValue={invoice == null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
+					<InputNumber defaultValue={invoice === null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputDate defaultValue={invoice == null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
+					<InputDate defaultValue={invoice === null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
 					{
 						anagraphics !== null ?
-							<InputSelect defaultValue={invoice == null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
+							<InputSelect defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
 							: null
 					}
 				</div>
@@ -158,26 +157,26 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice == null ? '' : invoice.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
+					<InputSelect defaultValue={invoice === null ? '' : invoice.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputText defaultValue={invoice == null ? '' : invoice.bank} label="Banca" name="bank" register={register} isRequired={false} />
+					<InputText defaultValue={invoice === null ? '' : invoice.bank} label="Banca" name="bank" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-6">
-					<InputText defaultValue={invoice == null ? '' : invoice.iban} label="IBAN" name="iban" register={register} isRequired={false} />
+					<InputText defaultValue={invoice === null ? '' : invoice.iban} label="IBAN" name="iban" register={register} isRequired={false} />
 				</div>
 			</div>
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputNumber price={true} type="number" defaultValue={invoice == null ? 0 : invoice.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
+					<InputNumber price={true} type="number" defaultValue={invoice === null ? 0 : invoice.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-3">
-					<InputNumber price={true} type="number" defaultValue={invoice == null ? 0 : invoice.other_taxes} onChange={setOtherTax} label="Altre Tasse" name="other_taxes" register={register} isRequired={false} />
+					<InputNumber price={true} type="number" defaultValue={invoice === null ? 0 : invoice.other_taxes} onChange={setOtherTax} label="Altre Tasse" name="other_taxes" register={register} isRequired={false} />
 				</div>
 			</div>
 
-			<InputTextArea defaultValue={invoice == null ? '' : invoice.note} name="note" label="Note" register={register} isRequired={false} />
+			<InputTextArea defaultValue={invoice === null ? '' : invoice.note} name="note" label="Note" register={register} isRequired={false} />
 
 			<hr />
 
@@ -271,6 +270,16 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 						<th>Totale Lordo</th>
 						<td>&euro; {number_format(total, 2, ',', '.')}</td>
 					</tr>
+					{
+						type === 'CLIENTE' ?
+						<>
+							<tr>
+								<th>Tasse da pagare* (NB: Le tasse e contributi che dovrai versare)</th>
+								<td>&euro; {number_format((total * 0.78 * 0.05) + (total * 0.78 * 0.2572), 2, ',', '.')}</td>
+							</tr>
+						</>
+						: null
+					}
 				</tbody>
 			</table>
 
