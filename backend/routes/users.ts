@@ -1,16 +1,17 @@
-import express from 'express';
-import rateLimit from 'express-rate-limit';
-import Joi from 'joi';
+import * as express from 'express';
+import * as rateLimit from 'express-rate-limit';
+import * as Joi from 'joi';
 
 import validation from '../utils/validation';
 import { UsersController } from '../controllers/users';
 import { OrganizationsController } from '../controllers/organizations';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
+import { ResponseExpress } from '../interfaces';
 
 
 const RouterUsers = {
-	login: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	login: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 			password: Joi.string().required(),
@@ -22,7 +23,7 @@ const RouterUsers = {
 		res.send({ token });
 	},
 
-	create: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	create: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		// validate body
 		const schema = Joi.object({
 			organization_id: Joi.string().required(),
@@ -40,7 +41,7 @@ const RouterUsers = {
 		res.status(201).send(result);
 	},
 
-	logout: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
+	logout: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const schema = Joi.object({
 			email: Joi.string().email().required(),
 		});
@@ -51,9 +52,9 @@ const RouterUsers = {
 		res.status(200).send('OK');
 	},
 
-	getMyData: async (req: express.Request, res: express.Response, _next: express.NextFunction) => {
-		const orgInfo = await OrganizationsController.single(res['organization_id']);
-		const userInfo = await UsersController.single(res['id']);
+	getMyData: async (_req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
+		const orgInfo = await OrganizationsController.single(res.organization_id);
+		const userInfo = await UsersController.single(res.id);
 
 		res.status(200).send({
 			organization: orgInfo,

@@ -1,17 +1,19 @@
-import jwt from 'jsonwebtoken';
+import * as express from 'express';
+import * as jwt from 'jsonwebtoken';
 
+const { assertExposable, throwExposable } = require('../modules/errors');
 import { JWT_SECRETS } from '../configuration';
-import { assertExposable, throwExposable } from '../modules/errors';
 import UserColl from '../models/user';
 import OrganizationColl from '../models/organization';
+import { ResponseExpress } from '../interfaces';
 
 export const authMiddleware = {
   authAssert: (opts = {} as any) => async (
-    req,
-    res,
-    next,
+    req: express.Request,
+    res: ResponseExpress,
+    next: express.NextFunction,
   ) => {
-    const bearerHeader = req.headers['authorization'];
+    const bearerHeader = req.headers['authorization'] as string;
 
     assertExposable(bearerHeader, 'token_not_found');
 
@@ -20,7 +22,7 @@ export const authMiddleware = {
     try {
       await jwt.verify(bearer, JWT_SECRETS);
     } catch (e) {
-      throwExposable('access_denied');
+			throwExposable('access_denied');
     }
 
     const { organization_id, email } = jwt.decode(bearer) as any;
@@ -44,9 +46,9 @@ export const authMiddleware = {
     assertExposable(organization, 'organization_not_found');
 
 		res.user = user;
-		res['id'] = user.id;
+		res.id = user.id;
 		res.role = user.role;
-		res['organization_id'] = user.organization_id;
+		res.organization_id = user.organization_id;
 		res.isAdmin = user.isAdmin;
 
     next();

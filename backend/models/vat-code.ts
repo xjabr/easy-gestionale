@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 const VatCodeScheme = new mongoose.Schema({
 	name: { type: String, required: true, default: '' },

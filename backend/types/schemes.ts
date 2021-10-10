@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import * as Joi from "joi";
 
 const schemes = {
 	anagraphic: Joi.object({

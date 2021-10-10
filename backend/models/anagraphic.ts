@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 const type = ['CUSTOMER', 'SUPPLIER']
 
@@ -23,9 +23,9 @@ const AnagraphicScheme = new mongoose.Schema({
 	note: { type: String, required: false, default: null }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
-const createParamsObj = async (userId, type, organization_id, search, filter) => {
+const createParamsObj = async (userId: any, type: any, organization_id: any, search: any, filter: any) => {
 	// let user = undefined;
-	let params = {
+	let params: any = {
 		organization_id: mongoose.Types.ObjectId(organization_id),
 		type
 	};
@@ -50,9 +50,9 @@ const createParamsObj = async (userId, type, organization_id, search, filter) =>
 }
 
 AnagraphicScheme.statics = {
-	findWithFilters: async function (organization_id, user_id, type, search = undefined, filter = undefined, limit, offset, target = 'created_at', sort = -1) {
+	findWithFilters: async function (organization_id: any, user_id: any, type: any, search: any = undefined, filter: any = undefined, limit: any, offset: any, target: any = 'created_at', sort: any = -1) {
 		let params = await createParamsObj(user_id, type, organization_id, search, filter);
-
+		// @ts-ignore
 		const result = await this.model('anagraphics').aggregate([
 			{
 				$match: {
@@ -74,10 +74,11 @@ AnagraphicScheme.statics = {
 
 		return {
 			data: result,
+		// @ts-ignore
 			length: await this.model('anagraphics').countDocuments(params)
 		}
-	} as any
+	}
 };
 
-const AnagraphicColl = mongoose.model('anagraphics', AnagraphicScheme) as any;
+const AnagraphicColl: any = mongoose.model('anagraphics', AnagraphicScheme);
 export default AnagraphicColl;

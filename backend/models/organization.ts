@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 
 // TODO: VALIDATION
 const OrganizationsScheme = new mongoose.Schema({

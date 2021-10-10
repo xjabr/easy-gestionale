@@ -1,6 +1,10 @@
-const errorMiddleware = (fn) => {
-  return (req, res, next) => {
-    return fn(req, res, next).catch((error) => {
+import * as express from 'express';
+
+import { ResponseExpress } from '../interfaces';
+
+const errorMiddleware = (fn: any) => {
+  return (req: express.Request, res: ResponseExpress | any, next: express.NextFunction) => {
+    return fn(req, res, next).catch((error: any) => {
 			res.error = error;
 			
       let status = 500;

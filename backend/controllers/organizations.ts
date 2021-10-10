@@ -1,8 +1,8 @@
 import OrganizationColl from '../models/organization';
-import { assertExposable } from '../modules/errors';
+const{ assertExposable } = require('../modules/errors');
 
 export const OrganizationsController = {
-	create: async (body) =>{
+	create: async (body: any) =>{
 		const { name_org } = body;
 
 		const exists = await OrganizationColl.exists({ name_org })
@@ -14,9 +14,8 @@ export const OrganizationsController = {
 		return result;
 	},
 
-	single: async (id) =>{
+	single: async (id: string) =>{
 		const result = await OrganizationColl.findOne({ _id: id });
-		console.log(result);
 		return result;
 	}
 }

@@ -1,8 +1,8 @@
-import express from 'express';
-import bodyparser from 'body-parser';
-import mongoose from 'mongoose';
-import cors from 'cors';
-import logger from 'morgan';
+import * as express from 'express';
+import * as bodyparser from 'body-parser';
+import * as mongoose from 'mongoose';
+import * as cors from 'cors';
+import * as morgan from 'morgan';
 
 import {
 	routerUsers,
@@ -13,14 +13,14 @@ import {
 
 require('dotenv').config();
 
-const app = express();
+const app: express.Application = express();
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyparser.json());
 
 const MONGO_URL = process.env.MONGO_URL;
 
-mongoose.connect(MONGO_URL, {
+mongoose.connect(MONGO_URL as any, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useFindAndModify: false

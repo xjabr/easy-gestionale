@@ -1,5 +1,6 @@
-import { throwExposable } from '../modules/errors';
-import Joi from 'joi';
+import * as Joi from 'joi';
+
+const { throwExposable } = require('../modules/errors');
 
 const validation = {
   Joi,
@@ -9,14 +10,14 @@ const validation = {
   joiPassword : Joi.string().length(64),
   uuid: new RegExp("^[0-9a-fA-F]{24}$"),
 
-  async validateParams(schema, params){
+  async validateParams(schema: any|object, params: any|object){
     try {
       const res = await schema.validateAsync(params, { presence: 'required' });
       return res;
-    } catch (error) {
+    } catch (error: any) {
       const validationError = {
         params,
-        errors: error.details.map(detail => detail.message),
+        errors: error.details.map((detail: any) => detail.message as any),
       };
 
       if (validationError.params.password) {

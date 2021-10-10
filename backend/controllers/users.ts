@@ -1,9 +1,11 @@
-import jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
+
 import UserColl from '../models/user';
 import { JWT_SECRETS } from '../configuration';
-import { assertExposable } from '../modules/errors';
 
-const signToken = (user) => {
+const{ assertExposable } = require('../modules/errors');
+
+const signToken = (user: any) => {
   return jwt.sign(
     {
       id: user._id,
@@ -21,7 +23,7 @@ const signToken = (user) => {
 };
 
 export const UsersController = {
-  signin: async (body) => {
+  signin: async (body: any) => {
     const { email, password } = body;
 
     const user = await UserColl.findOne({ email });
@@ -38,13 +40,12 @@ export const UsersController = {
     return token;
 	},
 
-	single: async (id) =>{
+	single: async (id: string) =>{
 		const result = await UserColl.findOne({ _id: id });
-		console.log(result);
 		return result;
 	},
 
-	create: async (body) =>{
+	create: async (body: any) =>{
 		const { email, username } = body;
 
 		const exists = await UserColl.exists({ email, username })
@@ -55,7 +56,7 @@ export const UsersController = {
 		return result;
 	},
 	
-  signout: async (email) => {
+  signout: async (email: string) => {
     const user = await UserColl.findOne({ email });
     assertExposable(user, 'user_not_exists');
     return user;
