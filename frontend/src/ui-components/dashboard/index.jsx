@@ -4,11 +4,11 @@ import styled from 'styled-components';
 
 import Sidebar from '../sidebar';
 
+import Home from '../../pages/Home';
 import Customers from '../../pages/Customers';
 import Suppliers from '../../pages/Suppliers';
 import InvoicesCustomer from '../../pages/InvoicesCustomer';
 import InvoicesSupplier from '../../pages/InvoicesSupplier';
-import { useAuth } from '../../contexts/auth-context';
 
 const WrapperMain = styled.div`
 	width: calc(100% - 250px);
@@ -20,25 +20,6 @@ const WrapperMain = styled.div`
 	padding: 20px;
 	overflow: auto;
 `;
-
-const Home = () => {
-	const { user } = useAuth();
-
-	return (
-		<div className="dashboard-component">
-			{
-				user !== null ?
-					<>
-						<h4 className="section-title">Benvenuto {`${user.user.first_name} ${user.user.last_name}`}</h4>
-						<hr />
-
-						{/* get charts for invoices customer and calcs */}
-					</>
-					: null
-			}
-		</div>
-	)
-}
 
 const Dashboard = () => {
 	return (

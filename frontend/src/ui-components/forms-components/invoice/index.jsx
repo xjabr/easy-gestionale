@@ -8,6 +8,7 @@ import { number_format } from '../../../utils';
 
 const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
 	const { register, handleSubmit } = useForm({});
+
 	const { getAnagraphicsForInvoice, getVatCodes } = useInvoice();
 
 	const [anagraphics, setAnagraphics] = useState(null);
@@ -196,7 +197,7 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 					<InputNumber price={true} type="number" label="Prezzo" name="service-price" value={priceService} onChange={setPriceService} />
 				</div>
 				<div className="col-md-2">
-					<InputSelect data={vatCodes} label="Codice IVA" name="service-vat-code" value={JSON.stringify(vatCodeService)} onChange={setVatCodeService} isObjVal={true} />
+					<InputSelect data={vatCodes} label="Codice IVA" name="service-vat-code" value={JSON.stringify(vatCodeService)} onChange={(value) => setVatCodeService(JSON.parse(value))} isObjVal={true} />
 				</div>
 				<div className="col-md-2">
 					<InputNumber price={true} type="number" label="Totale" name="service-total" disabled={true} value={parseFloat((qtaService * priceService) * (1 + vatCodeService.perc / 100)).toFixed(2)} />

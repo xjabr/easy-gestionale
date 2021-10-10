@@ -148,6 +148,35 @@ const InvoiceProvider = (props) => {
 
 		return obj;
 	}
+	
+	const analysisCustomerInvoices = async () => {
+		let obj = {
+			data: null,
+			error: null,
+			meta: null,
+			status: null
+		}
+
+		try {
+			const result = await httpGet(`${INVOICE_ENDPOINT}/analysis-customer-invoices`, jwtToken, {})
+
+			obj = {
+				data: result.data,
+				error: null,
+				meta: null,
+				status: result.status
+			}
+		} catch (err) {
+			obj = {
+				data: null,
+				error: err,
+				meta: null,
+				status: null
+			}
+		}
+
+		return obj;
+	}
 
 	const createInvoice = async (data) => {
 		let obj = {
@@ -239,6 +268,7 @@ const InvoiceProvider = (props) => {
 			value={{
 				listInvoices,
 				getLastNr,
+				analysisCustomerInvoices,
 				getSingleInvoice,
         getAnagraphicsForInvoice,
 				createInvoice,

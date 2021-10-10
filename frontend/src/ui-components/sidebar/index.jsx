@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 // import fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFileInvoice, faReceipt, faFileInvoiceDollar, faUser, faHouseUser, faTachometerAlt, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faFileInvoice, faFileInvoiceDollar, faUser, faHouseUser, faTachometerAlt } from '@fortawesome/free-solid-svg-icons';
 
 const WrapperSidebar = styled.div`
   width: 250px;
@@ -61,12 +61,12 @@ const Sidebar = () => {
 			<h2>LAZWEB</h2>
 
       <NavLink to="/"><FontAwesomeIcon icon={faTachometerAlt} />Dashboard</NavLink>
+			<hr />
       <NavLink to="/clienti"><FontAwesomeIcon icon={faUser} />Clienti</NavLink>
       <NavLink to="/fornitori"><FontAwesomeIcon icon={faHouseUser} />Fornitori</NavLink>
+			<hr />
       <NavLink to="/fatture-vendita"><FontAwesomeIcon icon={faFileInvoiceDollar} />Fatture Vendita</NavLink>
       <NavLink to="/fatture-acquisto"><FontAwesomeIcon icon={faFileInvoice} />Fatture Acquisto</NavLink>
-      <NavLink to="/corrispettivi"><FontAwesomeIcon icon={faReceipt} />Corrispettivi</NavLink>
-      <NavLink to="/prima-nota"><FontAwesomeIcon icon={faTable} />Prima Nota</NavLink>
     </WrapperSidebar>    
 	)
 }
