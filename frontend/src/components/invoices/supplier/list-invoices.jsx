@@ -14,7 +14,7 @@ const ListInvoices = (props) => {
   const [search, setSearch] = useState(null);
   const [filter, setFilter] = useState(null);
 
-  const limit = 12;
+  const limit = 25;
   const [offset, setOffset] = useState(0);
   const [pagination, setPagination] = useState(null);
 

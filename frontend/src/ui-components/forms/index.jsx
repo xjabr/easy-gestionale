@@ -25,7 +25,7 @@ export const InputText = ({ style = {}, className = '', disabled = false, defaul
 
 	return (
 		<>
-			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 			<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input ' + className : 'form-control ' + className} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} onChange={handleValidation} />
 		</>
 	)
@@ -55,7 +55,7 @@ export const InputEmail = ({ style = {}, disabled = false, defaultValue = undefi
 
 	return (
 		<>
-			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 			<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type="email" onChange={handleValidation} />
 		</>
 	)
@@ -86,14 +86,14 @@ export const InputNumber = ({ price = false, style = {}, disabled = false, value
 	if (!price) {
 		return (
 			<>
-				<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+				<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 				<input style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} step={type !== 'number' ? null : step} onChange={handleValidation} />
 			</>
 		)
 	} else {
 		return (
 			<>
-				<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+				<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 				<div className="input-group flex-nowrap">
 					<span className="input-group-text">&euro;</span>
 					<input style={style} defaultValue={defaultValue} value={value} disabled={disabled} className={error ? 'form-control form-error-input' : 'form-control'} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} type={type} step={type !== 'number' ? null : step} onChange={handleValidation} />
@@ -127,7 +127,7 @@ export const InputTextArea = ({ style = {}, className = '', disabled = false, de
 
 	return (
 		<>
-			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 			<textarea style={style} defaultValue={defaultValue} disabled={disabled} className={error ? 'form-control form-error-input ' + className : 'form-control ' + className} name={name} id={name} ref={register({ required: isRequired })} placeholder={placeholder} onChange={handleValidation}></textarea>
 		</>
 	)
@@ -143,7 +143,7 @@ export const InputDate = ({ style = {}, disabled = false, defaultValue = undefin
 
 	return (
 		<>
-			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 			<input style={style} defaultValue={moment(defaultValue).format('YYYY-MM-DD')} disabled={disabled} className={'form-control'} name={name} id={name} placeholder={placeholder} type="date" ref={register({ required: isRequired })} onChange={handleValidation} />
 		</>
 	)
@@ -168,7 +168,7 @@ export const InputSelect = ({ isObjVal = false, style = {}, className = '', disa
 
 	return (
 		<>
-			<label className="fw-bold" htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
+			<label htmlFor={name}>{label} {isRequired ? <span className="required">*</span> : null}</label>
 			<select style={style} defaultValue={defaultValue} disabled={disabled} name={name} id={name} ref={register({ required: isRequired })} className={'form-select ' + className} onChange={handleValidation}>
 				<option value="">{placeholder}</option>
 				{

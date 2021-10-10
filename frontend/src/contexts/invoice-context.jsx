@@ -43,6 +43,35 @@ const InvoiceProvider = (props) => {
 		return obj;
 	}
 
+	const getLastNr = async (type) => {
+		let obj = {
+			data: null,
+			error: null,
+			meta: null,
+			status: null
+		}
+
+		try {
+			const result = await httpGet(`${INVOICE_ENDPOINT}/last-nr/${type}`, jwtToken, { })
+
+			obj = {
+				data: result.data,
+				error: null,
+				meta: null,
+				status: result.status
+			}
+		} catch (err) {
+			obj = {
+				data: null,
+				error: err,
+				meta: null,
+				status: null
+			}
+		}
+
+		return obj;
+	}
+
 	const getVatCodes = async () => {
 		let obj = {
 			data: null,
@@ -82,20 +111,10 @@ const InvoiceProvider = (props) => {
 
 		try {
 			const result = await httpGet(`${INVOICE_ENDPOINT}/list-anagraphics/${type}`, jwtToken);
-
-			obj = {
-				data: result.data,
-				error: null,
-				meta: null,
-				status: result.status
-			}
+			obj.data = result.data;
+			obj.status = result.status;
 		} catch (err) {
-			obj = {
-				data: null,
-				error: err,
-				meta: null,
-				status: null
-			}
+			obj.error = err;
 		}
 
 		return obj;
@@ -219,6 +238,7 @@ const InvoiceProvider = (props) => {
 		<InvoiceContext.Provider
 			value={{
 				listInvoices,
+				getLastNr,
 				getSingleInvoice,
         getAnagraphicsForInvoice,
 				createInvoice,

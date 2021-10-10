@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import ReactToPrint from 'react-to-print';
 
+import { AnagraphicProvider } from '../../../contexts/anagraphic-context';
 import { useInvoice } from '../../../contexts/invoice-context';
 import FormInvoice from '../../../ui-components/forms-components/invoice';
+import InvoicePdf from '../../../ui-components/pdfs/invoices-pdf';
 
 const EditInvoice = (props) => {
 	const { id } = props.match.params;
   const { updateInvoice, getSingleInvoice } = useInvoice();
 
 	const [invoice, setInvoice] = useState(null);
+
+	const pdfTarget = useRef();
 
   useEffect(() => {
 		const getInvoice = async () => {
@@ -39,15 +44,26 @@ const EditInvoice = (props) => {
 
       <hr />
 
-      <div className="row">
-        <div className="col-md-8">
-          {
-            invoice !== null ? 
+			{invoice !== null ?
+				<>
+					<ReactToPrint
+						trigger={() => (
+							<button className="btn btn-primary">Download Fattura PDF</button>
+						)}
+						content={() => pdfTarget.current}
+					/>
+
+					<div className="d-none">
+						<AnagraphicProvider>
+							<InvoicePdf invoice={invoice} targetRef={pdfTarget} ref={pdfTarget} />
+						</AnagraphicProvider>
+					</div>
+
+					<hr />
+
             <FormInvoice invoice={invoice} handleSave={onSubmit} type="FORNITORE" />
-            : null
-          }
-        </div>
-      </div>
+				</>
+				: <p>Caricamento risorse...</p>}
 
     </div>
   )

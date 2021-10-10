@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import jwt from 'jwt-decode'
 
-import { httpPost } from '../http'
+import { httpGet, httpPost } from '../http'
 import { AUTH_ENDPOINT, ORGANIZATIONS_ENDPOINT } from '../constants/API_ENDPOINT'
 
 const AuthContext = React.createContext()
@@ -40,6 +40,15 @@ function AuthProvider(props) {
         const result = await httpPost(`${AUTH_ENDPOINT}/login`, null, { email, password })
         return result;
     }
+
+		const getMyInfo = async () => {
+			try {
+				const result = await httpGet(`${AUTH_ENDPOINT}/my-info`, jwtToken, {});
+				return result.data;
+			} catch (err) {
+				return err;
+			}
+		}
 
 		const registration = async (body) => {
 			// first get organizations data and create it
@@ -177,6 +186,7 @@ function AuthProvider(props) {
                 registration,
                 logout,
                 id,
+								getMyInfo,
                 username,
                 userEmail,
                 forgotPassword,

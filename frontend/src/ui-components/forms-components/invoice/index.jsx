@@ -4,8 +4,9 @@ import { InputText, InputNumber, InputDate, InputTextArea, InputSelect } from '.
 import { useInvoice } from '../../../contexts/invoice-context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { number_format } from '../../../utils';
 
-const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
+const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
 	const { register, handleSubmit } = useForm({});
 	const { getAnagraphicsForInvoice, getVatCodes } = useInvoice();
 
@@ -141,7 +142,7 @@ const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
 					<InputSelect defaultValue={invoice == null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputNumber defaultValue={invoice == null ? '' : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
+					<InputNumber defaultValue={invoice == null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
 					<InputDate defaultValue={invoice == null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
@@ -180,7 +181,7 @@ const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
 
 			<hr />
 
-			<h4>Servizi</h4>
+			<h4 className="section-title">Servizi</h4>
 
 			<div className="row">
 				<div className="col-md-2">
@@ -232,9 +233,9 @@ const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
 											<td>{item.name}</td>
 											<td>{item.description}</td>
 											<td>{item.qta}</td>
-											<td>&euro; {parseFloat(item.price).toFixed(2)}</td>
+											<td>&euro; {number_format(item.price, 2, ',', '.')}</td>
 											<td>{item.vatCode.label}</td>
-											<td>&euro; {parseFloat(item.total).toFixed(2)}</td>
+											<td>&euro; {number_format(item.total, 2, ',', '.')}</td>
 										</tr>
 									)
 								})
@@ -247,28 +248,28 @@ const FormAnagraphic = ({ invoice = null, handleSave, type = 'CLIENTE' }) => {
 
 			<hr />
 
-			<h4>Resoconto</h4>
+			<h4 className="section-title">Resoconto</h4>
 			<table className="table table-striped w-50">
 				<tbody>
 					<tr>
-						<th>Totale Servizi</th>
-						<td>&euro; {parseFloat(totalDoc).toFixed(2)}</td>
-					</tr>
-					<tr>
-						<th>Totale Servizi IVA</th>
-						<td>&euro; {parseFloat(totalDocIva).toFixed(2)}</td>
-					</tr>
-					<tr>
 						<th>Sconto</th>
-						<td>&euro; {parseFloat(discount).toFixed(2)}</td>
+						<td>&euro; {number_format(discount, 2, ',', '.')}</td>
 					</tr>
 					<tr>
 						<th>Tasse Extra</th>
-						<td>&euro; {parseFloat(otherTax).toFixed(2)}</td>
+						<td>&euro; {number_format(otherTax, 2, ',', '.')}</td>
 					</tr>
 					<tr>
-						<th>Totale Fattura</th>
-						<td>&euro; {parseFloat(total).toFixed(2)}</td>
+						<th>Totale Documento</th>
+						<td>&euro; {number_format(totalDoc, 2, ',', '.')}</td>
+					</tr>
+					<tr>
+						<th>Totale IVA</th>
+						<td>&euro; {number_format(totalDocIva, 2, ',', '.')}</td>
+					</tr>
+					<tr>
+						<th>Totale Lordo</th>
+						<td>&euro; {number_format(total, 2, ',', '.')}</td>
 					</tr>
 				</tbody>
 			</table>

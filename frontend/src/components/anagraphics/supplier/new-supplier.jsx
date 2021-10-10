@@ -12,7 +12,7 @@ const NewSupplier = ({ setSuppliers, setShowNewForm }) => {
 
 		if (error !== null) return alert(`Errore`);
 
-		const { data } = await listAnagraphic('SUPPLIER', null, null, 12, 0);
+		const { data } = await listAnagraphic('SUPPLIER', null, null, 25, 0);
 		setSuppliers(data.data);
 		setShowNewForm(false);
 	}

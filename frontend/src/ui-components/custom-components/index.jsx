@@ -20,7 +20,7 @@ export const NewPageWrapperCopy = styled.div`
 	transform: translate(-50%, -50%);
 	border-radius: 2px;
 	box-shadow: 0px 0px 200px #0008;
-	padding: 40px;
+	padding: 20px;
 	z-index: 9999;
 	overflow: auto;
 `;

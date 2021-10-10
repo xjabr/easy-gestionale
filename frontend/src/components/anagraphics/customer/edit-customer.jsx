@@ -40,7 +40,7 @@ const EditCustomer = (props) => {
       <hr />
 
       <div className="row">
-        <div className="col-md-8">
+        <div className="col-md-12">
           {
             customer !== null ? 
             <FormAnagraphic customer={customer} handleSave={onSubmit} type="CUSTOMER" />

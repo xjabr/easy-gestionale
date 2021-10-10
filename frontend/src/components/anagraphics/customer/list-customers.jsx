@@ -14,7 +14,7 @@ const ListCustomers = (props) => {
   const [search, setSearch] = useState(null);
   const [filter, setFilter] = useState(null);
 
-  const limit = 12;
+  const limit = 25;
   const [offset, setOffset] = useState(0);
   const [pagination, setPagination] = useState(null);
 
@@ -93,7 +93,7 @@ const ListCustomers = (props) => {
         <thead className="thead-dark">
           <tr>
             <th></th>
-            <th>Ragione Sociale/Nome e Cognome</th>
+            <th>Nome e Cognome</th>
             <th>Email</th>
             <th>Telefono</th>
             <th>Codice Fiscale</th>
