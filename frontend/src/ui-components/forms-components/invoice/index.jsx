@@ -275,8 +275,8 @@ const FormAnagraphic = ({ newNr = null, invoice = null, handleSave, type = 'CLIE
 						type === 'CLIENTE' ?
 						<>
 							<tr>
-								<th>Tasse da pagare* (NB: Le tasse e contributi che dovrai versare)</th>
-								<td>&euro; {number_format((total * 0.78 * 0.05) + (total * 0.78 * 0.2572), 2, ',', '.')}</td>
+								<th>Le tasse e contributi che dovrai versare per questa fattura</th>
+								<td>&euro; {number_format((total * 0.78 * 0.2572) + ((total * 0.78) - (total * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
 							</tr>
 						</>
 						: null
