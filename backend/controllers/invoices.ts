@@ -70,8 +70,8 @@ export const InvoicesController = {
 		}
 		
 		let taxableIncome: number = total * 0.78;
-		let contributions: number = taxableIncome * 0.2572;
-		let taxes: number = taxableIncome * 0.05;
+		let contributions: number = total * 0.78 * 0.2572;
+		let taxes: number = ((total * 0.78) - contributions) * 0.05;
 
 		// generate chart's data
 		var chartData = [
