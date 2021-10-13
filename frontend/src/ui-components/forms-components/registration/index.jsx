@@ -65,6 +65,12 @@ const FormRegistration = ({ error, handleSave }) => {
 
 			<hr />
 
+			<label className="d-block" htmlFor="regimeForfettario"><input type="checkbox" id="regimeForfettario" name="regimeForfettario" {...register('regimeForfettario', { required: true })} /> Regime Forfettario?</label>
+			<label className="d-block" htmlFor="dittaIndividuale"><input type="checkbox" id="dittaIndividuale" name="dittaIndividuale" {...register('dittaIndividuale', { required: true })} /> Ditta Individuale?</label>
+			<InputText name="codiceAteco" label="Codice Ateco" isRequired={true} register={register} />
+
+			<hr />
+
 			<InputText name="pec" label="PEC" register={register} isRequired={true} />
 			<InputText name="code_desti" label="Codice Destinatario" register={register} isRequired={true} />
 

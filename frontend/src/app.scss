@@ -228,11 +228,26 @@ thead {
 }
 
 
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+
+
 .container-invoice {
 	width: 100%;
 
 	hr {
-		margin: 1em 0;
+		margin: 1.5em 0;
 	}
 
 	display: flex;
@@ -240,19 +255,19 @@ thead {
 
 	h4 {
 		font-weight: bold;
-		font-size: 18px;
+		font-size: 16px;
 		margin-bottom: 1em;
 	}
 
 	.invoice-middle {
 		h3 {
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: bold;
 			margin-bottom: 10px;
 		}
 
 		p {
-			font-size: 14px;
+			font-size: 12px;
 			margin-bottom: 2px;
 		}
 
@@ -260,9 +275,13 @@ thead {
 
 	table {
 		width: 100%;
+
+		th {
+			font-weight: bold!important;
+		}
 		
 		th, td {
-			font-size: 14px!important;
+			font-size: 12px!important;
 			font-weight: normal!important;
 			padding: 5px 10px;
 		}
@@ -273,17 +292,17 @@ thead {
 		padding: 10px;
 	
 		h1 {
-			font-size: 32px;
+			font-size: 20px;
 			margin-bottom: 0.5em;
 			font-weight: bold;
 		}
 	
 		h2 {
-			font-size: 20px;
+			font-size: 18px;
 		}
 	
 		p {
-			font-size: 14px;
+			font-size: 12px;
 			margin: 0;
 		}
 	}
@@ -291,14 +310,15 @@ thead {
 	.invoice-summary {
 		display: flex;
 		flex-direction: column;
+
 		h4 {
-			font-size: 18px;
+			font-size: 16px;
 			font-weight: bold;
 			margin-bottom: 10px;
 		}
 
 		p {
-			font-size: 14px;
+			font-size: 12px;
 			margin-bottom: 2px;
 		}
 
@@ -309,10 +329,14 @@ thead {
 
 			table {
 				width: 100%;
+
+				th {
+					font-weight: bold!important;
+				}
 				
 				th, td {
-					font-size: 14px;
-					padding: 5px;
+					font-size: 12px!important;
+					padding: 5px!important;
 				}
 			}
 		}

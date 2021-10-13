@@ -9,6 +9,7 @@ import Customers from '../../pages/Customers';
 import Suppliers from '../../pages/Suppliers';
 import InvoicesCustomer from '../../pages/InvoicesCustomer';
 import InvoicesSupplier from '../../pages/InvoicesSupplier';
+import QuotesCustomers from '../../pages/QuotesCustomers';
 
 const WrapperMain = styled.div`
 	width: calc(100% - 250px);
@@ -32,6 +33,7 @@ const Dashboard = () => {
 					<Route path="/fornitori" component={Suppliers} />
 					<Route path="/fatture-vendita" component={InvoicesCustomer} />
 					<Route path="/fatture-acquisto" component={InvoicesSupplier} />
+					<Route path="/preventivi" component={QuotesCustomers} />
 				</Switch>
 			</WrapperMain>
 		</BrowserRouter>

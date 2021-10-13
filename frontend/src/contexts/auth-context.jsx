@@ -12,6 +12,7 @@ function AuthProvider(props) {
 	const [id, setId] = useState(null)
 	const [user, setUser] = useState(null)
 	const [username, setUsername] = useState(null)
+	const [ateco, setAteco] = useState(null)
 	const [userEmail, setUserEmail] = useState(null)
 
 	useEffect(() => {
@@ -31,6 +32,7 @@ function AuthProvider(props) {
 				setUsername(decodedToken.username)
 				setJwtToken(existingToken)
 				setIsLoggedIn(true)
+				setAteco(decodedToken.ateco);
 				fetchUserData()
 			}
 		}
@@ -71,7 +73,10 @@ function AuthProvider(props) {
 			pec,
 			cod_desti,
 			iban,
-			bank
+			bank,
+			regimeForfettario,
+			dittaIndividuale,
+			codiceAteco
 		} = body
 
 		const organization = await httpPost(`${ORGANIZATIONS_ENDPOINT}/`, null, {
@@ -85,7 +90,10 @@ function AuthProvider(props) {
 			pec,
 			cod_desti,
 			iban,
-			bank
+			bank,
+			regimeForfettario,
+			dittaIndividuale,
+			codiceAteco
 		});
 
 		const organizationId = organization.data._id;
@@ -200,6 +208,7 @@ function AuthProvider(props) {
 				userEmail,
 				forgotPassword,
 				resetPassword,
+				ateco
 			}}
 			{...props}
 		/>

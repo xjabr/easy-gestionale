@@ -67,6 +67,10 @@ const Sidebar = () => {
 			<hr />
       <NavLink to="/fatture-vendita"><FontAwesomeIcon icon={faFileInvoiceDollar} />Fatture Vendita</NavLink>
       <NavLink to="/fatture-acquisto"><FontAwesomeIcon icon={faFileInvoice} />Fatture Acquisto</NavLink>
+
+			<hr />
+
+      <NavLink to="/preventivi"><FontAwesomeIcon icon={faFileInvoiceDollar} />Preventivi</NavLink>
     </WrapperSidebar>    
 	)
 }

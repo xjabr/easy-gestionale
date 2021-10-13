@@ -1,31 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { InputText, InputNumber, InputDate, InputTextArea, InputSelect } from '../../forms';
-import { useInvoice } from '../../../contexts/invoice-context';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { useQuote } from '../../../contexts/quote-context';
+import { InputText, InputNumber, InputDate, InputTextArea, InputSelect } from '../../forms';
 import { number_format } from '../../../utils';
 
-const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
+const FormQuote = ({ newNr = null, quote = null, handleSave }) => {
 	const { register, handleSubmit } = useForm({});
 
-	const { getAnagraphicsForInvoice, getVatCodes } = useInvoice();
+	const { getAnagraphicsForQuote, getVatCodes } = useQuote();
 
 	const [anagraphics, setAnagraphics] = useState(null);
 	const [vatCodes, setVatCodes] = useState([]);
-	const [services, setServices] = useState(invoice !== null ? invoice.services : []);
+	const [services, setServices] = useState(quote !== null ? quote.services : []);
 
 	const [nameService, setNameService] = useState("");
 	const [descriptionService, setDescriptionService] = useState("");
 	const [qtaService, setQtaService] = useState(0);
 	const [priceService, setPriceService] = useState(0);
 	const [vatCodeService, setVatCodeService] = useState(0);
-	const [bollo, setBollo] = useState(invoice === null ? false : invoice.bollo);
-	const [discount, setDiscount] = useState(invoice === null ? 0 : invoice.discount);
+	const [bollo, setBollo] = useState(quote === null ? false : quote.bollo);
+	const [discount, setDiscount] = useState(quote === null ? 0 : quote.discount);
 
-	const [totalDoc, setTotalDoc] = useState(invoice === null ? 0 : invoice.total)
-	const [totalDocIva, setTotalDocIva] = useState(invoice === null ? 0 : invoice.total)
-	const [total, setTotal] = useState(invoice === null ? 0 : invoice.total)
+	const [totalDoc, setTotalDoc] = useState(quote === null ? 0 : quote.total)
+	const [totalDocIva, setTotalDocIva] = useState(quote === null ? 0 : quote.total)
+	const [total, setTotal] = useState(quote === null ? 0 : quote.total)
 
 	useEffect(() => {
 		const getVatCodesCall = async () => {
@@ -45,7 +46,7 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 		}
 
 		const getAnagraphics = async () => {
-			const { data, error } = await getAnagraphicsForInvoice(type === 'CLIENTE' ? 'CUSTOMER' : 'SUPPLIER');
+			const { data, error } = await getAnagraphicsForQuote();
 
 			if (error !== null) return alert('Errore');
 
@@ -62,12 +63,11 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 
 		getAnagraphics();
 		getVatCodesCall();
-	}, [getAnagraphicsForInvoice, getVatCodes, type]);
+	}, [getAnagraphicsForQuote, getVatCodes]);
 
 	const onSubmit = async (data) => {
 		data = {
 			...data,
-			type,
 			services: services,
 			tot_document: totalDoc,
 			tot_iva: totalDocIva,
@@ -125,7 +125,7 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 	}
 
 	const type_document = [
-		{ value: 'FATTURA', label: 'FATTURA' },
+		{ value: 'PREVENTIVO', label: 'PREVENTIVO' },
 		{ value: 'NOTA CREDITO', label: 'NOTA CREDITO' }
 	];
 
@@ -140,18 +140,18 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 		<form className="margin-40" onSubmit={handleSubmit(onSubmit)}>
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice === null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
+					<InputSelect defaultValue={quote === null ? '' : quote.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputNumber defaultValue={invoice === null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
+					<InputNumber defaultValue={quote === null ? newNr : quote.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputDate defaultValue={invoice === null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
+					<InputDate defaultValue={quote === null ? '' : quote.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
 					{
 						anagraphics !== null ?
-							<InputSelect defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
+							<InputSelect defaultValue={quote === null ? '' : quote.anagraphic_id} data={anagraphics} label={'Cliente'} name="anagraphic_id" register={register} isRequired={true} />
 							: null
 					}
 				</div>
@@ -159,30 +159,30 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice === null ? '' : invoice.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
+					<InputSelect defaultValue={quote === null ? '' : quote.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputText defaultValue={invoice === null ? '' : invoice.bank} label="Banca" name="bank" register={register} isRequired={false} />
+					<InputText defaultValue={quote === null ? '' : quote.bank} label="Banca" name="bank" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-6">
-					<InputText defaultValue={invoice === null ? '' : invoice.iban} label="IBAN" name="iban" register={register} isRequired={false} />
+					<InputText defaultValue={quote === null ? '' : quote.iban} label="IBAN" name="iban" register={register} isRequired={false} />
 				</div>
 			</div>
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputNumber price={true} type="number" defaultValue={invoice === null ? 0 : invoice.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
+					<InputNumber price={true} type="number" defaultValue={quote === null ? 0 : quote.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-3">
-					<InputText defaultValue={invoice === null ? 0 : invoice.idBollo} label="Identificativo Bollo" name="idBollo" register={register} isRequired={false} />
+					<InputText defaultValue={quote === null ? 0 : quote.idBollo} label="Identificativo Bollo" name="idBollo" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-3">
 					<label htmlFor="" className="d-block">&nbsp;</label>
-					<label htmlFor="bollo"><input defaultChecked={invoice === null ? false : invoice.bollo} onClick={() => setBollo(!bollo)} type="checkbox" name="bollo" id="bollo" {...register('bollo', { isRequired: false })} /> Bollo?</label>
+					<label htmlFor="bollo"><input defaultChecked={quote === null ? false : quote.bollo} onClick={() => setBollo(!bollo)} type="checkbox" name="bollo" id="bollo" {...register('bollo', { isRequired: false })} /> Bollo?</label>
 				</div>
 			</div>
 
-			<InputTextArea defaultValue={invoice === null ? '' : invoice.note} name="note" label="Note" register={register} isRequired={false} />
+			<InputTextArea defaultValue={quote === null ? '' : quote.note} name="note" label="Note" register={register} isRequired={false} />
 
 			<hr />
 
@@ -213,7 +213,7 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 				</div>
 			</div>
 
-			{services.length > 0 ?
+			{ services.length > 0 ?
 				<>
 					<hr />
 
@@ -272,21 +272,6 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 						<th>Totale</th>
 						<td>&euro; {number_format(total, 2, ',', '.')}</td>
 					</tr>
-					{
-						type === 'CLIENTE' ?
-							<>
-								<tr>
-									<th>Le tasse e contributi che dovrai versare per questa fattura</th>
-									{
-										bollo ?
-										<td>&euro; {number_format(((total-2) * 0.78 * 0.2572) + (((total-2) * 0.78) - ((total-2) * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
-										:
-										<td>&euro; {number_format((total * 0.78 * 0.2572) + ((total * 0.78) - (total * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
-									}
-								</tr>
-							</>
-							: null
-					}
 				</tbody>
 			</table>
 
@@ -297,4 +282,4 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 	)
 }
 
-export default FormInvoice;
+export default FormQuote;

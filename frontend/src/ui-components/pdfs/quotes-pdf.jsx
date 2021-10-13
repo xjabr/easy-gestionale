@@ -6,7 +6,7 @@ import { useAnagraphic } from '../../contexts/anagraphic-context';
 
 import { number_format, Padder } from '../../utils';
 
-const InvoicePdf = ({ invoice, targetRef }) => {
+const QuotePdf = ({ quote, targetRef }) => {
 	const { getMyInfo } = useAuth();
 	const { getSingleAnagraphic } = useAnagraphic();
 
@@ -22,14 +22,14 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 		}
 
 		const fetchOtherData = async () => {
-			const { data, error } = await getSingleAnagraphic(invoice.anagraphic_id);
+			const { data, error } = await getSingleAnagraphic(quote.anagraphic_id);
 			if (error !== null) return alert(error.response.data.description);
 			setOther(data);
 		}
 
 		fetchUserData();
 		fetchOtherData();
-	}, [getSingleAnagraphic, getMyInfo, invoice]);
+	}, [getSingleAnagraphic, getMyInfo, quote]);
 
 	return (
 		<div className="container-invoice" style={{ padding: 50 }} ref={targetRef}>
@@ -60,12 +60,12 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 
 						<hr />
 
-						<p className="mb-0" style={{ fontSize: 12 }}><strong>FATTURA NR</strong> {new Padder(2).pad(invoice.nr_document)}/{moment(invoice.date_document).year()} <strong>DEL</strong> {moment(invoice.date_document).format('DD/MM/YYYY')}</p>
+						<p className="mb-0" style={{ fontSize: 12 }}><strong>PREVENTIVO NR</strong> {new Padder(2).pad(quote.nr_document)}/{moment(quote.date_document).year()} <strong>DEL</strong> {moment(quote.date_document).format('DD/MM/YYYY')}</p>
 
 						<hr />
 
 						<div className="invoice-services">
-							{invoice.services.length > 0 ?
+							{quote.services.length > 0 ?
 								<>
 									<table className="table table-striped">
 										<thead className="thead-dark">
@@ -79,7 +79,7 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 										</thead>
 										<tbody>
 											{
-												invoice.services.map((item, index) => {
+												quote.services.map((item, index) => {
 													return (
 														<tr key={index}>
 															<td style={{ fontSize: 12 }}>{item.description}</td>
@@ -112,36 +112,15 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 						</div>
 
 						<hr />
-						<div className="invoice-summary">
-							<div style={{ columns: '2 auto' }}>
-								<div style={{ width: '100%' }}>
-									<h4>Mod. Pagamento - {invoice.payment_method}</h4>
-									{
-										invoice.payment_method === 'BONIFICO' ?
-											<>
-												<p>Banca: <strong>{invoice.bank === '' || invoice.bank === null ? org.bank : invoice.bank}</strong></p>
-												<p>IBAN: <strong>{invoice.iban === '' || invoice.iban === null ? org.iban : invoice.iban}</strong></p>
-											</>
-											:
-											<>
-												<p>Contatta <strong>{user.email}</strong> per maggior info.</p>
-											</>
-									}
-								</div>
-								<div style={{ width: '100%' }}>
-									<h4>Scadenze</h4>
-									<p><strong>{moment(invoice.date_document).add(7, 'days').format('DD/MM/YYYY')}</strong>: &euro; {number_format(invoice.tot, 2, ',', '.')}</p>
-								</div>
-							</div>
 
-							<hr />
+						<div className="invoice-summary">
 							<div className="table-contianer clearfix">
 								<div style={{ width: '50%', float: 'left' }}>
 									{
-										invoice.bollo ?
+										quote.bollo ?
 											<>
 												<p className="mb-0"><strong>Bollo su originale:</strong> &euro; 2,00</p>
-												<p className="mb-0"><strong>Identificativo:</strong> {invoice.idBollo}</p>
+												<p className="mb-0"><strong>Identificativo:</strong> {quote.idBollo}</p>
 											</>
 											: null
 									}
@@ -152,14 +131,14 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 										<tbody>
 											<tr>
 												<th style={{ width: '50%' }}>Sconto</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.discount, 2, ',', '.')}</td>
+												<td style={{ textAlign: 'right' }}>&euro; {number_format(quote.discount, 2, ',', '.')}</td>
 											</tr>
 											<tr>
 												<th style={{ width: '50%' }}>Imponibile</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot_document, 2, ',', '.')}</td>
+												<td style={{ textAlign: 'right' }}>&euro; {number_format(quote.tot_document, 2, ',', '.')}</td>
 											</tr>
 											{
-												invoice.bollo ?
+												quote.bollo ?
 													<tr>
 														<th style={{ width: '50%' }}>Bollo</th>
 														<td style={{ textAlign: 'right' }}>&euro; {number_format(2, 2, ',', '.')}</td>
@@ -168,11 +147,11 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 											}
 											<tr>
 												<th style={{ width: '50%' }}>IVA</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot_iva, 2, ',', '.')}</td>
+												<td style={{ textAlign: 'right' }}>&euro; {number_format(quote.tot_iva, 2, ',', '.')}</td>
 											</tr>
 											<tr>
 												<th style={{ width: '50%' }}>Totale</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot, 2, ',', '.')}</td>
+												<td style={{ textAlign: 'right' }}>&euro; {number_format(quote.tot, 2, ',', '.')}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -188,4 +167,4 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 
 }
 
-export default InvoicePdf;
+export default QuotePdf;
