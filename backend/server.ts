@@ -8,7 +8,8 @@ import {
 	routerUsers,
 	routerOrganizations,
 	routerAnagraphics,
-	routerInvoices
+	routerInvoices,
+	routerQuotes
 } from './routes';
 
 require('dotenv').config();
@@ -40,6 +41,7 @@ db.once('open', function () {
   app.use('/api/organizations', routerOrganizations);
   app.use('/api/anagraphics', routerAnagraphics);
   app.use('/api/invoices', routerInvoices);
+  app.use('/api/quotes', routerQuotes);
 });
 
 export default app;

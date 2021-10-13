@@ -13,7 +13,11 @@ const OrganizationsScheme = new mongoose.Schema({
 	pec: { type: String, required: false },
 	cod_desti: { type: String, required: false },
 	iban: { type: String, required: false },
-	bank: { type: String, required: false }
+	bank: { type: String, required: false },
+	regimeForfettario: { type: Boolean, required: false },
+	dittaIndividuale: { type: Boolean, required: false },
+	codiceAteco: { type: String, required: false },
+	yearlyExpenses: { type: Number, required: false, default: 0.00 }
 });
 
 // Export the model and return your IUser interface

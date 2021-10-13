@@ -1,14 +1,8 @@
 import * as mongoose from 'mongoose';
 
-const typeDocument = [
-	'CLIENTE',
-	'FORNITORE'
-];
-
-const InvoiceScheme = new mongoose.Schema({
+const QuoteScheme = new mongoose.Schema({
 	organization_id: { type: mongoose.Types.ObjectId, required: true, ref: 'organizations' },
 	user_id: { type: mongoose.Types.ObjectId, required: true, ref: 'users' },
-	type: { type: String, required: true, enum: typeDocument },
 	type_document: { type: String, required: true },
 	nr_document: { type: String, required: true },
 	date_document: { type: Date, required: true },
@@ -26,11 +20,10 @@ const InvoiceScheme = new mongoose.Schema({
 	note: { type: String, required: false, default: null },
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
-const createParamsObj = async (userId: any, type: any, organization_id: any, search: any, filter: any) => {
+const createParamsObj = async (userId: any, organization_id: any, search: any, filter: any) => {
 	// let user = undefined;
 	let params: any = {
-		organization_id: mongoose.Types.ObjectId(organization_id),
-		type
+		organization_id: mongoose.Types.ObjectId(organization_id)
 	};
 
 	if (userId != '*') {
@@ -49,12 +42,12 @@ const createParamsObj = async (userId: any, type: any, organization_id: any, sea
 	return params;
 }
 
-InvoiceScheme.statics = {
-	findWithFilters: async function (organization_id: any, user_id: any, type: any, search: any = undefined, filter: any = undefined, limit: any, offset: any, target: any = 'created_at', sort: any = -1) {
-		let params = await createParamsObj(user_id, type, organization_id, search, filter);
+QuoteScheme.statics = {
+	findWithFilters: async function (organization_id: any, user_id: any, search: any = undefined, filter: any = undefined, limit: any, offset: any, target: any = 'created_at', sort: any = -1) {
+		let params = await createParamsObj(user_id, organization_id, search, filter);
 
 		// @ts-ignore
-		const result = await this.model('invoices').aggregate([
+		const result = await this.model('quotes').aggregate([
 			{
 				$match: {
 					...params
@@ -84,11 +77,11 @@ InvoiceScheme.statics = {
 		return {
 			data: result,
 			// @ts-ignore
-			length: await this.model('invoices').countDocuments(params)
+			length: await this.model('quotes').countDocuments(params)
 		}
 	}
 };
 
 
-const InvoiceColl = mongoose.model('invoices', InvoiceScheme) as any;
-export default InvoiceColl;
+const QuoteColl = mongoose.model('quotes', QuoteScheme) as any;
+export default QuoteColl;

@@ -30,7 +30,10 @@ const schemes = {
 		pec: Joi.string().optional(),
 		cod_desti: Joi.string().optional(),
 		iban: Joi.string().optional(),
-		bank: Joi.string().optional()
+		bank: Joi.string().optional(),
+		regimeForfettario: Joi.boolean().optional(),
+		dittaIndividuale: Joi.boolean().optional(),
+		codiceAteco: Joi.string().optional()
 	}),
 
 	invoice: Joi.object({
@@ -44,7 +47,26 @@ const schemes = {
 		iban: Joi.string().allow(null).allow("").optional(),
 		services: Joi.array().default([]).optional(),
 		discount: Joi.number().allow(null).optional(),
-		other_taxes: Joi.number().allow(null).optional(),
+		bollo: Joi.boolean().allow(null).optional().default(false),
+		idBollo: Joi.string().allow(null).allow("").empty().optional().default(null),
+		tot_document: Joi.number().allow(null).optional(),
+		tot_iva: Joi.number().allow(null).optional(),
+		tot: Joi.number().allow(null).optional(),
+		note: Joi.string().allow(null).allow("").optional(),
+	}),
+
+	quote: Joi.object({
+		type_document: Joi.string().required(),
+		nr_document: Joi.number().required(),
+		date_document: Joi.date().required(),
+		anagraphic_id: Joi.string().required(),
+		payment_method: Joi.string().allow(null).allow("").optional(),
+		bank: Joi.string().allow(null).allow("").optional(),
+		iban: Joi.string().allow(null).allow("").optional(),
+		services: Joi.array().default([]).optional(),
+		discount: Joi.number().allow(null).optional(),
+		bollo: Joi.boolean().allow(null).optional().default(false),
+		idBollo: Joi.string().allow(null).allow("").empty().optional().default(null),
 		tot_document: Joi.number().allow(null).optional(),
 		tot_iva: Joi.number().allow(null).optional(),
 		tot: Joi.number().allow(null).optional(),

@@ -2,16 +2,18 @@ import * as jwt from 'jsonwebtoken';
 
 import UserColl from '../models/user';
 import { JWT_SECRETS } from '../configuration';
+import OrganizationColl from '../models/organization';
 
 const{ assertExposable } = require('../modules/errors');
 
-const signToken = (user: any) => {
+const signToken = (user: any, org: any) => {
   return jwt.sign(
     {
       id: user._id,
 			email: user.email,
 			organization_id: user.organization_id,
 			username: user.username,
+      ateco: org.codiceAteco,
       isActive: user.isActive,
       isAdmin: user.isAdmin,
       isVerified: user.isVerified,
@@ -27,6 +29,7 @@ export const UsersController = {
     const { email, password } = body;
 
     const user = await UserColl.findOne({ email });
+		const org = await OrganizationColl.findOne({ _id: user.organization_id });
 
     assertExposable(user, 'login_fail');
     assertExposable(user.isActive, 'disabled_account');
@@ -36,7 +39,7 @@ export const UsersController = {
 
     assertExposable(pwd, 'login_fail');
 
-    const token = signToken(user);
+    const token = signToken(user, org);
     return token;
 	},
 

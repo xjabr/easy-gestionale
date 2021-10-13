@@ -2,6 +2,8 @@ import * as moment from 'moment';
 
 import InvoiceColl from '../models/invoice';
 import AnagraphicColl from '../models/anagraphic';
+import OrganizationColl from '../models/organization';
+// import { getPercByAteco } from '../utils/ateco-codes';
 
 const{ assertExposable } = require('../modules/errors');
 
@@ -62,20 +64,33 @@ export const InvoicesController = {
 		const endYearDate = `${year}-12-31`;
 
 		const data = await InvoiceColl.find({ organization_id, type: 'CLIENTE', date_document: { $gte: startYearDate, $lt: endYearDate} });
+		const org = await OrganizationColl.findOne({ _id: organization_id });
 
 		// get sum of data
 		let total: number = 0;
 		for (let i = 0; i < data.length; i++) {
-			total += data[i].tot;
+			total += data[i].bollo ? data[i].tot - 2 : data[i].tot;
 		}
+
+		// const taxPerc: number = getPercByAteco(org.codiceAteco);
 		
+		// let taxableIncome: number = total * taxPerc;
+		// let contributions: number = total * taxPerc;
+		// if (!org.dittaIndividuale) {
+			// 	contributions = contributions * 0.2572;
+		// } else {
+		// 	contributions = total <= 15953 ? 2600 : contributions * 0.2190;
+		// 	contributions += 75;
+		// }
+		// let taxes: number = ((total * taxPerc)) * 0.05;
+
 		let taxableIncome: number = total * 0.78;
-		let contributions: number = total * 0.78 * 0.2572;
-		let taxes: number = ((total * 0.78) - contributions) * 0.05;
+		let contributions: number = taxableIncome * 0.2572;
+		let taxes: number = ((taxableIncome) - contributions) * 0.05;
 
 		// generate chart's data
 		var chartData = [
-			['Mese', 'Totale', 'Totale Documento', 'IVA', 'Tasse + Contributi'],
+			['Mese', 'Totale', 'Imponibile', 'IVA', 'Tasse + Contributi'],
 			['Gennaio', 0, 0, 0, 0],
 			['Febbraio', 0, 0, 0, 0],
 			['Marzo', 0, 0, 0, 0],
@@ -93,10 +108,17 @@ export const InvoicesController = {
 		for (let i = 0; i < data.length; i++) {
 			var indexMonth = moment(data[i].date_document).get('month') + 1;
 
-			chartData[indexMonth][1] += data[i].tot;
+			let singleTotal = data[i].bollo ? data[i].tot - 2 : data[i].tot;
+
+			chartData[indexMonth][1] += singleTotal;
 			chartData[indexMonth][2] += data[i].tot_document;
 			chartData[indexMonth][3] += data[i].tot_iva;
-			chartData[indexMonth][4] += (data[i].tot * 0.78 * 0.05) + (data[i].tot * 0.78 * 0.2572) as any;
+
+			let singleTaxableIncome: number = singleTotal * 0.78;
+			let singleContributions: number = singleTaxableIncome * 0.2572;
+			let singleTaxes: number = ((taxableIncome) - contributions) * 0.05;
+			
+			chartData[indexMonth][4] += (singleTaxes + singleContributions) as any;
 		}
 
 		return {
@@ -105,7 +127,8 @@ export const InvoicesController = {
 			taxes,
 			contributions,
 			contributionsAndTaxes: taxes + contributions,
-			netIncome: total - (taxes + contributions),
+			expenses: org.yearlyExpenses,
+			netIncome: total - (taxes + contributions) - org.yearlyExpenses,
 			chartData
 		};
 	}
