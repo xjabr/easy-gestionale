@@ -113,13 +113,14 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 
 						<hr />
 						<div className="invoice-summary">
-							<div style={{ columns: '2 auto' }}>
-								<div style={{ width: '100%' }}>
+							<div className="clearfix">
+								<div style={{ width: '50%', float: 'left' }}>
 									<h4>Mod. Pagamento - {invoice.payment_method}</h4>
 									{
 										invoice.payment_method === 'BONIFICO' ?
 											<>
 												<p>Banca: <strong>{invoice.bank === '' || invoice.bank === null ? org.bank : invoice.bank}</strong></p>
+												<p>Intestare a: <strong>{`${user.first_name} ${user.last_name}`}</strong></p>
 												<p>IBAN: <strong>{invoice.iban === '' || invoice.iban === null ? org.iban : invoice.iban}</strong></p>
 											</>
 											:
@@ -128,7 +129,7 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 											</>
 									}
 								</div>
-								<div style={{ width: '100%' }}>
+								<div style={{ width: '50%', float: 'left' }}>
 									<h4>Scadenze</h4>
 									<p><strong>{moment(invoice.date_document).add(7, 'days').format('DD/MM/YYYY')}</strong>: &euro; {number_format(invoice.tot, 2, ',', '.')}</p>
 								</div>
