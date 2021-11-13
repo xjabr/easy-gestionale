@@ -1,6 +1,5 @@
 import AnagraphicColl from '../models/anagraphic';
-
-const{ assertExposable } = require('../modules/errors');
+import { assertExposable } from '../modules/errors';
 
 export const AnagraphicsController = {
 	list: async (organization_id: string, user_id: string, type: string, query: any) => {

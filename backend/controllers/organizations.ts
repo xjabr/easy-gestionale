@@ -1,5 +1,6 @@
 import OrganizationColl from '../models/organization';
-const{ assertExposable } = require('../modules/errors');
+import { assertExposable } from '../modules/errors';
+
 
 export const OrganizationsController = {
 	create: async (body: any) =>{

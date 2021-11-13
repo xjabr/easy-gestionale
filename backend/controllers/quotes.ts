@@ -5,7 +5,8 @@ import AnagraphicColl from '../models/anagraphic';
 import OrganizationColl from '../models/organization';
 import { getPercByAteco } from '../utils/ateco-codes';
 
-const{ assertExposable } = require('../modules/errors');
+import { assertExposable } from '../modules/errors';
+
 
 export const QuotesController = {
 	list: async (organization_id: string, user_id: string = '*', query: any) => {

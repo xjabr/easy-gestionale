@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 
-const { throwExposable } = require('../modules/errors');
+import { throwExposable } from '../modules/errors';
 
 const validation = {
   Joi,

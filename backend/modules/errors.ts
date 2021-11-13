@@ -1,10 +1,10 @@
-const throwError = (message, detail) => {
+export const throwError = (message, detail) => {
   const err = new Error(message);
   Object.assign(err, detail);
   throw err;
 };
 
-const throwExposable = (code, status = undefined, description = undefined, exposeMeta = undefined) => {
+export const throwExposable = (code, status = undefined, description = undefined, exposeMeta = undefined) => {
   const error = getError(code);
 
   if (!error) {
@@ -16,7 +16,7 @@ const throwExposable = (code, status = undefined, description = undefined, expos
     });
   }
 
-  const err = new Error(code);
+  const err = new Error(code) as any;
   err.exposeCustom_ = true;
 
   err.status = status || error.status;
@@ -29,7 +29,7 @@ const throwExposable = (code, status = undefined, description = undefined, expos
   throw err;
 };
 
-function castExposable(error) {
+export function castExposable(error) {
 
   if (error.exposeCustom_) throw error;
 
@@ -37,7 +37,7 @@ function castExposable(error) {
 
 }
 
-function getError(errorCode) {
+export function getError(errorCode) {
   const code = ERRORS[errorCode];
   if (!errorCode || !code) {
     return null;
@@ -45,20 +45,20 @@ function getError(errorCode) {
   return code;
 }
 
-function assert(condition, ...args) {
+export function assert(condition: boolean, message: string, detail: object) {
   if (!condition) {
-    throwError(...args);
+    throwError(message, detail);
   }
 }
 
 
-function assertExposable(condition, ...args) {
+export function assertExposable(condition: boolean, code: string, status: number = undefined, description: string = undefined, exposeMeta: object = undefined) {
   if (!condition) {
-    throwExposable(...args);
+    throwExposable(code, status, description, exposeMeta);
   }
 }
 
-const ERRORS = {
+export const ERRORS = {
 	invoices_type_not_valid: {
 		status: 400,
 		description: 'Incorrect type of invoice'

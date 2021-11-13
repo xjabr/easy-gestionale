@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as jwt from 'jsonwebtoken';
 
-const { assertExposable, throwExposable } = require('../modules/errors');
+import { assertExposable, throwExposable } from '../modules/errors';
 import { JWT_SECRETS } from '../configuration';
 import UserColl from '../models/user';
 import OrganizationColl from '../models/organization';

@@ -4,7 +4,8 @@ import UserColl from '../models/user';
 import { JWT_SECRETS } from '../configuration';
 import OrganizationColl from '../models/organization';
 
-const{ assertExposable } = require('../modules/errors');
+import { assertExposable } from '../modules/errors';
+
 
 const signToken = (user: any, org: any) => {
   return jwt.sign(

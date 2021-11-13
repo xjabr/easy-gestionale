@@ -8,7 +8,8 @@ import errorMiddleware from '../middleware/errors.middleware';
 import { getVatCodes } from '../utils/vat-codes';
 import { ResponseExpress } from '../interfaces';
 
-const{ assertExposable } = require('../modules/errors');
+import { assertExposable } from '../modules/errors';
+
 
 const RouterInvoices = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
