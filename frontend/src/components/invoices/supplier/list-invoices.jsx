@@ -13,6 +13,7 @@ const ListInvoices = (props) => {
   const [invoices, setInvoices] = useState(null);
   const [search, setSearch] = useState(null);
   const [filter, setFilter] = useState(null);
+	const [year, setYear] = useState(new Date().getFullYear());
 
   const limit = 25;
   const [offset, setOffset] = useState(0);
@@ -22,13 +23,13 @@ const ListInvoices = (props) => {
 
   useEffect(() => {
     const initInvoices = async () => {
-      const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+      const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset, year);
       setInvoices(data.data);
       getPagination(data.length, limit, setOffset, setPagination);
     }
 
     initInvoices();
-  }, [listInvoices, filter, limit, offset, search]);
+  }, [listInvoices, filter, limit, offset, search, year]);
 
   const handleDeleteInvoice = async (id) => {
     const confirmDelete = window.confirm('Sei sicuro di voler eliminare il documento?');
@@ -43,13 +44,13 @@ const ListInvoices = (props) => {
       return console.log(error.response.data.description);
     }
 
-    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset, year);
     setInvoices(data.data);
     getPagination(data.length, limit, setOffset, setPagination);
   }
 
   const handleSearch = async () => {
-    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset);
+    const { data } = await listInvoices('FORNITORE', search, filter === 'null' ? null : filter, limit, offset, year);
     setInvoices(data.data);
     getPagination(data.length, limit, setOffset, setPagination);
   }
@@ -62,6 +63,12 @@ const ListInvoices = (props) => {
         <select className="form-select d-inline w-auto mx-2" onChange={(e) => setFilter(e.target.value)}>
           <option value="null">Seleziona un filtro</option>
         </select>
+
+				<select className="form-select d-inline w-auto mx-2" onChange={(e) => setYear(e.target.value)}>
+					<option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
+					<option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
+					<option value={new Date().getFullYear() - 2}>{new Date().getFullYear() - 2}</option>
+				</select>
 
         <div className="wrapper-input-group w-auto d-inline-block">
           <div className="input-group">

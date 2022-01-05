@@ -11,16 +11,17 @@ const HomeComponent = () => {
 	const { analysisCustomerInvoices } = useInvoice();
 
 	const [data, setData] = useState(null);
+	const [year, setYear] = useState(new Date().getFullYear());
 
 	useEffect(() => {
 		const fetchAnalysisCustomerInvoice = async () => {
-			const { data, error } = await analysisCustomerInvoices();
+			const { data, error } = await analysisCustomerInvoices({ year });
 			if (error !== null) return alert(error.response.data.description);
 			setData(data);
 		}
 
 		fetchAnalysisCustomerInvoice();
-	}, []);
+	}, [year]);
 
 	return (
 		<div className="dashboard-component">
@@ -28,6 +29,15 @@ const HomeComponent = () => {
 				user !== null && data !== null ?
 					<>
 						<h4 className="section-title">Benvenuto {`${user.user.first_name} ${user.user.last_name}`}</h4>
+
+						<hr />
+
+						<select className="form-select d-inline w-auto mx-2" onChange={(e) => setYear(e.target.value)}>
+							<option value={new Date().getFullYear()}>{new Date().getFullYear()}</option>
+							<option value={new Date().getFullYear() - 1}>{new Date().getFullYear() - 1}</option>
+							<option value={new Date().getFullYear() - 2}>{new Date().getFullYear() - 2}</option>
+						</select>
+
 						<hr />
 
 						{/* get charts for invoices customer and calcs */}
@@ -49,7 +59,7 @@ const HomeComponent = () => {
 						/>
 
 						<p className="mb-0">Totale: <strong>&euro; {number_format(data.total, 2, ',', '.')}</strong></p>
-						<p className="mb-0">Imponibile Tassabile ({getPercByAteco(ateco)*100}%): <strong>&euro; {number_format(data.taxableIncome, 2, ',', '.')}</strong></p>
+						<p className="mb-0">Imponibile Tassabile ({getPercByAteco(ateco) * 100}%): <strong>&euro; {number_format(data.taxableIncome, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Tasse: <strong>&euro; {number_format(data.taxes, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Contributi: <strong>&euro; {number_format(data.contributions, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Tasse e Contributi da Pagare: <strong>&euro; {number_format(data.contributionsAndTaxes, 2, ',', '.')}</strong></p>

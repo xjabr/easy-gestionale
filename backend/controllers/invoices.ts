@@ -6,11 +6,12 @@ import OrganizationColl from '../models/organization';
 // import { getPercByAteco } from '../utils/ateco-codes';
 
 import { assertExposable } from '../modules/errors';
+import { getPercByAteco } from '../utils/ateco-codes';
 
 
 export const InvoicesController = {
-	list: async (organization_id: string, user_id: string = '*', type: string, query: any) => {
-		const result = await InvoiceColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
+	list: async (organization_id: string, user_id: string = '*', type: string, query: any, year: any) => {
+		const result = await InvoiceColl.findWithFilters(organization_id, user_id, type, query.q, query.filter, parseInt(query.limit), parseInt(query.offset), year);
 		return result;
 	},
 
@@ -73,19 +74,8 @@ export const InvoicesController = {
 			total += data[i].bollo ? data[i].tot - 2 : data[i].tot;
 		}
 
-		// const taxPerc: number = getPercByAteco(org.codiceAteco);
-		
-		// let taxableIncome: number = total * taxPerc;
-		// let contributions: number = total * taxPerc;
-		// if (!org.dittaIndividuale) {
-			// 	contributions = contributions * 0.2572;
-		// } else {
-		// 	contributions = total <= 15953 ? 2600 : contributions * 0.2190;
-		// 	contributions += 75;
-		// }
-		// let taxes: number = ((total * taxPerc)) * 0.05;
-
-		let taxableIncome: number = total * 0.78;
+		const taxPerc: number = getPercByAteco(org.codiceAteco);
+		let taxableIncome: number = total * taxPerc;
 		let contributions: number = taxableIncome * 0.2572;
 		let taxes: number = ((taxableIncome) - contributions) * 0.05;
 
@@ -115,7 +105,7 @@ export const InvoicesController = {
 			chartData[indexMonth][2] += data[i].tot_document;
 			chartData[indexMonth][3] += data[i].tot_iva;
 
-			let singleTaxableIncome: number = singleTotal * 0.78;
+			let singleTaxableIncome: number = singleTotal * taxPerc;
 			let singleContributions: number = singleTaxableIncome * 0.2572;
 			let singleTaxes: number = ((taxableIncome) - contributions) * 0.05;
 			

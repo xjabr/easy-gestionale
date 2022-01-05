@@ -10,7 +10,7 @@ import { assertExposable } from '../modules/errors';
 
 export const QuotesController = {
 	list: async (organization_id: string, user_id: string = '*', query: any) => {
-		const result = await QuoteColl.findWithFilters(organization_id, user_id, query.q, query.filter, parseInt(query.limit), parseInt(query.offset));
+		const result = await QuoteColl.findWithFilters(organization_id, user_id, query.q, query.filter, parseInt(query.limit), parseInt(query.offset), query.year);
 		return result;
 	},
 

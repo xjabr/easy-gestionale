@@ -14,9 +14,11 @@ import { assertExposable } from '../modules/errors';
 const RouterInvoices = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { type } = req.params;
+		const { year } = req.query;
+		
 		await assertExposable(!(type !== 'CLIENTE' && type !== 'FORNITORE' && type !== 'NOTA CREDITO'), 'invoices_type_not_valid');
 
-		const result = await InvoicesController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type, req.query);
+		const result = await InvoicesController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type, req.query, year);
 		res.status(200).send(result);
 	},
 

@@ -45,14 +45,14 @@ export function getError(errorCode) {
   return code;
 }
 
-export function assert(condition: boolean, message: string, detail: object) {
+export function assert(condition: any, message: string, detail: object) {
   if (!condition) {
     throwError(message, detail);
   }
 }
 
 
-export function assertExposable(condition: boolean, code: string, status: number = undefined, description: string = undefined, exposeMeta: object = undefined) {
+export function assertExposable(condition: any, code: string, status: number = undefined, description: string = undefined, exposeMeta: object = undefined) {
   if (!condition) {
     throwExposable(code, status, description, exposeMeta);
   }

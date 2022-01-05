@@ -20,10 +20,11 @@ const QuoteScheme = new mongoose.Schema({
 	note: { type: String, required: false, default: null },
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
-const createParamsObj = async (userId: any, organization_id: any, search: any, filter: any) => {
+const createParamsObj = async (userId: any, organization_id: any, search: any, filter: any, year: any) => {
 	// let user = undefined;
 	let params: any = {
-		organization_id: mongoose.Types.ObjectId(organization_id)
+		organization_id: mongoose.Types.ObjectId(organization_id),
+		date_document: { $gte: new Date(`${year}-01-01`), $lte: new Date(`${year}-12-31`) }
 	};
 
 	if (userId != '*') {
@@ -43,8 +44,8 @@ const createParamsObj = async (userId: any, organization_id: any, search: any, f
 }
 
 QuoteScheme.statics = {
-	findWithFilters: async function (organization_id: any, user_id: any, search: any = undefined, filter: any = undefined, limit: any, offset: any, target: any = 'created_at', sort: any = -1) {
-		let params = await createParamsObj(user_id, organization_id, search, filter);
+	findWithFilters: async function (organization_id: any, user_id: any, search: any = undefined, filter: any = undefined, limit: any, offset: any, year: any, target: any = 'created_at', sort: any = -1) {
+		let params = await createParamsObj(user_id, organization_id, search, filter, year);
 
 		// @ts-ignore
 		const result = await this.model('quotes').aggregate([

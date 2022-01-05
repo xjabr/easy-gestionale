@@ -9,7 +9,7 @@ const QuoteContext = React.createContext();
 const QuoteProvider = (props) => {
 	const { jwtToken } = useAuth();
 
-	const listQuotes = async (query, filter, limit, offset) => {
+	const listQuotes = async (query, filter, limit, offset, year) => {
 		let obj = {
 			data: null,
 			error: null,
@@ -22,7 +22,8 @@ const QuoteProvider = (props) => {
 				filter,
 				q: query,
 				limit,
-				offset
+				offset,
+				year
 			})
 
 			obj = {

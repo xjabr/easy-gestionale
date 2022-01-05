@@ -9,7 +9,7 @@ const InvoiceContext = React.createContext();
 const InvoiceProvider = (props) => {
 	const { jwtToken } = useAuth();
 
-	const listInvoices = async (type, query, filter, limit, offset) => {
+	const listInvoices = async (type, query, filter, limit, offset, year) => {
 		let obj = {
 			data: null,
 			error: null,
@@ -22,7 +22,8 @@ const InvoiceProvider = (props) => {
 				filter,
 				q: query,
 				limit,
-				offset
+				offset,
+				year
 			})
 
 			obj = {
@@ -149,7 +150,7 @@ const InvoiceProvider = (props) => {
 		return obj;
 	}
 	
-	const analysisCustomerInvoices = async () => {
+	const analysisCustomerInvoices = async (params) => {
 		let obj = {
 			data: null,
 			error: null,
@@ -158,7 +159,7 @@ const InvoiceProvider = (props) => {
 		}
 
 		try {
-			const result = await httpGet(`${INVOICE_ENDPOINT}/analysis-customer-invoices`, jwtToken, {})
+			const result = await httpGet(`${INVOICE_ENDPOINT}/analysis-customer-invoices`, jwtToken, params)
 
 			obj = {
 				data: result.data,
