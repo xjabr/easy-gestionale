@@ -1,4 +1,3 @@
-import * as mongoose from 'mongoose';
 import * as express from 'express';
 
 export interface ResponseExpress extends express.Response {
@@ -9,6 +8,3 @@ export interface ResponseExpress extends express.Response {
 	isAdmin: boolean;
 	error: any;
 }
-
-
-export interface IAnagraphic extends mongoose.Document {}

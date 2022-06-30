@@ -1,8 +1,8 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-import { useAuth } from '../../contexts/auth-context';
-import { useAnagraphic } from '../../contexts/anagraphic-context';
+import { useAuth } from '../../contexts/auth.context';
+import { useAnagraphic } from '../../contexts/anagraphic.context';
 
 import { number_format, Padder } from '../../utils';
 
@@ -40,9 +40,18 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 						<div className="invoice-header">
 							<h1>{org.name_org}</h1>
 							<p className="mb-0">{org.address}, {org.cap}, {org.city}</p>
-							<p className="mb-0">Codice Fiscale {org.cf}</p>
-							<p className="mb-0">Partita Iva {org.p_iva}</p>
-							<p className="mb-0">REA: CT</p>
+							{
+								!org.ukOrganization ?
+								<>
+									<p className="mb-0">Codice Fiscale {org.cf}</p>
+									<p className="mb-0">Partita Iva {org.p_iva}</p>
+									<p className="mb-0">REA: CT</p>
+								</>
+								:
+								<>
+									<p className="mb-0">NIN {org.nin}</p>
+								</>
+							}
 						</div>
 
 						<hr />
@@ -110,6 +119,15 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									: null
 							}
 						</div>
+
+						{
+							invoice.note != null || invoice.note != "" ?
+							<>
+								<hr />
+								<pre style={{ fontSize: 11, fontWeight: 'bold', fontFamily: 'Arial, sans-serif' }}>{invoice.note}</pre>
+							</>
+							: null
+						}
 
 						<hr />
 						<div className="invoice-summary">

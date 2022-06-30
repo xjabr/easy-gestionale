@@ -1,5 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Sidebar from '../sidebar';

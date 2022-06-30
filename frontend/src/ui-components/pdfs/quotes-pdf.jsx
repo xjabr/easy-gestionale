@@ -1,8 +1,8 @@
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 
-import { useAuth } from '../../contexts/auth-context';
-import { useAnagraphic } from '../../contexts/anagraphic-context';
+import { useAuth } from '../../contexts/auth.context';
+import { useAnagraphic } from '../../contexts/anagraphic.context';
 
 import { number_format, Padder } from '../../utils';
 

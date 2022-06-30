@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { useQuote } from '../../../contexts/quote-context';
+import { useQuote } from '../../../contexts/quote.context';
 import { InputText, InputNumber, InputDate, InputTextArea, InputSelect } from '../../forms';
 import { number_format } from '../../../utils';
 

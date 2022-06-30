@@ -6,6 +6,7 @@ import { AnagraphicsController } from '../controllers/anagraphics';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
 import { ResponseExpress } from '../interfaces';
+import { assertExposable } from '../modules/errors';
 
 const RouterAnagraphics = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
@@ -22,7 +23,10 @@ const RouterAnagraphics = {
 
 	single: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { id } = req.params;
+		
 		const result = await AnagraphicsController.single(res.organization_id, id);
+		await assertExposable(result, 'not_found');
+
 		res.status(200).send(result);
 	},
 

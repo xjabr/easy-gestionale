@@ -15,7 +15,6 @@ export interface IUser extends mongoose.Document {
 	isActive: boolean;
 	isVerified: boolean;
 	divisions: Array<any>;
-	ukUser: boolean;
   isCorrectPassword?(password: string): void;
 }
 
@@ -35,8 +34,7 @@ const UserSchema: mongoose.Schema = new mongoose.Schema({
 	isAdmin: { type: Boolean, default: false },
 	isActive: { type: Boolean, default: true },
 	isVerified: { type: Boolean, default: false },
-	divisions: { type: Array, required: false, default: ['all'] },
-	ukUser: { type: Boolean, required: false, default: true }
+	divisions: { type: Array, required: false, default: ['all'] }
 });
 
 UserSchema.pre<IUser>('save', function (next) {

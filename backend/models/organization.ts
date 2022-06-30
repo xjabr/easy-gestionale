@@ -17,7 +17,9 @@ const OrganizationsScheme = new mongoose.Schema({
 	regimeForfettario: { type: Boolean, required: false },
 	dittaIndividuale: { type: Boolean, required: false },
 	codiceAteco: { type: String, required: false },
-	yearlyExpenses: { type: Number, required: false, default: 0.00 }
+	yearlyExpenses: { type: Number, required: false, default: 0.00 },
+	ukOrganization: { type: Boolean, required: false, default: false },
+	nin: { type: String, required: false, default: null },
 });
 
 // Export the model and return your IUser interface

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { InputText, InputNumber, InputDate, InputTextArea, InputSelect } from '../../forms';
-import { useInvoice } from '../../../contexts/invoice-context';
+import { useInvoice } from '../../../contexts/invoice.context';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { number_format } from '../../../utils';
