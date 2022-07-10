@@ -20,6 +20,9 @@ const OrganizationsScheme = new mongoose.Schema({
 	yearlyExpenses: { type: Number, required: false, default: 0.00 },
 	ukOrganization: { type: Boolean, required: false, default: false },
 	nin: { type: String, required: false, default: null },
+	taxPerc: { type: Number, required: false, default: 5 },
+	contribPerc: { type: Number, required: false, default: 25.72 },
+	impPerc: { type: Number, required: false, default: 78 }
 });
 
 // Export the model and return your IUser interface

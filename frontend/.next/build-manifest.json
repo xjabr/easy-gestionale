@@ -30,25 +30,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/customers": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/customers.js"
-    ],
     "/invoices/customers": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/invoices/customers.js"
     ],
-    "/quotes/[id]": [
+    "/invoices/suppliers": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/quotes/[id].js"
+      "static/chunks/pages/invoices/suppliers.js"
     ],
-    "/suppliers": [
+    "/quotes": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/suppliers.js"
+      "static/chunks/pages/quotes.js"
     ]
   },
   "ampFirstPages": []

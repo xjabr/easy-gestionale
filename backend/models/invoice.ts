@@ -24,6 +24,8 @@ const InvoiceScheme = new mongoose.Schema({
 	tot_iva: { type: Number, required: false, default: 0 },
 	tot: { type: Number, required: false, default: 0 },
 	note: { type: String, required: false, default: null },
+	taxesAmount: { type: Number, required: true, default: 0 },
+	contribAmount: { type: Number, required: true, default: 0 }
 }, { timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } });
 
 const createParamsObj = async (userId: any, type: any, organization_id: any, search: any, filter: any, year: any) => {

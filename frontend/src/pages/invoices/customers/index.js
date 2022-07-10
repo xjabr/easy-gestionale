@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBoxOpen, faEye, faFolderOpen, faLockOpen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import moment from 'moment';
 
 import { useInvoice } from '../../../contexts/invoice.context';
@@ -119,8 +119,8 @@ const ListInvoicesCustomers = () => {
 								return (
 									<tr key={index}>
 										<td>
-											<a href={`/invoices/customers/${item._id}`} className="btn btn-secondary"><FontAwesomeIcon icon={faEdit} /></a>
-											<button type="button" onClick={() => handleDeleteInvoice(item._id)} className="mx-2 btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button>
+											<a href={`/invoices/customers/${item._id}`} className="btn btn-secondary"><FontAwesomeIcon icon={faFolderOpen} /></a>
+											{/* <button type="button" onClick={() => handleDeleteInvoice(item._id)} className="mx-2 btn btn-danger"><FontAwesomeIcon icon={faTrash} /></button> */}
 										</td>
 										<td>{item.type_document}</td>
 										<td>{item.nr_document}</td>

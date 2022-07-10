@@ -3,7 +3,6 @@ import * as moment from 'moment';
 import QuoteColl from '../models/quote';
 import AnagraphicColl from '../models/anagraphic';
 import OrganizationColl from '../models/organization';
-import { getPercByAteco } from '../utils/ateco-codes';
 
 import { assertExposable } from '../modules/errors';
 
@@ -18,7 +17,7 @@ export const QuotesController = {
 		const startYearDate = `${year}-01-01`;
 		const endYearDate = `${year}-12-31`;
 
-		const result = await QuoteColl.find({organization_id, date_document: { $gte: startYearDate, $lt: endYearDate} }).sort('-nr_document');
+		const result = await QuoteColl.find({ organization_id, date_document: { $gte: startYearDate, $lt: endYearDate } }).sort('-nr_document');
 
 		if (result.length < 1) {
 			return 0;
@@ -39,7 +38,7 @@ export const QuotesController = {
 		return result;
 	},
 
-	create: async (body: any) =>{
+	create: async (body: any) => {
 		const Quote = new QuoteColl(body);
 		const result = await Quote.save();
 		return result;
@@ -51,9 +50,9 @@ export const QuotesController = {
 
 		return result;
 	},
-	
+
 	delete: async (id: string) => {
-		const Quote = await  QuoteColl.findOne({ _id: id });
+		const Quote = await QuoteColl.findOne({ _id: id });
 		assertExposable(Quote != null, 'Quote_not_found');
 
 		const result = await Quote.delete();
@@ -64,7 +63,7 @@ export const QuotesController = {
 		const startYearDate = `${year}-01-01`;
 		const endYearDate = `${year}-12-31`;
 
-		const data = await QuoteColl.find({ organization_id, date_document: { $gte: startYearDate, $lt: endYearDate} });
+		const data = await QuoteColl.find({ organization_id, date_document: { $gte: startYearDate, $lt: endYearDate } });
 		const org = await OrganizationColl.findOne({ _id: organization_id });
 
 		// get sum of data
@@ -73,17 +72,10 @@ export const QuotesController = {
 			total += data[i].bollo ? data[i].tot - 2 : data[i].tot;
 		}
 
-		const taxPerc: number = getPercByAteco(org.codiceAteco);
-		
+		const taxPerc: number = (org.impPerc / 100);
 		let taxableIncome: number = total * taxPerc;
-		let contributions: number = total * taxPerc;
-		if (!org.dittaIndividuale) {
-			contributions = contributions * 0.2572;
-		} else {
-			contributions = total <= 15953 ? 2600 : contributions * 0.2190;
-			contributions += 75;
-		}
-		let taxes: number = ((total * taxPerc)) * 0.05;
+		let contributions: number = taxableIncome * (org.contribPerc / 100);
+		let taxes: number = ((taxableIncome) - contributions) * (org.taxPerc / 100);
 
 		// generate chart's data
 		var chartData = [
@@ -109,15 +101,10 @@ export const QuotesController = {
 			chartData[indexMonth][2] += data[i].tot_document;
 			chartData[indexMonth][3] += data[i].tot_iva;
 
-			let singleContributions: number = data[i].tot * taxPerc;
-			if (!org.dittaIndividuale) {
-				singleContributions = singleContributions * 0.2572;
-			} else {
-				singleContributions = data[i].tot <= 15953 ? (2600/12) : singleContributions * 0.2190;
-				singleContributions += 75;
-			}
-			let singleTaxes: number = ((data[i].tot * taxPerc)) * 0.05;
-			
+
+			let singleContributions: number = data[i].tot * taxPerc * (org.contribPerc / 100);
+			let singleTaxes: number = ((data[i].tot * taxPerc)) * (org.taxPerc / 100);
+
 			chartData[indexMonth][4] += (singleTaxes + singleContributions) as any;
 		}
 

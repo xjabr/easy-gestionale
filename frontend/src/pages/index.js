@@ -70,7 +70,6 @@ const Home = () => {
 						/>
 
 						<p className="mb-0">Totale: <strong>&euro; {number_format(data.total, 2, ',', '.')}</strong></p>
-						<p className="mb-0">Imponibile Tassabile ({getPercByAteco(ateco) * 100}%): <strong>&euro; {number_format(data.taxableIncome, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Tasse: <strong>&euro; {number_format(data.taxes, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Contributi: <strong>&euro; {number_format(data.contributions, 2, ',', '.')}</strong></p>
 						<p className="mb-0">Tasse e Contributi da Pagare: <strong>&euro; {number_format(data.contributionsAndTaxes, 2, ',', '.')}</strong></p>

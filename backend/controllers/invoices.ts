@@ -3,11 +3,8 @@ import * as moment from 'moment';
 import InvoiceColl from '../models/invoice';
 import AnagraphicColl from '../models/anagraphic';
 import OrganizationColl from '../models/organization';
-// import { getPercByAteco } from '../utils/ateco-codes';
 
 import { assertExposable } from '../modules/errors';
-import { getPercByAteco } from '../utils/ateco-codes';
-
 
 export const InvoicesController = {
 	list: async (organization_id: string, user_id: string = '*', type: string, query: any, year: any) => {
@@ -42,18 +39,47 @@ export const InvoicesController = {
 
 	create: async (body: any) =>{
 		const invoice = new InvoiceColl(body);
+		const org = await OrganizationColl.findOne({ _id: body.organization_id });
+
+		const taxPerc: number = (org.impPerc / 100);
+		let taxableIncome: number = body.tot * taxPerc;
+		let contributions: number = taxableIncome * (org.contribPerc / 100);
+		let taxes: number = ((taxableIncome) - contributions) * (org.taxPerc / 100);
+
+		invoice.taxesAmount = taxes;
+		invoice.contribAmount = contributions;
+
 		const result = await invoice.save();
 		return result;
 	},
 
-	update: async (id: string, body: any) => {
+	update: async (id: string, body: any, organization_id: any) => {
+		return {};
+
 		const result = await InvoiceColl.updateOne({ _id: id }, { $set: { ...body } }, { runValidators: true });
+		
 		assertExposable(!(result.n < 1 || result.n > 2), 'invoice_not_found'); // check if invoice exist
+
+		const org = await OrganizationColl.findOne({ _id: organization_id });
+
+		const taxPerc: number = (org.impPerc / 100);
+		let taxableIncome: number = body.tot * taxPerc;
+		let contributions: number = taxableIncome * (org.contribPerc / 100);
+		let taxes: number = ((taxableIncome) - contributions) * (org.taxPerc / 100);
+
+		const invoice = await InvoiceColl.findOne({ _id: id });
+
+		invoice.taxesAmount = taxes;
+		invoice.contribAmount = contributions;
+
+		await invoice.save();
 
 		return result;
 	},
 	
 	delete: async (id: string) => {
+		return {};
+
 		const invoice = await  InvoiceColl.findOne({ _id: id });
 		assertExposable(invoice != null, 'invoice_not_found');
 
@@ -70,14 +96,13 @@ export const InvoicesController = {
 
 		// get sum of data
 		let total: number = 0;
+		let taxes: number = 0;
+		let contributions: number = 0;
 		for (let i = 0; i < data.length; i++) {
 			total += data[i].bollo ? data[i].tot - 2 : data[i].tot;
+			taxes += data[i].taxesAmount;
+			contributions += data[i].contribAmount;
 		}
-
-		const taxPerc: number = getPercByAteco(org.codiceAteco);
-		let taxableIncome: number = total * taxPerc;
-		let contributions: number = taxableIncome * 0.2572;
-		let taxes: number = ((taxableIncome) - contributions) * 0.05;
 
 		// generate chart's data
 		var chartData = [
@@ -105,16 +130,11 @@ export const InvoicesController = {
 			chartData[indexMonth][2] += data[i].tot_document;
 			chartData[indexMonth][3] += data[i].tot_iva;
 
-			let singleTaxableIncome: number = singleTotal * taxPerc;
-			let singleContributions: number = singleTaxableIncome * 0.2572;
-			let singleTaxes: number = ((taxableIncome) - contributions) * 0.05;
-			
-			chartData[indexMonth][4] += (singleTaxes + singleContributions) as any;
+			chartData[indexMonth][4] += data[i].contribAmount + data[i].taxesAmount;
 		}
 
 		return {
 			total,
-			taxableIncome,
 			taxes,
 			contributions,
 			contributionsAndTaxes: taxes + contributions,

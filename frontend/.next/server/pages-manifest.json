@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_document": "pages/_document.js",
   "/_error": "pages/_error.js",
-  "/suppliers": "pages/suppliers.js",
-  "/customers": "pages/customers.js",
-  "/": "pages/index.js"
+  "/invoices/customers": "pages/invoices/customers.js",
+  "/quotes": "pages/quotes.js",
+  "/invoices/suppliers": "pages/invoices/suppliers.js"
 }

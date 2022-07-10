@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { number_format } from '../../../utils';
 
-const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
+const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
 	const { register, handleSubmit } = useForm({});
 
 	const { getAnagraphicsForInvoice, getVatCodes } = useInvoice();
@@ -140,18 +140,18 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 		<form className="margin-40" onSubmit={handleSubmit(onSubmit)}>
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice === null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
+					<InputSelect disabled={update} defaultValue={invoice === null ? '' : invoice.type_document} data={type_document} label="Tipo Documento" name="type_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputNumber defaultValue={invoice === null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
+					<InputNumber disabled={update} defaultValue={invoice === null ? newNr : invoice.nr_document} label="Nr. Documento" name="nr_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputDate defaultValue={invoice === null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
+					<InputDate disabled={update} defaultValue={invoice === null ? '' : invoice.date_document} label="Data Documento" name="date_document" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
 					{
 						anagraphics !== null ?
-							<InputSelect defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
+							<InputSelect disabled={update} defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
 							: null
 					}
 				</div>
@@ -159,59 +159,62 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputSelect defaultValue={invoice === null ? '' : invoice.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
+					<InputSelect disabled={update} defaultValue={invoice === null ? '' : invoice.payment_method} data={payment_method} label="Metodo di Pagamento" name="payment_method" register={register} isRequired={true} />
 				</div>
 				<div className="col-md-3">
-					<InputText defaultValue={invoice === null ? '' : invoice.bank} label="Banca" name="bank" register={register} isRequired={false} />
+					<InputText disabled={update} defaultValue={invoice === null ? '' : invoice.bank} label="Banca" name="bank" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-6">
-					<InputText defaultValue={invoice === null ? '' : invoice.iban} label="IBAN" name="iban" register={register} isRequired={false} />
+					<InputText disabled={update} defaultValue={invoice === null ? '' : invoice.iban} label="IBAN" name="iban" register={register} isRequired={false} />
 				</div>
 			</div>
 
 			<div className="row mb-3">
 				<div className="col-md-3">
-					<InputNumber price={true} type="number" defaultValue={invoice === null ? 0 : invoice.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
+					<InputNumber disabled={update} price={true} type="number" defaultValue={invoice === null ? 0 : invoice.discount} onChange={setDiscount} label="Sconto" name="discount" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-3">
-					<InputText defaultValue={invoice === null ? 0 : invoice.idBollo} label="Identificativo Bollo" name="idBollo" register={register} isRequired={false} />
+					<InputText disabled={update} defaultValue={invoice === null ? 0 : invoice.idBollo} label="Identificativo Bollo" name="idBollo" register={register} isRequired={false} />
 				</div>
 				<div className="col-md-3">
 					<label htmlFor="" className="d-block">&nbsp;</label>
-					<label htmlFor="bollo"><input defaultChecked={invoice === null ? false : invoice.bollo} onClick={() => setBollo(!bollo)} type="checkbox" name="bollo" id="bollo" {...register('bollo', { isRequired: false })} /> Bollo?</label>
+					<label htmlFor="bollo"><input disabled={update} defaultChecked={invoice === null ? false : invoice.bollo} onClick={() => setBollo(!bollo)} type="checkbox" name="bollo" id="bollo" {...register('bollo', { isRequired: false })} /> Bollo?</label>
 				</div>
 			</div>
 
-			<InputTextArea defaultValue={invoice === null ? '' : invoice.note} name="note" label="Note" register={register} isRequired={false} />
+			<InputTextArea disabled={update} defaultValue={invoice === null ? '' : invoice.note} name="note" label="Note" register={register} isRequired={false} />
 
 			<hr />
 
 			<h4 className="section-title">Servizi</h4>
 
-			<div className="row">
-				<div className="col-md-2">
-					<InputText label="Nome Servizio" name="service-name" value={nameService} onChange={setNameService} />
-				</div>
-				<div className="col-md-3">
-					<InputText label="Descrizione" name="service-description" value={descriptionService} onChange={setDescriptionService} />
-				</div>
-				<div className="col-md-1">
-					<InputNumber step="1" type="number" label="Quantità" name="service-qta" value={qtaService} onChange={setQtaService} />
-				</div>
-				<div className="col-md-2">
-					<InputNumber price={true} type="number" label="Prezzo" name="service-price" value={priceService} onChange={setPriceService} />
-				</div>
-				<div className="col-md-2">
-					<InputSelect data={vatCodes} label="Codice IVA" name="service-vat-code" value={JSON.stringify(vatCodeService)} onChange={(value) => setVatCodeService(JSON.parse(value))} isObjVal={true} />
-				</div>
-				<div className="col-md-2">
-					<InputNumber price={true} type="number" label="Totale" name="service-total" disabled={true} value={parseFloat((qtaService * priceService) * (1 + vatCodeService.perc / 100)).toFixed(2)} />
-				</div>
+			{
+				!update &&
+				<div className="row">
+					<div className="col-md-2">
+						<InputText label="Nome Servizio" name="service-name" value={nameService} onChange={setNameService} />
+					</div>
+					<div className="col-md-3">
+						<InputText label="Descrizione" name="service-description" value={descriptionService} onChange={setDescriptionService} />
+					</div>
+					<div className="col-md-1">
+						<InputNumber step="1" type="number" label="Quantità" name="service-qta" value={qtaService} onChange={setQtaService} />
+					</div>
+					<div className="col-md-2">
+						<InputNumber price={true} type="number" label="Prezzo" name="service-price" value={priceService} onChange={setPriceService} />
+					</div>
+					<div className="col-md-2">
+						<InputSelect data={vatCodes} label="Codice IVA" name="service-vat-code" value={JSON.stringify(vatCodeService)} onChange={(value) => setVatCodeService(JSON.parse(value))} isObjVal={true} />
+					</div>
+					<div className="col-md-2">
+						<InputNumber price={true} type="number" label="Totale" name="service-total" disabled={true} value={parseFloat((qtaService * priceService) * (1 + vatCodeService.perc / 100)).toFixed(2)} />
+					</div>
 
-				<div className="col-md-2 mt-2">
-					<button type="button" onClick={handleAddService} className="btn btn-primary btn-block w-100">Aggiungi</button>
+					<div className="col-md-2 mt-2">
+						<button type="button" onClick={handleAddService} className="btn btn-primary btn-block w-100">Aggiungi</button>
+					</div>
 				</div>
-			</div>
+			}
 
 			{services.length > 0 ?
 				<>
@@ -279,9 +282,9 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 									<th>Le tasse e contributi che dovrai versare per questa fattura</th>
 									{
 										bollo ?
-										<td>&euro; {number_format(((total-2) * 0.78 * 0.2572) + (((total-2) * 0.78) - ((total-2) * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
-										:
-										<td>&euro; {number_format((total * 0.78 * 0.2572) + ((total * 0.78) - (total * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
+											<td>&euro; {number_format(((total - 2) * 0.78 * 0.2572) + (((total - 2) * 0.78) - ((total - 2) * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
+											:
+											<td>&euro; {number_format((total * 0.78 * 0.2572) + ((total * 0.78) - (total * 0.78 * 0.2572)) * 0.05, 2, ',', '.')}</td>
 									}
 								</tr>
 							</>
@@ -290,9 +293,15 @@ const FormInvoice = ({ newNr = null, invoice = null, handleSave, type = 'CLIENTE
 				</tbody>
 			</table>
 
-			<hr />
 
-			<input type="submit" className="btn btn-primary" value="Conferma" />
+			{
+				!update &&
+				<>
+					<hr />
+
+					<input type="submit" className="btn btn-primary" value="Conferma" />
+				</>
+			}
 		</form>
 	)
 }

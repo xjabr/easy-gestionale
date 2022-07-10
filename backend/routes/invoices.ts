@@ -55,7 +55,7 @@ const RouterInvoices = {
 
 	update: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		await validation.validateParams(schemes.invoice, req.body)
-		const result = await InvoicesController.update(req.params.id, { ...req.body });
+		const result = await InvoicesController.update(req.params.id, { ...req.body }, res.organization_id);
 		res.status(200).send(result);
 	},
 
