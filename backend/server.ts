@@ -10,7 +10,9 @@ import {
 	routerAnagraphics,
 	routerInvoices,
 	routerQuotes
-} from './routes';
+} from './routes/index.route';
+
+import { MONGO_URL } from './configuration';
 
 require('dotenv').config();
 
@@ -18,8 +20,6 @@ const app: express.Application = express();
 
 app.use(morgan('dev'));
 app.use(bodyparser.json());
-
-const MONGO_URL = process.env.MONGO_URL;
 
 mongoose.connect(MONGO_URL as any, {
   useNewUrlParser: true,

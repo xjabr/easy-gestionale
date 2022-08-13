@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 
-import QuoteColl from '../models/quote';
+import QuoteColl from '../models/quote.model';
 import AnagraphicColl from '../models/anagraphic';
-import OrganizationColl from '../models/organization';
+import OrganizationColl from '../models/organization.model';
 
 import { assertExposable } from '../modules/errors';
 

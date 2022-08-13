@@ -1,4 +1,4 @@
-import OrganizationColl from '../models/organization';
+import OrganizationColl from '../models/organization.model';
 import { assertExposable } from '../modules/errors';
 
 

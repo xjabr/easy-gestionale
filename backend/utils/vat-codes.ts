@@ -1,4 +1,4 @@
-import VatCodeColl from '../models/vat-code';
+import VatCodeColl from '../models/vat-code.model';
 
 export const getVatCodes = async (forUk: boolean = false) => {
 	const results = await VatCodeColl.find({ forUk });

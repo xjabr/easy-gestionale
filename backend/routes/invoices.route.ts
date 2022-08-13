@@ -1,12 +1,12 @@
 import * as express from 'express';
 
 import validation from '../utils/validation';
-import schemes from '../types/schemes';
-import { InvoicesController } from '../controllers/invoices';
+import schemes from '../types/schemes.type';
+import { InvoicesController } from '../controllers/invoices.controller';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
 import { getVatCodes } from '../utils/vat-codes';
-import { ResponseExpress } from '../interfaces';
+import { ResponseExpress } from '../interfaces/index.interface';
 
 import { assertExposable } from '../modules/errors';
 

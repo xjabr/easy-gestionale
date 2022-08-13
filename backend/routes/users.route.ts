@@ -3,11 +3,11 @@ import * as rateLimit from 'express-rate-limit';
 import * as Joi from 'joi';
 
 import validation from '../utils/validation';
-import { UsersController } from '../controllers/users';
-import { OrganizationsController } from '../controllers/organizations';
+import { UsersController } from '../controllers/users.model';
+import { OrganizationsController } from '../controllers/organizations.model';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
-import { ResponseExpress } from '../interfaces';
+import { ResponseExpress } from '../interfaces/index.interface';
 
 
 const RouterUsers = {
@@ -75,9 +75,9 @@ const limitRequestsMiddleware = rateLimit({
 	}
 });
 
+UserRoutes.get('/info', errorMiddleware(authed), errorMiddleware(RouterUsers.getMyData));
 UserRoutes.post('/login', limitRequestsMiddleware, errorMiddleware(RouterUsers.login));
 UserRoutes.post('/create', limitRequestsMiddleware, errorMiddleware(RouterUsers.create));
-UserRoutes.get('/my-info', errorMiddleware(authed), errorMiddleware(RouterUsers.getMyData));
 UserRoutes.post('/logout', errorMiddleware(authed), errorMiddleware(RouterUsers.logout));
 
 export default UserRoutes;

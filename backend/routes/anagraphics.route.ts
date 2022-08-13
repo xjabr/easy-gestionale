@@ -1,11 +1,11 @@
 import * as express from 'express';
 
 import validation from '../utils/validation';
-import schemes from '../types/schemes';
-import { AnagraphicsController } from '../controllers/anagraphics';
+import schemes from '../types/schemes.type';
+import { AnagraphicsController } from '../controllers/anagraphics.controller';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
-import { ResponseExpress } from '../interfaces';
+import { ResponseExpress } from '../interfaces/index.interface';
 import { assertExposable } from '../modules/errors';
 
 const RouterAnagraphics = {

@@ -1,7 +1,7 @@
 import app from './server';
 
-require('dotenv').config();
+import { PORT } from './configuration';
 
-const PORT = process.env.PORT || 5001;
+require('dotenv').config();
 
 app.listen(PORT, () => console.log(`SERVER LISTENING ON PORT ${PORT}`));

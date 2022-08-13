@@ -1,6 +1,6 @@
 import * as express from 'express';
 
-import { ResponseExpress } from '../interfaces';
+import { ResponseExpress } from '../interfaces/index.interface';
 
 const errorMiddleware = (fn: any) => {
   return (req: express.Request, res: ResponseExpress | any, next: express.NextFunction) => {

@@ -1,8 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 
-import UserColl from '../models/user';
+import UserColl from '../models/user.model.';
 import { JWT_SECRETS } from '../configuration';
-import OrganizationColl from '../models/organization';
+import OrganizationColl from '../models/organization.model';
 
 import { assertExposable } from '../modules/errors';
 

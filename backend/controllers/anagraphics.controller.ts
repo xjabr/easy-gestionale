@@ -1,4 +1,4 @@
-import AnagraphicColl from '../models/anagraphic';
+import AnagraphicColl from '../models/anagraphic.model';
 import { assertExposable } from '../modules/errors';
 
 export const AnagraphicsController = {

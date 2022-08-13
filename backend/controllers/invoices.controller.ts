@@ -1,8 +1,8 @@
 import * as moment from 'moment';
 
-import InvoiceColl from '../models/invoice';
-import AnagraphicColl from '../models/anagraphic';
-import OrganizationColl from '../models/organization';
+import InvoiceColl from '../models/invoice.model';
+import AnagraphicColl from '../models/anagraphic.model';
+import OrganizationColl from '../models/organization.model';
 
 import { assertExposable } from '../modules/errors';
 

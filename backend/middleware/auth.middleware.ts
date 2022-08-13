@@ -3,9 +3,9 @@ import * as jwt from 'jsonwebtoken';
 
 import { assertExposable, throwExposable } from '../modules/errors';
 import { JWT_SECRETS } from '../configuration';
-import UserColl from '../models/user';
-import OrganizationColl from '../models/organization';
-import { ResponseExpress } from '../interfaces';
+import UserColl from '../models/user.model.';
+import OrganizationColl from '../models/organization.model';
+import { ResponseExpress } from '../interfaces/index.interface';
 
 export const authMiddleware = {
   authAssert: (opts = {} as any) => async (

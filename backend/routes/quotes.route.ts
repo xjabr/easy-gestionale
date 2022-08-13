@@ -1,12 +1,12 @@
 import * as express from 'express';
 
 import validation from '../utils/validation';
-import schemes from '../types/schemes';
-import { QuotesController } from '../controllers/quotes';
+import schemes from '../types/schemes.type';
+import { QuotesController } from '../controllers/quotes.model';
 import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
 import { getVatCodes } from '../utils/vat-codes';
-import { ResponseExpress } from '../interfaces';
+import { ResponseExpress } from '../interfaces/index.interface';
 
 const RouterQuotes = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
@@ -62,7 +62,7 @@ const RouterQuotes = {
 const QuoteRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: true, isAdmin: false });
 
-QuoteRoutes.get('/analysis-customer-Quotes', errorMiddleware(authed), RouterQuotes.analysisQuoteCustomer);
+QuoteRoutes.get('/analysis-customer-quotes', errorMiddleware(authed), RouterQuotes.analysisQuoteCustomer);
 QuoteRoutes.get('/vat-codes', errorMiddleware(authed), errorMiddleware(RouterQuotes.getVatCodesApi));
 QuoteRoutes.get('/list', errorMiddleware(authed), errorMiddleware(RouterQuotes.list));
 QuoteRoutes.get('/last-nr', errorMiddleware(authed), errorMiddleware(RouterQuotes.getLastNr));
