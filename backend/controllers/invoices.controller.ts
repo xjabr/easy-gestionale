@@ -30,8 +30,8 @@ export const InvoicesController = {
 		return result;
 	},
 
-	single: async (organization_id: string, id: string) => {
-		const result = await InvoiceColl.findOne({ _id: id });
+	single: async (organization_id: string, documentId: string) => {
+		const result = await InvoiceColl.findOne({ _id: documentId });
 		assertExposable(result != null, 'invoice_not_found');
 		assertExposable(result.organization_id != organization_id, 'access_denied');
 		return result;
@@ -53,10 +53,8 @@ export const InvoicesController = {
 		return result;
 	},
 
-	update: async (id: string, body: any, organization_id: any) => {
-		return {};
-
-		const result = await InvoiceColl.updateOne({ _id: id }, { $set: { ...body } }, { runValidators: true });
+	update: async (documentId: string, body: any, organization_id: any) => {
+		const result = await InvoiceColl.updateOne({ _id: documentId }, { $set: { ...body } }, { runValidators: true });
 		
 		assertExposable(!(result.n < 1 || result.n > 2), 'invoice_not_found'); // check if invoice exist
 
@@ -67,7 +65,7 @@ export const InvoicesController = {
 		let contributions: number = taxableIncome * (org.contribPerc / 100);
 		let taxes: number = ((taxableIncome) - contributions) * (org.taxPerc / 100);
 
-		const invoice = await InvoiceColl.findOne({ _id: id });
+		const invoice = await InvoiceColl.findOne({ _id: documentId });
 
 		invoice.taxesAmount = taxes;
 		invoice.contribAmount = contributions;
@@ -77,21 +75,33 @@ export const InvoicesController = {
 		return result;
 	},
 	
-	delete: async (id: string) => {
-		return {};
-
-		const invoice = await  InvoiceColl.findOne({ _id: id });
+	/**
+	 * Delete an invoice by id
+	 * 
+	 * @param id 
+	 * @returns object
+	 */
+	delete: async (documentId: string) => {
+		const invoice = await  InvoiceColl.findOne({ _id: documentId });
 		assertExposable(invoice != null, 'invoice_not_found');
 
 		const result = await invoice.delete();
 		return result;
 	},
 
-	analysisInvoiceCustomer: async (organization_id: string, year: any = new Date().getFullYear()) => {
+	/**
+	 * Generate a report of all invoices emitted in a year
+	 * and calc taxes and contributions to pay
+	 * 
+	 * @param organization_id 
+	 * @param year 
+	 * @returns object
+	 */
+	generateReport: async (organization_id: string, year: any = new Date().getFullYear()) => {
 		const startYearDate = `${year}-01-01`;
 		const endYearDate = `${year}-12-31`;
 
-		const data = await InvoiceColl.find({ organization_id, type: 'CLIENTE', date_document: { $gte: startYearDate, $lt: endYearDate} });
+		const data = await InvoiceColl.find({ organization_id, type: 'invoice', date_document: { $gte: startYearDate, $lt: endYearDate} });
 		const org = await OrganizationColl.findOne({ _id: organization_id });
 
 		// get sum of data
@@ -142,5 +152,9 @@ export const InvoicesController = {
 			netIncome: total - (taxes + contributions) - org.yearlyExpenses,
 			chartData
 		};
-	}
+	},
+
+	sendInvoiceToCustomer: async (_documentId: string) => {},
+	listInvoicesByAnagraphic: async (_anagraphicId: string, _type: string = 'invoice') => {},
+
 }

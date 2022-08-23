@@ -12,10 +12,13 @@ const RouterAnagraphics = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { type } = req.params;
 
-		if (type !== 'CUSTOMER' && type !== 'SUPPLIER') {
+		if (type !== 'customer' && type !== 'supplier') {
 			res.status(400).send({ ok: false, msg: "Type not valid" });
 			return ;
 		}
+
+		// check if limit and offset are presents
+		await assertExposable(!isNaN(parseInt(req.query.limit as any)) && !isNaN(parseInt(req.query.offset as any)), 'bad_params');
 
 		const result = await AnagraphicsController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type, req.query);
 		res.status(200).send(result);

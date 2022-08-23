@@ -7,9 +7,13 @@ import { authMiddleware } from '../middleware/auth.middleware';
 import errorMiddleware from '../middleware/errors.middleware';
 import { getVatCodes } from '../utils/vat-codes';
 import { ResponseExpress } from '../interfaces/index.interface';
+import { assertExposable } from '../modules/errors';
 
 const RouterQuotes = {
 	list: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
+		// check if limit and offset are presents
+		await assertExposable(!isNaN(parseInt(req.query.limit as any)) && !isNaN(parseInt(req.query.offset as any)), 'bad_params');
+
 		const result = await QuotesController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, req.query);
 		res.status(200).send(result);
 	},

@@ -16,7 +16,10 @@ const RouterInvoices = {
 		const { type } = req.params;
 		const { year } = req.query;
 		
-		await assertExposable(!(type !== 'CLIENTE' && type !== 'FORNITORE' && type !== 'NOTA CREDITO'), 'invoices_type_not_valid');
+		await assertExposable(!(type !== 'invoice' && type !== 'receipt' && type !== 'credit_note'), 'invoices_type_not_valid');
+
+		// check if limit and offset are presents
+		await assertExposable(!isNaN(parseInt(req.query.limit as any)) && !isNaN(parseInt(req.query.offset as any)), 'bad_params');
 
 		const result = await InvoicesController.list(res.organization_id, res.role === 'ADMIN' ? '*' : res.id, type, req.query, year);
 		res.status(200).send(result);
@@ -24,7 +27,7 @@ const RouterInvoices = {
 
 	getLastNr: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { type } = req.params;
-		await assertExposable(!(type !== 'CLIENTE' && type !== 'FORNITORE' && type !== 'NOTA CREDITO'), 'invoices_type_not_valid');
+		await assertExposable(!(type !== 'invoice' && type !== 'receipt' && type !== 'credit_note'), 'invoices_type_not_valid');
 
 		const result = await InvoicesController.getLastNr(res.organization_id, type, req.query.year ? req.query.year : new Date().getFullYear());
 		res.status(200).send({ lastNr: result });
@@ -33,7 +36,7 @@ const RouterInvoices = {
 	listAnagraphicByType: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { type } = req.params;
 
-		if (type !== 'CUSTOMER' && type !== 'SUPPLIER') {
+		if (type !== 'customer' && type !== 'supplier') {
 			res.status(400).send({ ok: false, msg: "Type not valid" });
 			return ;
 		}
@@ -69,10 +72,10 @@ const RouterInvoices = {
 		res.status(200).send(result);
 	},
 
-	analysisInvoiceCustomer: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
+	generateReport: async (req: express.Request, res: ResponseExpress, _next: express.NextFunction) => {
 		const { year } = req.query;
 
-		const result = await InvoicesController.analysisInvoiceCustomer(res.organization_id, year ? year : new Date().getFullYear());
+		const result = await InvoicesController.generateReport(res.organization_id, year ? year : new Date().getFullYear());
 		res.status(200).send(result);
 	}
 }
@@ -80,7 +83,7 @@ const RouterInvoices = {
 const InvoiceRoutes = express.Router();
 const authed = authMiddleware.authAssert({ isActive: true, isVerified: true, isAdmin: false });
 
-InvoiceRoutes.get('/analysis-customer-invoices', errorMiddleware(authed), RouterInvoices.analysisInvoiceCustomer);
+InvoiceRoutes.get('/report', errorMiddleware(authed), RouterInvoices.generateReport);
 InvoiceRoutes.get('/vat-codes', errorMiddleware(authed), errorMiddleware(RouterInvoices.getVatCodesApi));
 InvoiceRoutes.get('/list/:type', errorMiddleware(authed), errorMiddleware(RouterInvoices.list));
 InvoiceRoutes.get('/last-nr/:type', errorMiddleware(authed), errorMiddleware(RouterInvoices.getLastNr));

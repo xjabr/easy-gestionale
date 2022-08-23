@@ -1,7 +1,7 @@
 import * as moment from 'moment';
 
 import QuoteColl from '../models/quote.model';
-import AnagraphicColl from '../models/anagraphic';
+import AnagraphicColl from '../models/anagraphic.model';
 import OrganizationColl from '../models/organization.model';
 
 import { assertExposable } from '../modules/errors';
@@ -27,7 +27,7 @@ export const QuotesController = {
 	},
 
 	listAnagraphicByType: async (organization_id: string) => {
-		const result = await AnagraphicColl.find({ organization_id, type: 'CUSTOMER' });
+		const result = await AnagraphicColl.find({ organization_id, type: 'customer' });
 		return result;
 	},
 
@@ -59,7 +59,7 @@ export const QuotesController = {
 		return result;
 	},
 
-	analysisQuoteCustomer: async (organization_id: string, year: any = new Date().getFullYear()) => {
+	analysisQuoteCustomer: async (organization_id: string, year: any = new Date().getFullYear()) => { // todo remove
 		const startYearDate = `${year}-01-01`;
 		const endYearDate = `${year}-12-31`;
 

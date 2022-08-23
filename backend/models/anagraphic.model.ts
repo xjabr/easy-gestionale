@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 
-const type = ['CUSTOMER', 'SUPPLIER']
+const type = ['customer', 'supplier']
 
 // TODO: VALIDATION
 const AnagraphicScheme = new mongoose.Schema({

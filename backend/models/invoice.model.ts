@@ -1,8 +1,9 @@
 import * as mongoose from 'mongoose';
 
 const typeDocument = [
-	'CLIENTE',
-	'FORNITORE'
+	'invoice',
+	'receipt',
+	'credit_note'
 ];
 
 const InvoiceScheme = new mongoose.Schema({
