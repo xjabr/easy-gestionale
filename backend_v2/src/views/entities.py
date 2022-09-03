@@ -29,6 +29,7 @@ class ListCreateEntityView(ListCreateAPIView):
 		serializer = EntitySerializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
 		serializer.save(
+			organization=request.user.organization,
 			user=request.user
 		)
 
@@ -38,7 +39,6 @@ class ListCreateEntityView(ListCreateAPIView):
 class SingleEntityView(APIView):
 	permission_classes = [IsAuthenticated]
 
-	@staticmethod
 	def get(self, request, entity_id: str = None):
 		assert_error(entity_id is None, 'ID not valid', 400)
 
@@ -49,7 +49,6 @@ class SingleEntityView(APIView):
 
 		return success_response(serializer.data, {}, 200)
 
-	@staticmethod
 	def patch(self, request, entity_id: str = None):
 		assert_error(entity_id is None, 'ID not valid', 400)
 
@@ -71,7 +70,6 @@ class SingleEntityView(APIView):
 
 		return success_response('Entity updated with success', {}, 200)
 
-	@staticmethod
 	def delete(self, request, entity_id: str = None):
 		assert_error(entity_id is None, 'ID not valid', 400)
 

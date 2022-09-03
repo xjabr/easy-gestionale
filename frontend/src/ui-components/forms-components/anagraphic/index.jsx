@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { InputText, InputNumber, InputEmail, InputTextArea } from '../../forms';
 
-const FormAnagraphic = ({ customer = null, handleSave, type = 'CUSTOMER' }) => {
+const FormAnagraphic = ({ customer = null, handleSave, type = 'customer' }) => {
 	const { register, handleSubmit } = useForm({});
 
 	const onSubmit = async (data) => {

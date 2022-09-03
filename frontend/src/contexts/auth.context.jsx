@@ -19,7 +19,7 @@ function AuthProvider(props) {
 		const existingToken = localStorage.getItem('access_token')
 
 		const fetchUserData = async () => {
-			const result = await httpGet(`${AUTH_ENDPOINT}/my-info`, existingToken, {});
+			const result = await httpGet(`${AUTH_ENDPOINT}/info`, existingToken, {});
 			setUser(result.data);
 		}
 
@@ -59,7 +59,7 @@ function AuthProvider(props) {
 
 	const getMyInfo = async () => {
 		try {
-			const result = await httpGet(`${AUTH_ENDPOINT}/my-info`, jwtToken, {});
+			const result = await httpGet(`${AUTH_ENDPOINT}/info`, jwtToken, {});
 			return result.data;
 		} catch (err) {
 			return err;

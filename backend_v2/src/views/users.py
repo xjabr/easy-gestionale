@@ -3,12 +3,35 @@ from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
 from src.models.users import User
-from src.serializers.users import UserSerializer
+from src.serializers.users import UserSerializer, SignUpUserSerializer
+from src.serializers.organizations import OrganizationSerializer
 
 from utils.users import generate_params_queryset, get_user_by_id
+from utils.organizations import get_organization_by_id
 from utils.responses import success_response
 
 from exceptions.errors import assert_error
+
+
+class OrganizationSignUp(APIView):
+	def post(self, request):
+		organization_serializer = OrganizationSerializer(data=request.data['organization'])
+		organization_serializer.is_valid(raise_exception=True)
+		organization_serializer.save()
+
+		user_serializer = SignUpUserSerializer(data=request.data['user'])
+		user_serializer.is_valid(raise_exception=True)
+		user_serializer.create({
+			**user_serializer.data,
+			'organization': get_organization_by_id(organization_serializer.data['id']),
+			'role': 'admin',
+			'password': request.data['user']['password']
+		})
+
+		return success_response(None, {
+			'organization': organization_serializer.data,
+			'user': user_serializer.data
+		}, 200)
 
 
 class UserCreateListView(ListCreateAPIView):
@@ -21,21 +44,23 @@ class UserCreateListView(ListCreateAPIView):
 			order = 'id'
 
 		params = generate_params_queryset(self.request.query_params)
-		data = User.objects.filter(**params).order_by(order)
+		data = User.objects.filter(**params, organization=self.request.user.organization.id).order_by(order)
 
 		return data
 
-	def list(self, request):
+	def list(self, request, *args, **kwargs):
 		queryset = self.filter_queryset(self.get_queryset())
 		serializers = self.get_serializer(queryset, many=True)
 
 		return success_response(serializers.data, {}, 200)
 
 	def create(self, request, *args, **kwargs):
+		assert_error(request.user.role != 'admin', 'You don\'t have permission for create a new user', 401)
+
 		serializer = UserSerializer(data=request.data)
 		serializer.is_valid(raise_exception=True)
-		serializer.save()
-		serializer.set_password(serializer.data['id'], request.data['password'])
+		user = serializer.create(dict(**serializer.data, organization=request.user.organization))
+		serializer.set_password(user.id, request.data['password'])
 
 		return success_response(serializer.data, {}, 200)
 
@@ -44,7 +69,6 @@ class SingleUserActionsView(APIView):
 	permission_classes = [IsAuthenticated]
 
 	# get single user
-	@staticmethod
 	def get(self, request, user_id: str = None):
 		assert_error(user_id is None, 'ID not valid', 400)
 
@@ -55,7 +79,6 @@ class SingleUserActionsView(APIView):
 
 		return success_response(serializer.data, {}, 200)
 
-	@staticmethod
 	def patch(self, request, user_id: str = None):
 		assert_error(user_id is None, 'ID not valid', 400)
 
@@ -66,7 +89,7 @@ class SingleUserActionsView(APIView):
 		# get user by id and update old data with the newest
 		user = get_user_by_id(user_id)
 		assert_error(user is None, 'Operator not found', 404)
-		assert_error(request.user.role != 'SUPER ADMIN' and user.role == 'SUPER ADMIN',
+		assert_error(request.user.role != 'admin' and user.role == 'admin',
 								 'You must have the permissions to update this user', 401)
 
 		user.first_name = serializer.data.get('first_name')
@@ -80,7 +103,6 @@ class SingleUserActionsView(APIView):
 
 		return success_response('Operator updated with success', {}, 200)
 
-	@staticmethod
 	def delete(self, request, user_id: str = None):
 		assert_error(user_id is None, 'ID not valid', 400)
 
@@ -95,7 +117,6 @@ class SingleUserActionsView(APIView):
 class UpdatePasswordView(APIView):
 	permission_classes = [IsAuthenticated]
 
-	@staticmethod
 	def post(self, request, user_id: str = None, *args, **kwargs):
 		assert_error(user_id is None, 'ID not valid', 400)
 

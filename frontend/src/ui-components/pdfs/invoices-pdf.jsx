@@ -38,19 +38,22 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 					<>
 						{/* header */}
 						<div className="invoice-header">
-							<h1>{org.name_org}</h1>
+							<h1>{!org.ukOrganization ? org.name_org : `INVOICE N. ${invoice.nr_document}`}</h1>
+
 							<p className="mb-0">{org.address}, {org.cap}, {org.city}</p>
+							<p className='mb-0'>{org.email}</p>
+							<p className='mb-0'>{org.phone}</p>
 							{
 								!org.ukOrganization ?
-								<>
-									<p className="mb-0">Codice Fiscale {org.cf}</p>
-									<p className="mb-0">Partita Iva {org.p_iva}</p>
-									<p className="mb-0">REA: CT</p>
-								</>
-								:
-								<>
-									<p className="mb-0">NIN {org.nin}</p>
-								</>
+									<>
+										<p className="mb-0">Codice Fiscale {org.cf}</p>
+										<p className="mb-0">Partita Iva {org.p_iva}</p>
+										<p className="mb-0">REA: CT</p>
+									</>
+									:
+									<>
+										{/* <p className="mb-0">NIN {org.nin}</p> */}
+									</>
 							}
 						</div>
 
@@ -59,17 +62,24 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 						<div className="invoice-middle">
 							<div style={{ width: '65%' }}></div>
 							<div style={{ width: '35%', float: 'right' }}>
-								<h3>Spett.le</h3>
+								<h3>{!org.ukOrganization ? 'Spett.le' : 'Billed To'}</h3>
 								<p>{other.first_name}</p>
-								<p>{other.address}, {other.cap}, {other.city}</p>
-								<p>Codice Fiscale: {other.cf}</p>
-								<p>Partita IVA: {other.p_iva}</p>
+								<p>{other.address}</p>
+								<p>{other.city}, {other.country}</p>
+								<p>{other.cap}</p>
+								{!org.ukOrganization ? <p>Codice Fiscale: {other.cf}</p> : null}
+								{!org.ukOrganization ? <p>Partita IVA: {other.p_iva}</p> : null}
 							</div>
 						</div>
 
 						<hr />
 
-						<p className="mb-0" style={{ fontSize: 12 }}><strong>FATTURA NR</strong> {new Padder(2).pad(invoice.nr_document)}/{moment(invoice.date_document).year()} <strong>DEL</strong> {moment(invoice.date_document).format('DD/MM/YYYY')}</p>
+						{
+							!org.ukOrganization ?
+								<p className="mb-0" style={{ fontSize: 12 }}><strong>FATTURA NR</strong> {new Padder(5).pad(invoice.nr_document)}/{moment(invoice.date_document).year()} <strong>DEL</strong> {moment(invoice.date_document).format('DD/MM/YYYY')}</p>
+								:
+								<p className="mb-0" style={{ fontSize: 12 }}>Invoice Number: <strong>{invoice.nr_document}</strong> <br />Date Of Issue: <strong>{moment(invoice.date_document).format('DD/MM/YYYY')}</strong></p>
+						}
 
 						<hr />
 
@@ -79,23 +89,23 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									<table className="table table-striped">
 										<thead className="thead-dark">
 											<tr>
-												<th>Descrizione</th>
-												<th>Quantità</th>
-												<th style={{ width: '100px', textAlign: 'right' }}>Prezzo</th>
-												<th style={{ width: '100px' }}>IVA</th>
-												<th style={{ width: '100px', textAlign: 'right' }}>Totale</th>
+												<th>{!org.ukOrganization ? 'Descrizione' : 'DESCRIPTION'}</th>
+												<th>{!org.ukOrganization ? 'Quantità' : 'QTY / HR RATE'}</th>
+												<th style={{ width: '100px', textAlign: 'right' }}>{!org.ukOrganization ? 'Prezzo' : 'UNIT COST'}</th>
+												{!org.ukOrganization ? <th style={{ width: '100px' }}>IVA</th> : null}
+												<th style={{ width: '100px', textAlign: 'right' }}>{!org.ukOrganization ? 'Totale' : 'AMOUNT'}</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody style={{ borderTop: '1px solid #333' }}>
 											{
 												invoice.services.map((item, index) => {
 													return (
 														<tr key={index}>
 															<td style={{ fontSize: 12 }}>{item.description}</td>
 															<td style={{ fontSize: 12 }}>{item.qta}</td>
-															<td style={{ fontSize: 12, textAlign: 'right' }}>&euro; {number_format(item.price, 2, ',', '.')}</td>
-															<td style={{ fontSize: 12 }}>{item.vatCode.label}</td>
-															<td style={{ fontSize: 12, textAlign: 'right' }}>&euro; {number_format(item.total, 2, ',', '.')}</td>
+															<td style={{ fontSize: 12, textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(item.price, 2, ',', '.')}</td>
+															{!org.ukOrganization ? <td style={{ fontSize: 12 }}>{item.vatCode.label}</td> : null}
+															<td style={{ fontSize: 12, textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(item.total, 2, ',', '.')}</td>
 														</tr>
 													)
 												})
@@ -106,7 +116,7 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 								: null}
 
 							{
-								org.regimeForfettario ?
+								org.regimeForfettario && !org.ukOrganization ?
 									<>
 										<hr />
 
@@ -121,19 +131,20 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 						</div>
 
 						{
-							invoice.note != null || invoice.note != "" ?
-							<>
-								<hr />
-								<pre style={{ fontSize: 11, fontWeight: 'bold', fontFamily: 'Arial, sans-serif' }}>{invoice.note}</pre>
-							</>
-							: null
+							invoice.note != null && invoice.note != "" ?
+								<>
+									<hr />
+									<p><strong style={{ fontSize: 13 }}>Notes:</strong></p>
+									<pre style={{ fontSize: 11, fontFamily: 'Arial, sans-serif' }}>{invoice.note}</pre>
+								</>
+								: null
 						}
 
 						<hr />
 						<div className="invoice-summary">
 							<div className="clearfix">
 								<div style={{ width: '50%', float: 'left' }}>
-									<h4>Mod. Pagamento - {invoice.payment_method}</h4>
+									<h4>{!org.ukOrganization ? 'Mod. Pagamento' : 'Payment Method'} - {invoice.payment_method}</h4>
 									{
 										invoice.payment_method === 'BONIFICO' ?
 											<>
@@ -142,14 +153,34 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 												<p>IBAN: <strong>{invoice.iban === '' || invoice.iban === null ? org.iban : invoice.iban}</strong></p>
 											</>
 											:
-											<>
-												<p>Contatta <strong>{user.email}</strong> per maggior info.</p>
-											</>
+											invoice.payment_method === 'Bank Transfer' ?
+												<>
+													<p>Bank Name: <strong>{org.bankName}</strong></p>
+													<p>Account Name: <strong>{org.accountHolder}</strong></p>
+													<p>Account Number: <strong>{org.accountNumber}</strong></p>
+													<p>Sort Code: <strong>{org.sortCode}</strong></p>
+												</>
+												:
+												<>
+													<p>{!org.ukOrganization ? 'Contatta' : 'Contact'} <strong>{user.email}</strong> {!org.ukOrganization ? 'per maggior info.' : 'for more info.'}</p>
+												</>
 									}
+
+
 								</div>
 								<div style={{ width: '50%', float: 'left' }}>
-									<h4>Scadenze</h4>
-									<p><strong>{moment(invoice.date_document).add(7, 'days').format('DD/MM/YYYY')}</strong>: &euro; {number_format(invoice.tot, 2, ',', '.')}</p>
+									{
+										!org.ukOrganization ?
+											<>
+												<h4>TERMINI</h4>
+												<p>Pagare la fattura entro il <strong>{moment(invoice.date_document).add(7, 'days').format('DD/MM/YYYY')}</strong></p>
+											</>
+											:
+											<>
+												<h4>Terms</h4>
+												<p>Please pay invoice by <strong>{moment(invoice.date_document).add(7, 'days').format('DD/MM/YYYY')}</strong></p>
+											</>
+									}
 								</div>
 							</div>
 
@@ -159,7 +190,7 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									{
 										invoice.bollo ?
 											<>
-												<p className="mb-0"><strong>Bollo su originale:</strong> &euro; 2,00</p>
+												<p className="mb-0"><strong>Bollo su originale:</strong> {!org.ukOrganization ? '€' : '£'} 2,00</p>
 												<p className="mb-0"><strong>Identificativo:</strong> {invoice.idBollo}</p>
 											</>
 											: null
@@ -170,28 +201,28 @@ const InvoicePdf = ({ invoice, targetRef }) => {
 									<table className="table table-striped w-100">
 										<tbody>
 											<tr>
-												<th style={{ width: '50%' }}>Sconto</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.discount, 2, ',', '.')}</td>
+												<th style={{ fontWeight: 'bold', width: '50%' }}>{!org.ukOrganization ? 'Sconto' : 'DISCOUNT'}</th>
+												<td style={{ textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(invoice.discount, 2, ',', '.')}</td>
 											</tr>
 											<tr>
-												<th style={{ width: '50%' }}>Imponibile</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot_document, 2, ',', '.')}</td>
+												<th style={{ fontWeight: 'bold', width: '50%' }}>{!org.ukOrganization ? 'Imponibile' : 'SUBTOTAL'}</th>
+												<td style={{ textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(invoice.tot_document, 2, ',', '.')}</td>
 											</tr>
 											{
 												invoice.bollo ?
 													<tr>
 														<th style={{ width: '50%' }}>Bollo</th>
-														<td style={{ textAlign: 'right' }}>&euro; {number_format(2, 2, ',', '.')}</td>
+														<td style={{ textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(2, 2, ',', '.')}</td>
 													</tr>
 													: null
 											}
 											<tr>
-												<th style={{ width: '50%' }}>IVA</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot_iva, 2, ',', '.')}</td>
+												<th style={{ fontWeight: 'bold', width: '50%' }}>{!org.ukOrganization ? 'IVA' : 'TAX'}</th>
+												<td style={{ textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(invoice.tot_iva, 2, ',', '.')}</td>
 											</tr>
 											<tr>
-												<th style={{ width: '50%' }}>Totale</th>
-												<td style={{ textAlign: 'right' }}>&euro; {number_format(invoice.tot, 2, ',', '.')}</td>
+												<th style={{ fontWeight: 'bold', width: '50%' }}>{!org.ukOrganization ? 'Totale' : 'TOTAL'}</th>
+												<td style={{ textAlign: 'right' }}>{!org.ukOrganization ? '€' : '£'} {number_format(invoice.tot, 2, ',', '.')}</td>
 											</tr>
 										</tbody>
 									</table>

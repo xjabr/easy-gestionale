@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { number_format } from '../../../utils';
 
-const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave, type = 'CLIENTE' }) => {
+const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave, type = 'invoice' }) => {
 	const { register, handleSubmit } = useForm({});
 
 	const { getAnagraphicsForInvoice, getVatCodes } = useInvoice();
@@ -45,7 +45,7 @@ const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave,
 		}
 
 		const getAnagraphics = async () => {
-			const { data, error } = await getAnagraphicsForInvoice(type === 'CLIENTE' ? 'CUSTOMER' : 'SUPPLIER');
+			const { data, error } = await getAnagraphicsForInvoice(type === 'invoice' ? 'customer' : 'supplier');
 
 			if (error !== null) return alert('Errore');
 
@@ -131,6 +131,7 @@ const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave,
 
 	const payment_method = [
 		{ value: 'CONTANTI', label: 'CONTANTI' },
+		{ value: 'Bank Transfer', label: 'BANK TRANSFER' },
 		{ value: 'BONIFICO', label: 'BONIFICO' },
 		{ value: 'ASSEGNO', label: 'ASSEGNO' },
 		{ value: 'ALTRO', label: 'ALTRO' },
@@ -151,7 +152,7 @@ const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave,
 				<div className="col-md-3">
 					{
 						anagraphics !== null ?
-							<InputSelect disabled={update} defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()} name="anagraphic_id" register={register} isRequired={true} />
+							<InputSelect disabled={update} defaultValue={invoice === null ? '' : invoice.anagraphic_id} data={anagraphics} label={'Cliente'} name="anagraphic_id" register={register} isRequired={true} />
 							: null
 					}
 				</div>
@@ -276,7 +277,7 @@ const FormInvoice = ({ update = false, newNr = null, invoice = null, handleSave,
 						<td>&euro; {number_format(total, 2, ',', '.')}</td>
 					</tr>
 					{
-						type === 'CLIENTE' ?
+						type === 'invoice' ?
 							<>
 								<tr>
 									<th>Le tasse e contributi che dovrai versare per questa fattura</th>

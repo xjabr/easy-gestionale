@@ -48,7 +48,7 @@ const EditSupplier = (props) => {
 
 			{
 				supplier !== null ?
-					<FormAnagraphic customer={supplier} handleSave={onSubmit} type="SUPPLIER" />
+					<FormAnagraphic customer={supplier} handleSave={onSubmit} type="supplier" />
 					: null
 			}
 		</div>

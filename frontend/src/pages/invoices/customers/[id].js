@@ -69,7 +69,7 @@ const EditInvoiceCustomer = (props) => {
 
 					<hr />
 
-					<FormInvoice update={true} invoice={invoice} handleSave={onSubmit} type="CLIENTE" />
+					<FormInvoice update={true} invoice={invoice} handleSave={onSubmit} type="invoice" />
 				</>
 				: <p>Caricamento risorse...</p>}
 		</div >

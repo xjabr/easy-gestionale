@@ -159,7 +159,7 @@ const QuoteProvider = (props) => {
 		}
 
 		try {
-			const result = await httpGet(`${QUOTE_ENDPOINT}/analysis-customer-Quotes`, jwtToken, {})
+			const result = await httpGet(`${QUOTE_ENDPOINT}/report`, jwtToken, {})
 
 			obj = {
 				data: result.data,

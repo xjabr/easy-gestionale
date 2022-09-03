@@ -159,7 +159,7 @@ const InvoiceProvider = (props) => {
 		}
 
 		try {
-			const result = await httpGet(`${INVOICE_ENDPOINT}/analysis-customer-invoices`, jwtToken, params)
+			const result = await httpGet(`${INVOICE_ENDPOINT}/report`, jwtToken, params)
 
 			obj = {
 				data: result.data,

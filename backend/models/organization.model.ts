@@ -14,12 +14,21 @@ const OrganizationsScheme = new mongoose.Schema({
 	cod_desti: { type: String, required: false },
 	iban: { type: String, required: false },
 	bank: { type: String, required: false },
+	phone: { type: String, required: false },
+	email: { type: String, required: false, unique: true },
+	website: { type: String, required: false, unique: true },
 	regimeForfettario: { type: Boolean, required: false },
 	dittaIndividuale: { type: Boolean, required: false },
 	codiceAteco: { type: String, required: false },
 	yearlyExpenses: { type: Number, required: false, default: 0.00 },
+
 	ukOrganization: { type: Boolean, required: false, default: false },
 	nin: { type: String, required: false, default: null },
+	bankName: { type: String, required: false, default: null },
+	accountHolder: { type: String, required: false, default: null },
+	accountNumber: { type: String, required: false, default: null },
+	sortCode: { type: String, required: false, default: null },
+	
 	taxPerc: { type: Number, required: false, default: 5 },
 	contribPerc: { type: Number, required: false, default: 25.72 },
 	impPerc: { type: Number, required: false, default: 78 }

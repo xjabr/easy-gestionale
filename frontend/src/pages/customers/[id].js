@@ -50,7 +50,7 @@ const EditCustomer = () => {
         <div className="col-md-12">
           {
             customer !== null ? 
-            <FormAnagraphic customer={customer} handleSave={onSubmit} type="CUSTOMER" />
+            <FormAnagraphic customer={customer} handleSave={onSubmit} type="customer" />
             : null
           }
         </div>

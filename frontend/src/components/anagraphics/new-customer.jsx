@@ -12,7 +12,7 @@ const NewCustomer = ({ setCustomers, setShowNewForm }) => {
 
 		if (error !== null) return alert(`Errore`);
 
-		const { data } = await listAnagraphic('CUSTOMER', null, null, 25, 0);
+		const { data } = await listAnagraphic('customer', null, null, 25, 0);
 		setCustomers(data.data);
 		setShowNewForm(false);
 	}
@@ -27,7 +27,7 @@ const NewCustomer = ({ setCustomers, setShowNewForm }) => {
 
         <hr/>
 
-        <FormAnagraphic handleSave={onSubmit} type="CUSTOMER" />
+        <FormAnagraphic handleSave={onSubmit} type="customer" />
       </NewPageWrapperCopy>
     </NewPageWrapper>
   )

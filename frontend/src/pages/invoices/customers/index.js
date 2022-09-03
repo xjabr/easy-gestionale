@@ -26,7 +26,7 @@ const ListInvoicesCustomers = () => {
 		if (!isLoggedIn) return ;
 
 		const initInvoices = async () => {
-			const { data } = await listInvoices('CLIENTE', search, filter === 'null' ? null : filter, limit, offset, year);
+			const { data } = await listInvoices('invoice', search, filter === 'null' ? null : filter, limit, offset, year);
 			setInvoices(data.data);
 			getPagination(data.length, limit, setOffset, setPagination);
 		}
@@ -47,13 +47,13 @@ const ListInvoicesCustomers = () => {
 			return console.log(error.response.data.description);
 		}
 
-		const { data } = await listInvoices('CLIENTE', search, filter === 'null' ? null : filter, limit, offset, year);
+		const { data } = await listInvoices('invoice', search, filter === 'null' ? null : filter, limit, offset, year);
 		setInvoices(data.data);
 		getPagination(data.length, limit, setOffset, setPagination);
 	}
 
 	const handleSearch = async () => {
-		const { data } = await listInvoices('CLIENTE', search, filter === 'null' ? null : filter, limit, offset, year);
+		const { data } = await listInvoices('invoice', search, filter === 'null' ? null : filter, limit, offset, year);
 		setInvoices(data.data);
 		getPagination(data.length, limit, setOffset, setPagination);
 	}

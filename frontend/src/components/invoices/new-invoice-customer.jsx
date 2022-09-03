@@ -14,14 +14,14 @@ const NewInvoice = ({ setInvoices, setShowNewForm }) => {
 
 		if (error !== null) return alert(`Errore`);
 
-		const { data } = await listInvoices('CLIENTE', null, null, 25, 0);
+		const { data } = await listInvoices('invoice', null, null, 25, 0);
 		setInvoices(data.data);
 		setShowNewForm(false);
 	}
 
 	useEffect(() => {
 		const fetchLastNr = async () => {
-			const { data, error } = await getLastNr('CLIENTE');
+			const { data, error } = await getLastNr('invoice');
 			if (error !== null) return alert(error.response.data.description);
 			setNr(data.lastNr + 1);
 		}
@@ -39,7 +39,7 @@ const NewInvoice = ({ setInvoices, setShowNewForm }) => {
 
         <hr/>
 
-        <FormInvoice handleSave={onSubmit} newNr={nr} type="CLIENTE" />
+        <FormInvoice handleSave={onSubmit} newNr={nr} type="invoice" />
       </NewPageWrapperCopy>
     </NewPageWrapper>
   )

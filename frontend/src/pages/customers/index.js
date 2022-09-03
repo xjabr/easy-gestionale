@@ -25,7 +25,7 @@ const ListCustomers = (props) => {
 		if (!isLoggedIn) return ;
 
 		const initCustomers = async () => {
-			const { data } = await listAnagraphic('CUSTOMER', search, filter === 'null' ? null : filter, limit, offset);
+			const { data } = await listAnagraphic('customer', search, filter === 'null' ? null : filter, limit, offset);
 			setCustomers(data.data);
 			getPagination(data.length, limit, setOffset, setPagination);
 		}
@@ -46,13 +46,13 @@ const ListCustomers = (props) => {
 			return console.log(error.response.data.description);
 		}
 
-		const { data } = await listAnagraphic('CUSTOMER', search, filter === 'null' ? null : filter, limit, offset);
+		const { data } = await listAnagraphic('customer', search, filter === 'null' ? null : filter, limit, offset);
 		setCustomers(data.data);
 		getPagination(data.length, limit, setOffset, setPagination);
 	}
 
 	const handleSearch = async () => {
-		const { data } = await listAnagraphic('CUSTOMER', search, filter === 'null' ? null : filter, limit, offset);
+		const { data } = await listAnagraphic('customer', search, filter === 'null' ? null : filter, limit, offset);
 		setCustomers(data.data);
 		getPagination(data.length, limit, setOffset, setPagination);
 	}
